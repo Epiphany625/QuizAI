@@ -1,0 +1,31 @@
+{
+    "manifest_version": 3,
+    "name": "QuizAI",
+    "version": "1.0",
+    "description": "A Chrome extension for quiz generation powered by Gemini.",
+    "side_panel": {
+      "default_path": "index.html"
+    },
+    "background": {
+      "service_worker": "background.js"
+    },
+    "permissions": [
+      "activeTab",
+      "scripting",
+      "storage",
+      "sidePanel",
+      "tabs"
+    ],
+    "host_permissions": [
+      "https://*.google.com/*",
+      "https://*/*"
+    ],
+    "content_scripts": [
+      {
+        "matches": ["https://*/*"],  
+        "js": ["content.js"],        
+        "run_at": "document_idle"   
+      }
+    ]
+  }
+  
