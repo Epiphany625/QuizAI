@@ -1,6 +1,6 @@
 # QuizAI
 
-## Please push changes to a separae branch
+## Please push changes to a separate branch
 
 **front end**
 cd QuizAI_frontend
