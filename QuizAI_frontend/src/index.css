@@ -18,8 +18,15 @@ a {
   color: #646cff;
   text-decoration: inherit;
 }
+label {
+  display: block;
+  font-size: 18px;
+}
 a:hover {
   color: #535bf2;
+}
+h4 {
+  font-size: 18px;
 }
 
 body {
@@ -33,6 +40,10 @@ body {
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
+}
+
+input {
+  height: 30px;
 }
 
 button {

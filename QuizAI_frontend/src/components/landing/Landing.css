@@ -1,0 +1,26 @@
+.landing {
+    width: 90%;
+}
+
+.title {
+    width: 100%;
+}
+
+.forms {
+    width: 105%;
+}
+
+.user-input {
+    width: 80%;
+}
+
+.form-selection {
+    display: flex;
+    justify-content: space-evenly;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.field {
+    margin: 5px;
+}
