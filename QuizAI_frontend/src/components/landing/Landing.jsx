@@ -1,20 +1,24 @@
 import { useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Landing.css';
 
 const Landing = () => {
+    // Hooks
     // Manage signup/login display
     const [signupDisplay, setSignUpDisplay] = useState('none');
-    const [loginDisplay, setLoginDisplay] = useState('block');
-    
+    const [loginDisplay, setLoginDisplay] = useState('block');    
     // Manage form data
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
-    
+    const [confirmPassword, setConfirmPassword] = useState("");    
     // Manage the styles of signup/login button
     const signUpButton = useRef();
     const loginButton = useRef();
+    // manage react router
+    const navigation = useNavigate();
 
+
+    // functions
     // Display selection handlers
     const chooseSignUp = () => {
         setSignUpDisplay('block');
@@ -54,6 +58,7 @@ const Landing = () => {
             if (response.ok) {
                 response = await response.json();
                 console.log(response);
+                navigation('/summary');
             } else {
                 console.log(response.statusText);
             }
@@ -86,6 +91,7 @@ const Landing = () => {
             if (response.ok) {
                 response = await response.json();
                 console.log(response);
+                navigation('/summary');
             } else {
                 console.log(response.statusText);
             }
