@@ -2,13 +2,15 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const cors = require('cors');
 
 // Express app setup
 const app = express();
 app.use(express.json());  // For parsing JSON bodies
+app.use(cors()); // allow cors
 
 // MongoDB connection URI (replace with your own)
-const MONGO_URI = 'mongodb+srv://xinyangxu2023:rEkgtllrjflvA7Dv@quizai.99cry.mongodb.net/';
+const MONGO_URI = 'mongodb+srv://xinyangxu2023:rEkgtllrjflvA7Dv@quizaicluster.99cry.mongodb.net/?retryWrites=true&w=majority&appName=QuizAICluster';
 
 // Connect to MongoDB Atlas
 mongoose.connect(MONGO_URI, {
@@ -21,7 +23,7 @@ mongoose.connect(MONGO_URI, {
 
 // Define the User schema
 const userSchema = new mongoose.Schema({
-    username: {
+    email: {
         type: String,
         required: true,
         unique: true
@@ -59,17 +61,17 @@ const SECRET_KEY = 'your-secret-key';
 
 // Registration Route
 app.post('/register', async (req, res) => {
-    const { username, password } = req.body;
+    const { email, password } = req.body;
 
     try {
         // Check if user already exists
-        const existingUser = await User.findOne({ username });
+        const existingUser = await User.findOne({ email });
         if (existingUser) {
             return res.status(400).json({ message: 'User already exists' });
         }
 
         // Create a new user and save to MongoDB
-        const newUser = new User({ username, password });
+        const newUser = new User({ email, password });
         await newUser.save();
 
         res.status(201).json({ message: 'User registered successfully' });
@@ -81,11 +83,11 @@ app.post('/register', async (req, res) => {
 
 // Login Route
 app.post('/login', async (req, res) => {
-    const { username, password } = req.body;
+    const { email, password } = req.body;
 
     try {
         // Find the user in the database
-        const user = await User.findOne({ username });
+        const user = await User.findOne({ email });
         if (!user) {
             return res.status(400).json({ message: 'Invalid credentials' });
         }
@@ -97,7 +99,7 @@ app.post('/login', async (req, res) => {
         }
 
         // Generate JWT token
-        const token = jwt.sign({ username: user.username }, SECRET_KEY, { expiresIn: '1h' });
+        const token = jwt.sign({ email: user.email }, SECRET_KEY, { expiresIn: '1h' });
 
         res.json({ message: 'Login successful', token });
     } catch (error) {

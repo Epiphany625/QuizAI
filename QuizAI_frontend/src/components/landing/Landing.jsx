@@ -32,18 +32,65 @@ const Landing = () => {
     };
 
     // Handle login form submission
-    const handleLogin = (event) => {
+    const handleLogin = async (event) => {
         event.preventDefault();
+        
+        // Form validation
         if (!lengthValidation()) {
             loginButton.current.style.backgroundColor = "red";
+            return; 
+        }
+        const data = { "email": email, "password": password };
+
+        try {
+            let response = await fetch("http://localhost:3000/login", {
+                method: "POST", 
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data),
+            });
+
+            if (response.ok) {
+                response = await response.json();
+                console.log(response);
+            } else {
+                console.log(response.statusText);
+            }
+        } catch (err) {
+            console.log(err);
         }
     };
 
     // Handle signup form submission
-    const handleSignUp = (event) => {
+    const handleSignUp = async (event) => {
         event.preventDefault();
+        
+        // Form validation
         if (!lengthValidation() || confirmPassword !== password) {
             signUpButton.current.style.backgroundColor = "red";
+            return; 
+        }
+
+        const data = { "email": email, "password": password };
+
+        try {
+            let response = await fetch("http://localhost:3000/register", {
+                method: "POST", 
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data),
+            });
+
+            if (response.ok) {
+                response = await response.json();
+                console.log(response);
+            } else {
+                console.log(response.statusText);
+            }
+        } catch (err) {
+            console.log(err);
         }
     };
 
