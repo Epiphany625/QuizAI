@@ -1,0 +1,176 @@
+/* Landing.css */
+
+/* Global Styles */
+html, body {
+    margin: 0;
+    height: 100%; /* Ensure the body takes the full viewport height */
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background-color: #f0f2f5; /* Soft light gray background */
+    color: #333;
+}
+
+/* Center everything vertically and horizontally */
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Landing Container */
+.landing {
+    width: 100%;
+    max-width: 100%; /* Ensure it doesn't exceed the viewport width */
+    padding: 20px; /* Reduced padding */
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Title Section */
+.title {
+    text-align: center;
+    margin-bottom: 20px; /* Added margin for spacing */
+}
+
+.title h1 {
+    font-size: 2.5rem; /* Reduced font size */
+    margin-bottom: 10px;
+    color: #2c3e50; /* Dark slate color */
+}
+
+.title h4 {
+    font-size: 1rem; /* Reduced font size */
+    color: #7f8c8d; /* Grayish color */
+    font-weight: 400;
+}
+
+/* Forms Container */
+.forms {
+    width: 100%;
+    max-width: 350px; /* Reduced max-width to make it smaller */
+    background-color: #ffffff; /* White background for forms */
+    padding: 20px; /* Reduced padding */
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Form Selection Buttons */
+.form-selection {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px; /* Reduced margin */
+}
+
+.form-selection button {
+    flex: 1;
+    padding: 10px 0; /* Reduced padding */
+    margin: 0 5px;
+    font-size: 0.9rem; /* Reduced font size */
+    font-weight: 500;
+    color: #7f8c8d;
+    background-color: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    transition: color 0.3s, border-bottom 0.3s;
+}
+
+.form-selection button:hover,
+.form-selection button:focus {
+    color: #3498db; /* Light blue */
+    border-bottom: 2px solid #3498db;
+    outline: none;
+}
+
+/* Active Button Style */
+.form-selection button:active {
+    color: #2980b9; /* Darker blue */
+    border-bottom: 2px solid #2980b9;
+}
+
+/* Forms */
+#signup-login-form {
+    width: 100%;
+}
+
+.signup-form,
+.login-form {
+    display: none;
+}
+
+.signup-form[style*="display: block"],
+.login-form[style*="display: block"] {
+    display: block;
+}
+
+.field {
+    margin-bottom: 15px; /* Reduced margin */
+    display: flex;
+    flex-direction: column;
+}
+
+.field label {
+    margin-bottom: 5px;
+    font-size: 0.9rem; /* Reduced font size */
+    font-weight: 500;
+    color: #34495e; /* Darker slate color */
+}
+
+.user-input {
+    padding: 10px; /* Reduced padding */
+    font-size: 0.9rem; /* Reduced font size */
+    border: 1px solid #bdc3c7; /* Light gray border */
+    border-radius: 4px;
+    transition: border-color 0.3s;
+}
+
+.user-input:focus {
+    border-color: #3498db;
+    outline: none;
+}
+
+/* Submit Buttons */
+.signup-form button,
+.login-form button {
+    width: 100%;
+    padding: 12px; /* Reduced padding */
+    font-size: 0.9rem; /* Reduced font size */
+    font-weight: 600;
+    color: #ffffff;
+    background-color: #3498db;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.signup-form button:hover,
+.login-form button:hover {
+    background-color: #2980b9;
+}
+
+.signup-form button:focus,
+.login-form button:focus {
+    outline: none;
+}
+
+/* Error Button Style */
+button[style*="background-color: red"] {
+    background-color: #e74c3c !important; /* Red color for error */
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+    .title h1 {
+        font-size: 2rem; /* Reduced font size */
+    }
+
+    .title h4 {
+        font-size: 0.9rem; /* Reduced font size */
+    }
+
+    .forms {
+        padding: 15px; /* Reduced padding */
+    }
+}
