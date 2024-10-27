@@ -1,4 +1,11 @@
-#root {
+/* #root {
   text-align: center;
   margin: 0px auto;
+} */
+
+body {
+  margin: 0;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  background-color: #f0f2f5; /* Soft light gray background */
+  color: #333;
 }
