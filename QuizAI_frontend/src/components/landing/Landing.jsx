@@ -25,18 +25,13 @@ const Landing = () => {
     const chooseSignUp = () => {
         setSignUpDisplay('block');
         setLoginDisplay('none');
-        setErrorMessage(''); // Clear error when switching forms
+        setErrorMessage('');
     };
 
     const chooseLogin = () => {
         setSignUpDisplay('none');
         setLoginDisplay('block');
-        setErrorMessage(''); // Clear error when switching forms
-    };
-
-    // Validation function for email and password length
-    const lengthValidation = () => {
-        return email.length > 5 && password.length >= 8;
+        setErrorMessage('');
     };
 
     // Handle login form submission
@@ -44,10 +39,16 @@ const Landing = () => {
         event.preventDefault();
         
         // Form validation
-        if (!lengthValidation()) {
-            setErrorMessage("Invalid length")
+        if (email.length <= 5) {
+            setErrorMessage("Email should have at least 6 characters");
             return; 
         }
+
+        if(password.length < 8) {
+            setErrorMessage("Password should have at least 8 characters");
+            return;            
+        }
+
         const data = { "email": email, "password": password };
 
         try {
@@ -64,7 +65,7 @@ const Landing = () => {
                 console.log(response);
                 navigation('/summary');
             } else {
-                setErrorMessage('Invalid login credentials');
+                setErrorMessage('Invalid Email / login credentials');
                 console.log(response.statusText);
             }
         } catch (err) {
@@ -78,12 +79,18 @@ const Landing = () => {
         event.preventDefault();
         
         // Form validation
-        if (!lengthValidation()) {
-            setErrorMessage("Invalid length");
+        if (email.length <= 5) {
+            setErrorMessage("Email should be at least 6 characters");
             return; 
-        } else if(confirmPassword != password){
-            setErrorMessage("Passwords don't match");
-            return;
+        }
+        if(password.length < 8) {
+            setErrorMessage("Password should be at least 8 characters");
+            return;            
+        }
+        if(password != confirmPassword) {
+            setErrorMessage("Passwords do not match");
+            console.log("Passwords do not match");
+            return;   
         }
 
         const data = { "email": email, "password": password };
@@ -102,25 +109,22 @@ const Landing = () => {
                 console.log(response);
                 navigation('/summary');
             } else {
+                setErrorMessage("Email already registered. Please sign in. ")
                 console.log(response.statusText);
             }
         } catch (err) {
+            setErrorMessage('Something went wrong. Please try again later.')
             console.log(err);
         }
     };
 
     return (
-        <div className='landing'>
-            <div className='title'>
-                <h1>QuizAI</h1>
-                <h4>Empower your learning journey with <i>Gemini AI</i></h4>
-            </div>
-            
-            {/* <div className='forms'> */}
-                {/* <div className='form-selection'>
-                    <button onClick={chooseSignUp}>Sign Up</button>
-                    <button onClick={chooseLogin}>Log In</button>
-                </div> */}
+        <div className="landing-container">
+            <div className='landing'>
+                <div className='title'>
+                    <h1>QuizAI</h1>
+                    <h4>Empower your learning journey with <i>Gemini AI</i></h4>
+                </div>
                 
                 <div className='forms'>
                     <div className='form-selection'>
@@ -176,18 +180,17 @@ const Landing = () => {
                                     onChange={(e) => setConfirmPassword(e.target.value)} 
                                 />
                             </div>
-                            
-                            {/* Error message */}
+
+                            {/* Error Message */}
                             {errorMessage && (
                                 <div className="error-message">
                                     {errorMessage}
                                 </div>
                             )}
-
+                            
                             <div style={{ paddingTop: "10px" }}>
                                 <button ref={signUpButton}>Sign Up</button>
                             </div>
-                            
                         </form>
 
                         <form 
@@ -231,7 +234,7 @@ const Landing = () => {
                     </div>
                 </div>
             </div>
-        // </div>
+        </div>
     );
 };
 
