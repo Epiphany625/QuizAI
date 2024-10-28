@@ -1,11 +1,9 @@
-/* #root {
-  text-align: center;
-  margin: 0px auto;
-} */
-
-body {
+/* Global Styles */
+html, body {
   margin: 0;
+  height: 100%; /* Ensure the body takes the full viewport height */
   font-family: 'Helvetica Neue', Arial, sans-serif;
   background-color: #f0f2f5; /* Soft light gray background */
   color: #333;
 }
+

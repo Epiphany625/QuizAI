@@ -17,7 +17,6 @@ const Landing = () => {
     // manage react router
     const navigation = useNavigate();
 
-
     // functions
     // Display selection handlers
     const chooseSignUp = () => {
@@ -101,93 +100,105 @@ const Landing = () => {
     };
 
     return (
-        <div className='landing'>
-            <div className='title'>
-                <h1>QuizAI</h1>
-                <h4>Empower your learning journey with <i>Gemini AI</i></h4>
-            </div>
-            
-            <div className='forms'>
-                <div className='form-selection'>
-                    <button onClick={chooseSignUp} className={signupDisplay == "block" ? 'active-button' : ''}>Sign Up</button>
-                    <button onClick={chooseLogin} className={loginDisplay == "block" ? 'active-button' : ''}>Log In</button>
+        <div className="landing-container">
+            <div className='landing'>
+                <div className='title'>
+                    <h1>QuizAI</h1>
+                    <h4>Empower your learning journey with <i>Gemini AI</i></h4>
                 </div>
                 
-                <div id="signup-login-form">
-                    <form 
-                        className="signup-form" 
-                        style={{ display: signupDisplay }} 
-                        onSubmit={handleSignUp}
-                    >
-                        <div className="field">
-                            <label htmlFor="signup-email">Email: </label>
-                            <input 
-                                id="signup-email" 
-                                className="user-input" 
-                                type="email" 
-                                value={email} 
-                                onChange={(e) => setEmail(e.target.value)} 
-                            />
-                        </div>
-                        
-                        <div className="field">
-                            <label htmlFor="signup-password">Password: </label>
-                            <input 
-                                id="signup-password" 
-                                className="user-input" 
-                                type="password" 
-                                value={password} 
-                                onChange={(e) => setPassword(e.target.value)} 
-                            />
-                        </div>
-                        
-                        <div className="field">
-                            <label htmlFor="signup-confirmPassword">Confirm Password: </label>
-                            <input 
-                                id="signup-confirmPassword" 
-                                className="user-input" 
-                                type="password" 
-                                value={confirmPassword} 
-                                onChange={(e) => setConfirmPassword(e.target.value)} 
-                            />
-                        </div>
-                        
-                        <div style={{ paddingTop: "10px" }}>
-                            <button ref={signUpButton}>Sign Up</button>
-                        </div>
-                    </form>
+                <div className='forms'>
+                    <div className='form-selection'>
+                        <button 
+                            onClick={chooseSignUp} 
+                            className={signupDisplay === "block" ? 'active-button' : ''}
+                        >
+                            Sign Up
+                        </button>
+                        <button 
+                            onClick={chooseLogin} 
+                            className={loginDisplay === "block" ? 'active-button' : ''}
+                        >
+                            Log In
+                        </button>
+                    </div>
+                    
+                    <div id="signup-login-form">
+                        <form 
+                            className="signup-form" 
+                            style={{ display: signupDisplay }} 
+                            onSubmit={handleSignUp}
+                        >
+                            <div className="field">
+                                <label htmlFor="signup-email">Email: </label>
+                                <input 
+                                    id="signup-email" 
+                                    className="user-input" 
+                                    type="email" 
+                                    value={email} 
+                                    onChange={(e) => setEmail(e.target.value)} 
+                                />
+                            </div>
+                            
+                            <div className="field">
+                                <label htmlFor="signup-password">Password: </label>
+                                <input 
+                                    id="signup-password" 
+                                    className="user-input" 
+                                    type="password" 
+                                    value={password} 
+                                    onChange={(e) => setPassword(e.target.value)} 
+                                />
+                            </div>
+                            
+                            <div className="field">
+                                <label htmlFor="signup-confirmPassword">Confirm Password: </label>
+                                <input 
+                                    id="signup-confirmPassword" 
+                                    className="user-input" 
+                                    type="password" 
+                                    value={confirmPassword} 
+                                    onChange={(e) => setConfirmPassword(e.target.value)} 
+                                />
+                            </div>
+                            
+                            <div style={{ paddingTop: "10px" }}>
+                                <button ref={signUpButton}>Sign Up</button>
+                            </div>
+                        </form>
 
-                    <form 
-                        className="login-form" 
-                        style={{ display: loginDisplay }} 
-                        onSubmit={handleLogin}
-                    >
-                        <div className="field">
-                            <label htmlFor="login-email">Email: </label>
-                            <input 
-                                id="login-email" 
-                                type="email" 
-                                className="user-input" 
-                                value={email} 
-                                onChange={(e) => setEmail(e.target.value)} 
-                            />
-                        </div>
-                        
-                        <div className="field">
-                            <label htmlFor="login-password">Password: </label>
-                            <input 
-                                id="login-password" 
-                                type="password" 
-                                className="user-input" 
-                                value={password} 
-                                onChange={(e) => setPassword(e.target.value)} 
-                            />
-                        </div>
-                        
-                        <div style={{ paddingTop: "10px" }}>
-                            <button ref={loginButton}>Log In</button>
-                        </div>
-                    </form>
+                        <form 
+                            className="login-form" 
+                            style={{ display: loginDisplay }} 
+                            onSubmit={handleLogin}
+                        >
+                            <div className="field">
+                                <label htmlFor="login-email">Email: </label>
+                                <input 
+                                    id="login-email" 
+                                    type="email" 
+                                    className="user-input" 
+                                    value={email} 
+                                    onChange={(e) => setEmail(e.target.value)} 
+                                />
+                            </div>
+                            
+                            <div className="field">
+                                <label htmlFor="login-password">Password: </label>
+                                <input 
+                                    id="login-password" 
+                                    type="password" 
+                                    className="user-input" 
+                                    value={password} 
+                                    onChange={(e) => setPassword(e.target.value)} 
+                                />
+                            </div>
+                            
+                            <div style={{ paddingTop: "10px" }}>
+                                <button ref={loginButton}>Log In</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
