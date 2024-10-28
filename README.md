@@ -10,4 +10,4 @@ npm run build
 
 
 **back end**
-cd QuizAI_backend
+cd QuizAI_backend npm i node app.js
