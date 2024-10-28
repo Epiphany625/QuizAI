@@ -9,14 +9,16 @@ html, body {
     color: #333;
 }
 
-/* Center everything vertically and horizontally */
-body {
+/* Remove centering styles from body to avoid affecting other components */
+
+/* Landing Container */
+.landing-container {
     display: flex;
     align-items: center;
     justify-content: center;
+    min-height: 100vh; /* Full viewport height */
 }
 
-/* Landing Container */
 .landing {
     width: 100%;
     max-width: 100%; /* Ensure it doesn't exceed the viewport width */
@@ -34,23 +36,29 @@ body {
 }
 
 .title h1 {
-    font-size: 2.5rem; /* Reduced font size */
+    font-size: 2.5rem; /* Adjust font size as needed */
     margin-bottom: 10px;
     color: #2c3e50; /* Dark slate color */
 }
 
 .title h4 {
-    font-size: 1rem; /* Reduced font size */
+    font-size: 1rem; /* Adjust font size as needed */
     color: #7f8c8d; /* Grayish color */
     font-weight: 400;
+}
+
+.error-message {
+    color: red;
+    font-size: 12px;
+
 }
 
 /* Forms Container */
 .forms {
     width: 100%;
-    max-width: 350px; /* Reduced max-width to make it smaller */
+    max-width: 350px; /* Adjust max-width as needed */
     background-color: #ffffff; /* White background for forms */
-    padding: 20px; /* Reduced padding */
+    padding: 20px; /* Adjust padding as needed */
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
@@ -59,14 +67,14 @@ body {
 .form-selection {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 15px; /* Reduced margin */
+    margin-bottom: 15px; /* Adjust margin as needed */
 }
 
 .form-selection button {
     flex: 1;
-    padding: 10px 0; /* Reduced padding */
+    padding: 10px 0; /* Adjust padding as needed */
     margin: 0 5px;
-    font-size: 0.9rem; /* Reduced font size */
+    font-size: 0.9rem; /* Adjust font size as needed */
     font-weight: 500;
     color: #7f8c8d;
     background-color: transparent;
@@ -76,17 +84,18 @@ body {
     transition: color 0.3s, border-bottom 0.3s;
 }
 
-.form-selection button:hover,
-.form-selection button:focus {
-    color: #3498db; /* Light blue */
-    border-bottom: 2px solid #3498db;
+/* Hover state */
+.form-selection button:hover {
+    color: #77b9e6; /* Light blue */
+    border-bottom: 2px solid #77b9e6;
     outline: none;
 }
 
-/* Active Button Style */
-.form-selection button:active {
-    color: #2980b9; /* Darker blue */
-    border-bottom: 2px solid #2980b9;
+/* Active button style */
+.form-selection .active-button {
+    color: #3498db; /* Light blue */
+    border-bottom: 2px solid #3498db;
+    outline: none;
 }
 
 /* Forms */
@@ -105,21 +114,21 @@ body {
 }
 
 .field {
-    margin-bottom: 15px; /* Reduced margin */
+    margin-bottom: 15px; /* Adjust margin as needed */
     display: flex;
     flex-direction: column;
 }
 
 .field label {
     margin-bottom: 5px;
-    font-size: 0.9rem; /* Reduced font size */
+    font-size: 0.9rem; /* Adjust font size as needed */
     font-weight: 500;
     color: #34495e; /* Darker slate color */
 }
 
 .user-input {
-    padding: 10px; /* Reduced padding */
-    font-size: 0.9rem; /* Reduced font size */
+    padding: 10px; /* Adjust padding as needed */
+    font-size: 0.9rem; /* Adjust font size as needed */
     border: 1px solid #bdc3c7; /* Light gray border */
     border-radius: 4px;
     transition: border-color 0.3s;
@@ -134,8 +143,8 @@ body {
 .signup-form button,
 .login-form button {
     width: 100%;
-    padding: 12px; /* Reduced padding */
-    font-size: 0.9rem; /* Reduced font size */
+    padding: 12px; /* Adjust padding as needed */
+    font-size: 0.9rem; /* Adjust font size as needed */
     font-weight: 600;
     color: #ffffff;
     background-color: #3498db;
@@ -163,14 +172,14 @@ button[style*="background-color: red"] {
 /* Responsive Design */
 @media (max-width: 480px) {
     .title h1 {
-        font-size: 2rem; /* Reduced font size */
+        font-size: 2rem; /* Adjust font size as needed */
     }
 
     .title h4 {
-        font-size: 0.9rem; /* Reduced font size */
+        font-size: 0.9rem; /* Adjust font size as needed */
     }
 
     .forms {
-        padding: 15px; /* Reduced padding */
+        padding: 15px; /* Adjust padding as needed */
     }
 }
