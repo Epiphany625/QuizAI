@@ -1,8 +1,15 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const cors = require('cors');
+// const express = require('express');
+// const mongoose = require('mongoose');
+// const bcrypt = require('bcryptjs');
+// const jwt = require('jsonwebtoken');
+// const cors = require('cors');
+
+import express from 'express';
+import mongoose from 'mongoose';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import cors from 'cors';
+
 
 // Express app setup
 const app = express();

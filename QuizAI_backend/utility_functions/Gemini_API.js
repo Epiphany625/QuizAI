@@ -1,9 +1,10 @@
-const { GoogleGenerativeAI } = require("@google/generative-ai");
+// const { GoogleGenerativeAI } = require("@google/generative-ai");
+import { GoogleGenerativeAI } from "@google/generative-ai";
+import fs from 'fs';
 
 const genAI = new GoogleGenerativeAI("AIzaSyCXQk8rR1R02XT1cacQfyr9fYP3VBe1HCI");
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-const fs = require('fs');
 
 function parseQuizToJson(quizText) {
     const quizJson = [];
@@ -51,7 +52,7 @@ function parseQuizToJson(quizText) {
 
 async function generateResponse() {
     try {
-        const data = fs.readFileSync('prompt.txt', 'utf8');
+        const data = fs.readFileSync('./prompt.txt', 'utf8');
         const result = await model.generateContent(data);
         console.log(parseQuizToJson(result.response.text()));
     } catch (err) {
