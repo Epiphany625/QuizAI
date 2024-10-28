@@ -1,14 +1,5 @@
 /* Landing.css */
 
-/* Global Styles */
-html, body {
-    margin: 0;
-    height: 100%; /* Ensure the body takes the full viewport height */
-    font-family: 'Helvetica Neue', Arial, sans-serif;
-    background-color: #f0f2f5; /* Soft light gray background */
-    color: #333;
-}
-
 /* Remove centering styles from body to avoid affecting other components */
 
 /* Landing Container */
