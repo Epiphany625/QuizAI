@@ -47,12 +47,6 @@ html, body {
     font-weight: 400;
 }
 
-.error-message {
-    color: red;
-    font-size: 12px;
-
-}
-
 /* Forms Container */
 .forms {
     width: 100%;
@@ -182,4 +176,9 @@ button[style*="background-color: red"] {
     .forms {
         padding: 15px; /* Adjust padding as needed */
     }
+}
+
+.error-message {
+    color: red;
+    font-size: 12px;
 }
