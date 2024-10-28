@@ -109,8 +109,8 @@ const Landing = () => {
             
             <div className='forms'>
                 <div className='form-selection'>
-                    <button onClick={chooseSignUp}>Sign Up</button>
-                    <button onClick={chooseLogin}>Log In</button>
+                    <button onClick={chooseSignUp} className={signupDisplay == "block" ? 'active-button' : ''}>Sign Up</button>
+                    <button onClick={chooseLogin} className={loginDisplay == "block" ? 'active-button' : ''}>Log In</button>
                 </div>
                 
                 <div id="signup-login-form">

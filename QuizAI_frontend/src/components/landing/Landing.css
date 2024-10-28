@@ -76,8 +76,16 @@ body {
     transition: color 0.3s, border-bottom 0.3s;
 }
 
-.form-selection button:hover,
-.form-selection button:focus {
+/* when the button is hovered */
+.form-selection button:hover{
+    color: #77b9e6; /* Light blue */
+    border-bottom: 2px solid #77b9e6;
+    outline: none;
+}
+
+
+/* after the button is clicked on, it stays that color, until the state changes */
+.form-selection .active-button {
     color: #3498db; /* Light blue */
     border-bottom: 2px solid #3498db;
     outline: none;
