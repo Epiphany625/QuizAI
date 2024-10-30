@@ -1,14 +1,10 @@
-// const express = require('express');
-// const mongoose = require('mongoose');
-// const bcrypt = require('bcryptjs');
-// const jwt = require('jsonwebtoken');
-// const cors = require('cors');
-
 import express from 'express';
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import cors from 'cors';
+import dotenv from 'dotenv';
+dotenv.config();
 
 
 // Express app setup
@@ -17,7 +13,7 @@ app.use(express.json());  // For parsing JSON bodies
 app.use(cors()); // allow cors
 
 // MongoDB connection URI (replace with your own)
-const MONGO_URI = 'mongodb+srv://xinyangxu2023:rEkgtllrjflvA7Dv@quizaicluster.99cry.mongodb.net/?retryWrites=true&w=majority&appName=QuizAICluster';
+const MONGO_URI = process.env.MONGO_URI;
 
 // Connect to MongoDB Atlas
 mongoose.connect(MONGO_URI, {
@@ -64,7 +60,8 @@ userSchema.methods.comparePassword = function (candidatePassword) {
 const User = mongoose.model('User', userSchema);  // Create User model
 
 // JWT Secret
-const SECRET_KEY = 'your-secret-key';
+const SECRET_KEY = "your-secret-key";
+
 
 // Registration Route
 app.post('/register', async (req, res) => {
