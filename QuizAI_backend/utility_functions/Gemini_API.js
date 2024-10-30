@@ -4,8 +4,15 @@ import parseQuizToJson from './json_parser.js';
 import dotenv from 'dotenv'
 dotenv.config();
 
+// error checking
+const apiKey = process.env.GOOGLE_AI_KEY;
+if (!apiKey) {
+    throw new Error("API key is missing. run file in the backend folder and do node utility_functions/Gemini_API.js");
+}
+
 
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_AI_KEY);
+console.log(process.env.GOOGLE_AI_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 
