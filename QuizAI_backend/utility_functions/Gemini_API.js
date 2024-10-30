@@ -1,58 +1,27 @@
-// const { GoogleGenerativeAI } = require("@google/generative-ai");
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import fs from 'fs';
+import parseQuizToJson from './json_parser.js';
+import dotenv from 'dotenv'
+dotenv.config();
 
-const genAI = new GoogleGenerativeAI("AIzaSyCXQk8rR1R02XT1cacQfyr9fYP3VBe1HCI");
+
+const genAI = new GoogleGenerativeAI(process.env.GOOGLE_AI_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-
-
-function parseQuizToJson(quizText) {
-    const quizJson = [];
-    let currentQuestion = null;
-    let correctAnsLeft = false;
-    let isQuestion = false;
-  
-    // Split the text into parts using specific markers as boundaries
-    const parts = quizText.split(/(?=#)|(?<=#)|(?=---)|(?<=---)|(?=[A-D]\))/g).map(part => part.trim()).filter(part => part !== '');
-  
-    parts.forEach(part => {
-      if (part.startsWith('#') || part.endsWith('#')) {
-        isQuestion = !isQuestion;
-      } else if (isQuestion){
-        if (currentQuestion) {
-            quizJson.push(currentQuestion);
-          }
-          currentQuestion = {
-            question: part.trim(),
-            choices: [],
-            correctAnswer: ''
-          };
-      } else if (part.match(/^[A-D]\)\s(.*)/)) {
-        if (currentQuestion) {
-          const choiceText = part.substring(3).trim();
-          currentQuestion.choices.push(choiceText);
-        }
-      } else if (part.startsWith('---')) {
-        correctAnsLeft = true;
-      } else if (correctAnsLeft) {
-        if (currentQuestion) {
-          currentQuestion.correctAnswer = part;
-          correctAnsLeft = false;
-        }
-      }
-    });
-  
-    if (currentQuestion) {
-      quizJson.push(currentQuestion);
-    }
-  
-    return quizJson;
-  }
 
 
 async function generateResponse() {
     try {
-        const data = fs.readFileSync('./prompt.txt', 'utf8');
+        // const data = fs.readFileSync('./prompt.txt', 'utf8');
+        const data = `generate a quiz of five questions, following this format:
+For example, the quizzes are:
+Which planet is known as the Red Planet? A) Venus B) Jupiter C) Mars D) Saturn--- C
+What is the chemical symbol for water? A) H2 B) O2 C) H2O D) CO2--- C
+Who wrote the play "Romeo and Juliet"? A) William Shakespeare B) Charles Dickens C) Mark Twain D) Jane Austen--- A
+
+Your answer should be in the format:
+# Which planet is known as the Red Planet? # A) Venus B) Jupiter C) Saturn D) Mars --- B
+# What is the chemical symbol for water? # A) H2 B) O2 C) H2O D) CO2 --- B
+Etc. please do not omit the # sign. `;
         const result = await model.generateContent(data);
         console.log(parseQuizToJson(result.response.text()));
     } catch (err) {
