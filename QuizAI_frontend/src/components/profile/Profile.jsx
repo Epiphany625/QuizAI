@@ -1,11 +1,10 @@
 import NavigationBar from '../navigationBar/NavigationBar.jsx';
 
-
-const Quiz = () => {
+const Profile = () => {
     return(
         <>
         <NavigationBar />
-        <div>Quiz</div>
+        <div>Profile</div>
         <p> Theme Color: #201E43
 #134B70
 #508C9B
@@ -14,4 +13,4 @@ const Quiz = () => {
     )
 }
 
-export default Quiz; 
+export default Profile; 

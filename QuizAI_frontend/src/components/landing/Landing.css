@@ -29,12 +29,12 @@
 .title h1 {
     font-size: 2.5rem; /* Adjust font size as needed */
     margin-bottom: 10px;
-    color: #2c3e50; /* Dark slate color */
+    color: #201E43; /* Darkest blue from new theme */
 }
 
 .title h4 {
     font-size: 1rem; /* Adjust font size as needed */
-    color: #7f8c8d; /* Grayish color */
+    color: #508C9B; /* Medium blue from new theme */
     font-weight: 400;
 }
 
@@ -42,7 +42,7 @@
 .forms {
     width: 100%;
     max-width: 350px; /* Adjust max-width as needed */
-    background-color: #ffffff; /* White background for forms */
+    background-color: #EEEEEE; /* Light background from new theme */
     padding: 20px; /* Adjust padding as needed */
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -61,7 +61,7 @@
     margin: 0 5px;
     font-size: 0.9rem; /* Adjust font size as needed */
     font-weight: 500;
-    color: #7f8c8d;
+    color: #508C9B; /* Medium blue from new theme */
     background-color: transparent;
     border: none;
     border-bottom: 2px solid transparent;
@@ -71,15 +71,15 @@
 
 /* Hover state */
 .form-selection button:hover {
-    color: #77b9e6; /* Light blue */
-    border-bottom: 2px solid #77b9e6;
+    color: #134B70; /* Darker blue from new theme */
+    border-bottom: 2px solid #134B70;
     outline: none;
 }
 
 /* Active button style */
 .form-selection .active-button {
-    color: #3498db; /* Light blue */
-    border-bottom: 2px solid #3498db;
+    color: #201E43; /* Darkest blue from new theme */
+    border-bottom: 2px solid #201E43;
     outline: none;
 }
 
@@ -108,7 +108,7 @@
     margin-bottom: 5px;
     font-size: 0.9rem; /* Adjust font size as needed */
     font-weight: 500;
-    color: #34495e; /* Darker slate color */
+    color: #201E43; /* Darkest blue for labels */
 }
 
 .user-input {
@@ -120,7 +120,7 @@
 }
 
 .user-input:focus {
-    border-color: #3498db;
+    border-color: #508C9B; /* Medium blue from new theme */
     outline: none;
 }
 
@@ -132,7 +132,7 @@
     font-size: 0.9rem; /* Adjust font size as needed */
     font-weight: 600;
     color: #ffffff;
-    background-color: #3498db;
+    background-color: #134B70; /* Darker blue from new theme */
     border: none;
     border-radius: 4px;
     cursor: pointer;
@@ -141,7 +141,7 @@
 
 .signup-form button:hover,
 .login-form button:hover {
-    background-color: #2980b9;
+    background-color: #508C9B; /* Medium blue from new theme */
 }
 
 .signup-form button:focus,
