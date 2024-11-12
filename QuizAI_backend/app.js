@@ -6,11 +6,10 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 dotenv.config();
 
-
 // Express app setup
 const app = express();
-app.use(express.json());  // For parsing JSON bodies
-app.use(cors()); // allow cors
+app.use(express.json()); // For parsing JSON bodies
+app.use(cors()); // Allow CORS
 
 // MongoDB connection URI (replace with your own)
 const MONGO_URI = process.env.MONGO_URI;
@@ -18,13 +17,14 @@ const MONGO_URI = process.env.MONGO_URI;
 // Connect to MongoDB Atlas
 mongoose.connect(MONGO_URI, {
     useNewUrlParser: true,
+    useUnifiedTopology: true
 }).then(() => {
     console.log('Connected to MongoDB');
 }).catch(err => {
     console.error('Error connecting to MongoDB:', err);
 });
 
-// Define the User schema
+// Define the User schema with default values for quizRequested, chatbotRequested, and date
 const userSchema = new mongoose.Schema({
     email: {
         type: String,
@@ -34,6 +34,18 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true
+    },
+    quizRequested: {
+        type: Number,
+        default: 0
+    },
+    chatbotRequested: {
+        type: Number,
+        default: 0
+    },
+    date: {
+        type: Date,
+        default: Date.now
     }
 });
 
@@ -57,11 +69,10 @@ userSchema.methods.comparePassword = function (candidatePassword) {
     return bcrypt.compare(candidatePassword, this.password);
 };
 
-const User = mongoose.model('User', userSchema);  // Create User model
+const User = mongoose.model('User', userSchema); // Create User model
 
 // JWT Secret
-const SECRET_KEY = "your-secret-key";
-
+const SECRET_KEY = process.env.SECRET_KEY || "your-secret-key";
 
 // Registration Route
 app.post('/register', async (req, res) => {
@@ -74,7 +85,7 @@ app.post('/register', async (req, res) => {
             return res.status(400).json({ message: 'User already exists' });
         }
 
-        // Create a new user and save to MongoDB
+        // Create a new user with default values for quizRequested, chatbotRequested, and date
         const newUser = new User({ email, password });
         await newUser.save();
 
