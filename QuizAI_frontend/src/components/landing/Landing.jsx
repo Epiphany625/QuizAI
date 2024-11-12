@@ -52,7 +52,7 @@ const Landing = () => {
         const data = { "email": email, "password": password };
 
         try {
-            let response = await fetch("http://localhost:3000/login", {
+            let response = await fetch("http://localhost:3000/api/auth/login", {
                 method: "POST", 
                 headers: {
                     "Content-Type": "application/json"
@@ -96,7 +96,7 @@ const Landing = () => {
         const data = { "email": email, "password": password };
 
         try {
-            let response = await fetch("http://localhost:3000/register", {
+            let response = await fetch("http://localhost:3000/api/auth/register", {
                 method: "POST", 
                 headers: {
                     "Content-Type": "application/json"

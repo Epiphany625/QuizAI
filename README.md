@@ -20,4 +20,4 @@
 
 ##### npm i **Remeber to do it every time you pull from the repository**
 
-##### node app.js
+##### node server.js
