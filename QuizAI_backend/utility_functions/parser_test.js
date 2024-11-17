@@ -5,7 +5,7 @@ import parseQuizToJson from './json_parser.js';
 let mcqText = `# Which organ is responsible for pumping blood throughout the body? # A) Brain B) Heart C) Kidney D) Liver --- B
 # what's the power house of the cell? # A) cell wall B) cellulose string C) mitochondria D) Liver --- C`;
 let shortAnswerText = `# Which organ is responsible for pumping blood throughout the body? # Brain
-# what's the power house of the cell? # mitochondria`;
+# what's the power house of the cell? # mitochondria eoijfo`;
 
 
 const quizJson = parseQuizToJson(shortAnswerText, "short answer");

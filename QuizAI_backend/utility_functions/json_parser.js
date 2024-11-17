@@ -53,34 +53,36 @@ function parseMCQToJson(quizText) {
 }
 
 function parseShortAnswerToJson(quizText) {
+  // Add debug logging
+  console.log("Incoming quiz text:", quizText);
+  
   const quizJson = [];
   let currentQuestion = null;
-  let isQuestion = false;
 
-  // Split the text into parts using # as boundaries
-  const parts = quizText.split(/(?=#)|(?<=#)/g).map(part => part.trim()).filter(part => part !== '');
+  // Split the text into parts using # as boundaries and filter empty strings
+  const parts = quizText.split('#').map(part => part.trim()).filter(part => part !== '');
+  
+  // Add debug logging
+  console.log("Parsed parts:", parts);
 
-  parts.forEach(part => {
-    if (part === '#') {
-      isQuestion = !isQuestion;
-    } else if (isQuestion) {
-      if (currentQuestion) {
-        quizJson.push(currentQuestion);
-      }
+  // Process pairs of parts (question and answer)
+  for (let i = 0; i < parts.length; i += 2) {
+    const question = parts[i];
+    const answer = parts[i + 1];
+
+    if (question && answer) {
       currentQuestion = {
-        question: part.trim(),
+        question: question.trim(),
         choices: [],
-        correctAnswer: ''
+        correctAnswer: answer.trim()
       };
-    } else if (!isQuestion && currentQuestion) {
-      currentQuestion.correctAnswer = part.trim();
+      quizJson.push(currentQuestion);
     }
-  });
-
-  if (currentQuestion) {
-    quizJson.push(currentQuestion);
   }
 
+  // Add debug logging
+  console.log("Final JSON:", quizJson);
+  
   return quizJson;
 }
 
