@@ -1,3 +1,7 @@
+/**
+ * @file Gemini_API.js  
+ */
+
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import fs from 'fs';
 import parseQuizToJson from './json_parser.js';
@@ -5,10 +9,21 @@ import dotenv from 'dotenv'
 import { getQuizPrompt, summaryInstructions, testContent } from './prompt.js';
 dotenv.config();
 
+
 // error checking
 const apiKey = process.env.GOOGLE_AI_KEY;
 if (!apiKey) {
     throw new Error("API key is missing. run file in the backend folder and do node utility_functions/Gemini_API.js");
+}
+
+// initialize the model
+let model;
+try {
+    const genAI = new GoogleGenerativeAI(apiKey);
+    model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+} catch (err) {
+    console.error('Error initializing Gemini model:', err);
+    throw new Error('Failed to initialize Gemini model');
 }
 
 

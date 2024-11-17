@@ -1,6 +1,6 @@
 // Quiz generation prompts
 const mcqFormat = `
-    Following this format:
+    Create a multiple-choice quiz question following this format:
     For example, the quiz questions are:
     Which planet is known as the Red Planet? A) Venus B) Jupiter C) Mars D) Saturn--- C
     What is the chemical symbol for water? A) H2 B) O2 C) H2O D) CO2--- C
@@ -12,9 +12,26 @@ const mcqFormat = `
     Etc. please do not omit the # sign. `;
 
 const shortAnswerFormat = `
+    Create a short-answer quiz question.
     Your response should be in the format:
     # [QUESTION]? # [ANSWER]
     # Who wrote the play "Romeo and Juliet"? # William Shakespeare
+
+    The question follows the # symbol and the answer follows the # symbol. Do not omit the # symbol. Do not include the question number.
+`;
+
+const fillInTheBlankFormat = `
+    Create a fill in the blank quiz question.
+    Every question should have only one blank.
+    Your response should be in the format:
+    # [QUESTION WITH ONE BLANK] # [ANSWER]
+    # [QUESTION WITH ONE BLANK] # [ANSWER]
+
+    For example for the question:
+    The chemical symbol for water is ____.
+    answer: H2O
+    Your response should be in the format: 
+    # The chemical symbol for water is ____. # H2O
 `;
 
 // Summary generation prompts
@@ -41,14 +58,21 @@ Embedded into the fabric of a host, e.g., an embedded controller in a host devic
 
 // Function to get quiz generation prompt
 function getQuizPrompt(content, numQuestions, questionType, exampleQuestion=null) {
-    return `generate a quiz of ${numQuestions} ${questionType} questions
+    return `
+        Using the content provided in multiple files, create a comprehensive quiz that helps students review for their exams. 
+        The quiz should cover a wide range of topics, ensuring questions are drawn from different sections and areas across all the files to provide balanced coverage. 
+        Focus on including questions that highlight key concepts, important chapters, 
+        and diverse subject areas to help students comprehensively review and ensure no significant material is overlooked.
 
-        ${questionType === "short answer" ? shortAnswerFormat : ""}
+        generate a quiz of ${numQuestions} ${questionType} questions
 
-        ${questionType === "multiple choice" || questionType === "True/False" ? mcqFormat : ""}
+        ${questionType === "short-answer" ? shortAnswerFormat : ""}
+
+        ${questionType === "multiple-choice" || questionType === "true-false" ? mcqFormat : ""}
 
         ${exampleQuestion ? `Here is an example question showcasing the type of style: ${exampleQuestion}` : ""}
 
+        ${questionType === "fill-in-the-blank" ? fillInTheBlankFormat : ""}
         Please use the content below to generate a quiz:
         ${content}
     `;
