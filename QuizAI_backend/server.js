@@ -3,6 +3,7 @@ import express from 'express';
 import cors from 'cors';
 import connectDB from './config/db.js';
 import authRoutes from './routes/authRoutes.js';
+import userRoutes from './routes/userRoutes.js';
 import { PORT } from './config/config.js';
 
 // Initialize Express app
@@ -16,8 +17,8 @@ app.use(cors());
 connectDB();
 
 // Routes
-app.use('/api/auth', authRoutes);
-
+app.use('/api/auth', authRoutes); // used for registration, login, and token verification
+app.use('/api/user', userRoutes); // used for getting user data
 // Start Server
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);

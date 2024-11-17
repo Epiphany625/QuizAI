@@ -1,7 +1,8 @@
 import NavigationBar from '../navigationBar/NavigationBar.jsx';
-
+import useTokenValidation from '../../hooks/useTokenValidation';
 
 const Quiz = () => {
+    useTokenValidation();
     return(
         <>
         <NavigationBar />
