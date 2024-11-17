@@ -1,5 +1,5 @@
 // Summary.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import NavigationBar from '../navigationBar/NavigationBar.jsx';
 import useTokenValidation from '../../hooks/useTokenValidation';
 import axios from 'axios';
@@ -12,31 +12,51 @@ const Summary = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const handleSummarize = async () => {
-        // setLoading(true);
-        // setError(null);
+    useEffect(() => {
+        const summary = localStorage.getItem('summary');
+        if (summary) {
+            setSummary(summary);
+        }
+    }, []);
 
-        // chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-        //     chrome.tabs.sendMessage(tabs[0].id, { action: 'scrapeContent' }, async (response) => {
-        //         if (chrome.runtime.lastError || !response) {
-        //             setError('Failed to communicate with content script.');
-        //             setLoading(false);
-        //             return;
-        //         }
-        //         const pageContent = response.content;
-        //         try {
-        //             const pageSummary = await summarizeContent(pageContent);
-        //             setSummary(pageSummary);
-        //         } catch (err) {
-        //             setError('Failed to generate summary.');
-        //         }
-        //         setLoading(false);
-        //     });
-        // });
-        const summaryResponse = await axios.get(`http://localhost:3000/api/summary`, {
-            webContent: 'test'
+    const getCurrentPageContent = async () => {
+        return new Promise((resolve, reject) => {
+            chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+                const activeTab = tabs[0];
+                chrome.scripting.executeScript({
+                    target: { tabId: activeTab.id },
+                    function: () => {
+                        // Get the main content of the page
+                        const content = document.body.innerText;
+                        return content;
+                    }
+                }, (results) => {
+                    if (chrome.runtime.lastError) {
+                        reject(chrome.runtime.lastError);
+                    } else {
+                        resolve(results[0].result);
+                    }
+                });
+            });
         });
-        setSummary(summaryResponse.data.summary);
+    };
+
+    const handleSummarize = async () => {
+        try {
+            setLoading(true);
+            setError(null);
+
+            const pageContent = await getCurrentPageContent();
+            const summaryResponse = await axios.post(`http://localhost:3000/api/summary`, {
+                webContent: pageContent
+            });
+            setSummary(summaryResponse.data.summary);
+            localStorage.setItem('summary', summaryResponse.data.summary);
+        } catch (err) {
+            setError(err.message || 'Failed to generate summary');
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (

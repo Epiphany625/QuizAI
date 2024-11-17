@@ -1,8 +1,8 @@
 import express from 'express';
-import { getSummary } from '../controllers/summaryController.js';
+import { postSummary } from '../controllers/summaryController.js';
 
 const router = express.Router();
 
-router.get('/', getSummary);
+router.post('/', postSummary);
 
 export default router;

@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Landing.css';
 
@@ -19,6 +19,21 @@ const Landing = () => {
 
     // track if user entered invalid login credentials, or other error messages
     const [errorMessage, setErrorMessage] = useState(''); // Track login error message
+
+    // if there is any summary generated, delete the summary from local storage to avoid duplicates
+    useEffect(() => {
+        if (localStorage.getItem('summary')) {
+            localStorage.removeItem('summary');
+        }
+    }, []);
+
+    // if the user is already logged in, redirect to the summary page
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            navigation('/summary');
+        }
+    }, []);
 
     // functions
     // Display selection handlers
