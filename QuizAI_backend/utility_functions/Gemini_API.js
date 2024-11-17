@@ -38,8 +38,8 @@ The most common size of a mobile computing device is pocket-sized, but other siz
 Dust refers to miniaturized devices without direct HCI interfaces, e.g., micro-electromechanical systems (MEMS), ranging from nanometers through micrometers to millimeters. See also Smart dust. Skin: fabrics based upon light emitting and conductive polymers and organic computer devices. These can be formed into more flexible non-planar display surfaces and products such as clothes and curtains, see OLED display. Also, see smart device.
 
 `;
-// generateQuiz(testContent);
 
+generateQuiz(testContent, 10, "t/f");
 
 
 // generate a streaming summary of the content
@@ -61,6 +61,8 @@ async function generateStreamingSummary(content) {
 }
 
 
+// study guide/requirements
+
 async function generateSummary(content){
     try {
         const instructions = `Generate a detailed, structured, and concicse summary of the content below: `;
@@ -72,28 +74,58 @@ async function generateSummary(content){
     }
 }
 
-async function generateQuiz(content) {
+async function generateQuiz(content, numQuestions=10, questionType="mcq", exampleQuestion=null) {
     try {
         // const data = fs.readFileSync('./prompt.txt', 'utf8');
-        const instructions = `generate a quiz of five questions, following this format:
-For example, the quizzes are:
-Which planet is known as the Red Planet? A) Venus B) Jupiter C) Mars D) Saturn--- C
-What is the chemical symbol for water? A) H2 B) O2 C) H2O D) CO2--- C
-Who wrote the play "Romeo and Juliet"? A) William Shakespeare B) Charles Dickens C) Mark Twain D) Jane Austen--- A
+        // can also use for t/f questions
+        const mcqFormat = `
+            Following this format:
+            For example, the quiz questions are:
+            Which planet is known as the Red Planet? A) Venus B) Jupiter C) Mars D) Saturn--- C
+            What is the chemical symbol for water? A) H2 B) O2 C) H2O D) CO2--- C
+            Who wrote the play "Romeo and Juliet"? A) William Shakespeare B) Charles Dickens C) Mark Twain D) Jane Austen--- A
 
-Your answer should be in the format:
-# Which planet is known as the Red Planet? # A) Venus B) Jupiter C) Saturn D) Mars --- B
-# What is the chemical symbol for water? # A) H2 B) O2 C) H2O D) CO2 --- B
-Etc. please do not omit the # sign. 
+            Your response should be in the format:
+            # Which planet is known as the Red Planet? # A) Venus B) Jupiter C) Saturn D) Mars --- B
+            # What is the chemical symbol for water? # A) H2 B) O2 C) H2O D) CO2 --- B
+            Etc. please do not omit the # sign. `;
+        const shortAnswerFormat = `
+            Following this format:
+            For example, the quiz questions are:
+            What is the chemical symbol for water? H2O
+            Who wrote the play "Romeo and Juliet"? William Shakespeare
 
-Please use the content below to generate a quiz:
-`;
-        const resultText = await promptModel(instructions + content);
-        const jsonOutput =  parseQuizToJson(resultText);
-        console.log(jsonOutput);
-        return jsonOutput;
+            Your response should be in the format:
+            # What is the chemical symbol for water? # H2O
+            # Who wrote the play "Romeo and Juliet"? # William Shakespeare
+        `;
+        const prompt = `generate a quiz of ${numQuestions} ${questionType} questions
+
+            ${questionType === "short answer" ? shortAnswerFormat : ""}
+
+            ${questionType === "mcq" || questionType === "t/f" ? mcqFormat : ""}
+
+            ${exampleQuestion ? `Here is an example question showcasing the type of style: ${exampleQuestion}` : ""}
+
+            Please use the content below to generate a quiz:
+            ${content}
+        `;
+        const resultText = await promptModel(prompt);
+        // Check if we got a valid response
+        if (!resultText) {
+            throw new Error('No response received from AI model');
+        }
+        if (questionType !== "short answer"){
+            const output = parseQuizToJson(resultText);
+            console.log(output);
+            return output;
+        } else {
+            console.log(resultText);
+            return resultText;
+        }
     } catch (err) {
         console.error('Error processing quiz:', err);
+        return null; // or return a specific error object that your frontend can handle
     }
 }
 
