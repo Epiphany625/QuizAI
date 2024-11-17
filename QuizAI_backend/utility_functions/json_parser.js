@@ -1,10 +1,10 @@
 function parseQuizToJson(quizText, questionType="mcq") {
-    if (questionType === "mcq" || questionType === "t/f") {
+    if (questionType === "multiple-choice" || questionType === "true-false") {
         return parseMCQToJson(quizText);
-    } else if (questionType === "short answer") {
+    } else if (questionType === "short-answer") {
         return parseShortAnswerToJson(quizText);
-    } else {
-      return parseMCQToJson(quizText); // default to mcq
+    } else if (questionType === "fill-in-the-blank") {
+        return parseFillInTheBlankToJson(quizText);
     }
 }
 
@@ -52,38 +52,33 @@ function parseMCQToJson(quizText) {
     return quizJson;
 }
 
+function parseFillInTheBlankToJson(quizText) {
+  return parseShortAnswerToJson(quizText);
+}
+
 function parseShortAnswerToJson(quizText) {
-  // Add debug logging
-  console.log("Incoming quiz text:", quizText);
-  
-  const quizJson = [];
-  let currentQuestion = null;
-
-  // Split the text into parts using # as boundaries and filter empty strings
-  const parts = quizText.split('#').map(part => part.trim()).filter(part => part !== '');
-  
-  // Add debug logging
-  console.log("Parsed parts:", parts);
-
-  // Process pairs of parts (question and answer)
-  for (let i = 0; i < parts.length; i += 2) {
-    const question = parts[i];
-    const answer = parts[i + 1];
-
-    if (question && answer) {
-      currentQuestion = {
-        question: question.trim(),
-        choices: [],
-        correctAnswer: answer.trim()
-      };
-      quizJson.push(currentQuestion);
+    const quizJson = [];
+    
+    // Split by # but keep the delimiter
+    const parts = quizText.split(/(#)/).map(part => part.trim()).filter(part => part !== '');
+    
+    for (let i = 0; i < parts.length - 2; i++) {
+        if (parts[i] === '#') {
+            const question = parts[i + 1];
+            const answer = parts[i + 3];
+            
+            if (question && answer) {
+                quizJson.push({
+                    question: question.trim(),
+                    choices: [],
+                    correctAnswer: answer.trim()
+                });
+            }
+            i += 3; // Skip processed parts
+        }
     }
-  }
-
-  // Add debug logging
-  console.log("Final JSON:", quizJson);
-  
-  return quizJson;
+    
+    return quizJson;
 }
 
 

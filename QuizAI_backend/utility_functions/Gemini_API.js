@@ -16,7 +16,7 @@ const genAI = new GoogleGenerativeAI(process.env.GOOGLE_AI_KEY);
 console.log("model successfully created.");
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-generateQuiz(testContent, 3, "short answer"); // use testContent for testing, imported from prompt.js
+generateQuiz(testContent, 3, "fill-in-the-blank"); // use testContent for testing, imported from prompt.js
 
 
 // generate a streaming summary of the content
@@ -52,7 +52,7 @@ async function generateSummary(content){
 }
 
 
-async function generateQuiz(content, numQuestions=10, questionType="multiple choice", exampleQuestion=null) {
+async function generateQuiz(content, numQuestions=10, questionType="multiple-choice", exampleQuestion=null) {
     try {
         // const data = fs.readFileSync('./prompt.txt', 'utf8');
         const prompt = getQuizPrompt(content, numQuestions, questionType, exampleQuestion);
