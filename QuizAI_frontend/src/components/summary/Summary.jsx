@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import NavigationBar from '../navigationBar/NavigationBar.jsx';
 import useTokenValidation from '../../hooks/useTokenValidation';
+import axios from 'axios';
 import './Summary.css';
 
 const Summary = () => {
@@ -11,18 +12,7 @@ const Summary = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    // const summarizeContent = async (text) => {
-    //     // Implement the summarization logic here
-    //     // For now, let's simulate with a timeout
-    //     return new Promise((resolve) => {
-    //         setTimeout(() => {
-    //             // Simple mock summarization
-    //             resolve(text.substring(0, 500) + '...');
-    //         }, 1000);
-    //     });
-    // };
-
-    const handleSummarize = () => {
+    const handleSummarize = async () => {
         // setLoading(true);
         // setError(null);
 
@@ -43,6 +33,10 @@ const Summary = () => {
         //         setLoading(false);
         //     });
         // });
+        const summaryResponse = await axios.get(`http://localhost:3000/api/summary`, {
+            webContent: 'test'
+        });
+        setSummary(summaryResponse.data.summary);
     };
 
     return (
