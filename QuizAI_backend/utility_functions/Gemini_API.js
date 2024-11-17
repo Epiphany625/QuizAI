@@ -74,6 +74,8 @@ async function generateSummary(content){
     }
 }
 
+
+
 async function generateQuiz(content, numQuestions=10, questionType="mcq", exampleQuestion=null) {
     try {
         // const data = fs.readFileSync('./prompt.txt', 'utf8');
@@ -142,3 +144,4 @@ async function promptModel(prompt){
 }
 
 
+export { generateQuiz, generateStreamingSummary, generateSummary };
