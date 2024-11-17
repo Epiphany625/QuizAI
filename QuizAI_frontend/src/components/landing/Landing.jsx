@@ -62,7 +62,9 @@ const Landing = () => {
 
             if (response.ok) {
                 response = await response.json();
+                localStorage.setItem('token', response.token);
                 console.log(response);
+                console.log(localStorage.getItem('token'));
                 navigation('/summary');
             } else {
                 setErrorMessage('Invalid Email / login credentials');

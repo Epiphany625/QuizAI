@@ -1,6 +1,7 @@
 import NavigationBar from '../navigationBar/NavigationBar.jsx';
-
+import useTokenValidation from '../../hooks/useTokenValidation';
 const Chatbot = () => {
+    useTokenValidation();
     return(
         <>
         <NavigationBar />
