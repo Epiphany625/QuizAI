@@ -12,14 +12,8 @@ if (!apiKey) {
 }
 
 
-const genAI = new GoogleGenerativeAI(process.env.GOOGLE_AI_KEY);
-console.log("model successfully created.");
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-
-generateQuiz(testContent, 3, "short answer"); // use testContent for testing, imported from prompt.js
-
-
 // generate a streaming summary of the content
+// didn't make one for quiz generation because formatting 
 async function generateStreamingSummary(content) {
     try {
         const instructions = summaryInstructions;
@@ -42,7 +36,7 @@ async function generateStreamingSummary(content) {
 
 async function generateSummary(content){
     try {
-        const instructions = `Generate a detailed, structured, and concicse summary of the content below: `;
+        const instructions = summaryInstructions;
         const resultText = await promptModel(instructions + content);
         console.log(resultText);
         return resultText;
@@ -50,6 +44,7 @@ async function generateSummary(content){
         console.error('Error processing summary:', err);
     }
 }
+
 
 
 async function generateQuiz(content, numQuestions=10, questionType="multiple choice", exampleQuestion=null) {
@@ -73,7 +68,8 @@ async function generateQuiz(content, numQuestions=10, questionType="multiple cho
 }
 
 
-// general helper function for prompting the model
+// general helper function for prompting the model and returning the text
+// may add cached context to the prompt in the future
 async function promptModel(prompt){
     try {
         const result = await model.generateContent(prompt);
