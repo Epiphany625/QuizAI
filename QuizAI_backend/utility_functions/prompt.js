@@ -16,6 +16,22 @@ const shortAnswerFormat = `
     Your response should be in the format:
     # [QUESTION]? # [ANSWER]
     # Who wrote the play "Romeo and Juliet"? # William Shakespeare
+
+    The question follows the # symbol and the answer follows the # symbol. Do not omit the # symbol. Do not include the question number.
+`;
+
+const fillInTheBlankFormat = `
+    Create a fill in the blank quiz question.
+    Every question should have only one blank.
+    Your response should be in the format:
+    # [QUESTION WITH ONE BLANK] # [ANSWER]
+    # [QUESTION WITH ONE BLANK] # [ANSWER]
+
+    For example for the question:
+    The chemical symbol for water is ____.
+    answer: H2O
+    Your response should be in the format: 
+    # The chemical symbol for water is ____. # H2O
 `;
 
 const fillInTheBlankFormat = `
@@ -56,7 +72,13 @@ Embedded into the fabric of a host, e.g., an embedded controller in a host devic
 
 // Function to get quiz generation prompt
 function getQuizPrompt(content, numQuestions, questionType, exampleQuestion=null) {
-    return `generate a quiz of ${numQuestions} ${questionType} questions
+    return `
+        Using the content provided in multiple files, create a comprehensive quiz that helps students review for their exams. 
+        The quiz should cover a wide range of topics, ensuring questions are drawn from different sections and areas across all the files to provide balanced coverage. 
+        Focus on including questions that highlight key concepts, important chapters, 
+        and diverse subject areas to help students comprehensively review and ensure no significant material is overlooked.
+
+        generate a quiz of ${numQuestions} ${questionType} questions
 
         ${questionType === "short-answer" ? shortAnswerFormat : ""}
 
