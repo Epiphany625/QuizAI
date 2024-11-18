@@ -16,6 +16,7 @@ if (!apiKey) {
     throw new Error("API key is missing. run file in the backend folder and do node utility_functions/Gemini_API.js");
 }
 
+
 // initialize the model
 let model;
 try {
@@ -25,6 +26,7 @@ try {
     console.error('Error initializing Gemini model:', err);
     throw new Error('Failed to initialize Gemini model');
 }
+
 
 
 // generate a streaming summary of the content
@@ -62,7 +64,7 @@ async function generateSummary(content){
 
 
 
-async function generateQuiz(content, numQuestions=10, questionType="multiple choice", exampleQuestion=null) {
+async function generateQuiz(content, numQuestions=10, questionType="multiple-choice", exampleQuestion=null) {
     try {
         // const data = fs.readFileSync('./prompt.txt', 'utf8');
         const prompt = getQuizPrompt(content, numQuestions, questionType, exampleQuestion);

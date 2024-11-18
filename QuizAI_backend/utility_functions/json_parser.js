@@ -69,26 +69,34 @@ function parseFillInTheBlankToJson(quizText) {
 return parseShortAnswerToJson(quizText);
 }
 
+
+function parseFillInTheBlankToJson(quizText) {
+  return parseShortAnswerToJson(quizText);
+}
+
 function parseShortAnswerToJson(quizText) {
-  const quizJson = [];
-  
-  // Split by # and ignore surrounding whitespace
-  const parts = quizText.split(/#/).map(part => part.trim()).filter(part => part !== '');
-  
-  for (let i = 0; i < parts.length - 1; i += 2) {
-      const question = parts[i];
-      const answer = parts[i + 1];
-      
-      if (question && answer) {
-          quizJson.push({
-              question: question.trim(),
-              choices: [],
-              correctAnswer: answer.trim()
-          });
-      }
-  }
-  
-  return quizJson;
+    const quizJson = [];
+    
+    // Split by # but keep the delimiter
+    const parts = quizText.split(/(#)/).map(part => part.trim()).filter(part => part !== '');
+    
+    for (let i = 0; i < parts.length - 2; i++) {
+        if (parts[i] === '#') {
+            const question = parts[i + 1];
+            const answer = parts[i + 3];
+            
+            if (question && answer) {
+                quizJson.push({
+                    question: question.trim(),
+                    choices: [],
+                    correctAnswer: answer.trim()
+                });
+            }
+            i += 3; // Skip processed parts
+        }
+    }
+    
+    return quizJson;
 }
 
 
