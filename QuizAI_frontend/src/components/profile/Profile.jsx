@@ -10,6 +10,7 @@ const Profile = () => {
     const [userStats, setUserStats] = useState({
         quizCount: 0,
         chatbotCount: 0,
+        summaryCount: 0,
         loading: true,
         error: null
     });
@@ -24,8 +25,9 @@ const Profile = () => {
                 });
                 
                 setUserStats({
-                    quizCount: response.data.quizCount || 0,
-                    chatbotCount: response.data.chatbotCount || 0,
+                    quizCount: response.data.quizRequested || 0,
+                    chatbotCount: response.data.chatbotRequested || 0,
+                    summaryCount: response.data.summaryRequested || 0,
                     loading: false,
                     error: null
                 });
@@ -84,6 +86,10 @@ const Profile = () => {
                         <div className="info-item">
                             <label>Chatbots Created:</label>
                             <span>{userStats.chatbotCount}</span>
+                        </div>
+                        <div className="info-item">
+                            <label>Summaries Generated:</label>
+                            <span>{userStats.summaryCount}</span>
                         </div>
                     </div>
                 </div>

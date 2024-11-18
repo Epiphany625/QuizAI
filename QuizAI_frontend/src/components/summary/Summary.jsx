@@ -42,9 +42,14 @@ const Summary = () => {
     };
 
     const handleSummarize = async () => {
+
         try {
             setLoading(true);
             setError(null);
+
+            // update the summary count
+            const userEmail = localStorage.getItem('email');
+            await axios.patch(`http://localhost:3000/api/user/${userEmail}/summary`);
 
             const pageContent = await getCurrentPageContent();
             const summaryResponse = await axios.post(`http://localhost:3000/api/summary`, {

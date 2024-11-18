@@ -43,8 +43,9 @@ export const loginUser = async (req, res) => {
 // Verify Token
 export const verifyToken = async (req, res) => {
     const token = req.headers.authorization.split(' ')[1];
-    jwt.verify(token, SECRET_KEY, (err, decoded) => {
+    jwt.verify(token, SECRET_KEY, async (err, decoded) => {
         if (err) return res.status(401).json({ message: 'Unauthorized' });
-        res.json({ message: 'Token verified', decoded });
+        const user = await User.findOne({ email: decoded.email });
+        res.json({ message: 'Token verified', user });
     });
 }; 

@@ -18,7 +18,7 @@ const useTokenValidation = () => {
                         },
                     });
                     console.log('User verified:', response.data);
-                    localStorage.setItem('email', response.data.decoded.email);
+                    localStorage.setItem('email', response.data.user.email);
                     console.log(localStorage.getItem('email'));
                 } catch (error) {
                     console.error('Token verification failed:', error);
