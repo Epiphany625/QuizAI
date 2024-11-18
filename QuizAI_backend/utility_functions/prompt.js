@@ -34,19 +34,6 @@ const fillInTheBlankFormat = `
     # The chemical symbol for water is ____. # H2O
 `;
 
-const fillInTheBlankFormat = `
-    Create a fill in the blank quiz question.
-    Every question should have only one blank.
-    Your response should be in the format:
-    # [QUESTION WITH ONE BLANK] # [ANSWER]
-    # [QUESTION WITH ONE BLANK] # [ANSWER]
-
-    For example for the question:
-    The chemical symbol for water is ____.
-    answer: H2O
-    Your response should be in the format: 
-    # The chemical symbol for water is ____. # H2O
-`;
 
 // Summary generation prompts
 const summaryInstructions = `Generate a detailed, structured, and concise summary of the content below: `;

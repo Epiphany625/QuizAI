@@ -69,11 +69,6 @@ function parseFillInTheBlankToJson(quizText) {
 return parseShortAnswerToJson(quizText);
 }
 
-
-function parseFillInTheBlankToJson(quizText) {
-  return parseShortAnswerToJson(quizText);
-}
-
 function parseShortAnswerToJson(quizText) {
     const quizJson = [];
     
