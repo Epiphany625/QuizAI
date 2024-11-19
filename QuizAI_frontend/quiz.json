@@ -1,0 +1,22 @@
+[
+  {
+    "question": "Which organ is responsible for pumping blood throughout the body?",
+    "choices": [
+      "Brain",
+      "Heart",
+      "Kidney",
+      "Liver"
+    ],
+    "correctAnswer": "B"
+  },
+  {
+    "question": "what's the power house of the cell?",
+    "choices": [
+      "cell wall",
+      "cellulose string",
+      "mitochondria",
+      "Liver"
+    ],
+    "correctAnswer": "C"
+  }
+]
