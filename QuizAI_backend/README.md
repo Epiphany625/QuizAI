@@ -18,11 +18,10 @@ The base URL for all endpoints is: `http://localhost:<PORT>/api`
 - **Sample Request:**
 
   ```javascript
-  fetch("http://localhost:<PORT>/api/user/user@example.com", {
-    method: "GET",
-  })
-    .then((response) => response.json())
-    .then((data) => console.log(data));
+  axios
+    .get("http://localhost:<PORT>/api/user/user@example.com")
+    .then((response) => console.log(response.data))
+    .catch((error) => console.error(error));
   ```
 
 - **Response:**
@@ -45,11 +44,10 @@ The base URL for all endpoints is: `http://localhost:<PORT>/api`
 - **Sample Request:**
 
   ```javascript
-  fetch("http://localhost:<PORT>/api/user/user@example.com/summary", {
-    method: "PATCH",
-  })
-    .then((response) => response.json())
-    .then((data) => console.log(data));
+  axios
+    .patch("http://localhost:<PORT>/api/user/user@example.com/summary")
+    .then((response) => console.log(response.data))
+    .catch((error) => console.error(error));
   ```
 
 - **Response:**
@@ -69,26 +67,29 @@ The base URL for all endpoints is: `http://localhost:<PORT>/api`
 - **Sample Request:**
 
   ```javascript
-  fetch("http://localhost:<PORT>/api/user/user@example.com/quiz", {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      quiz: {
-        url: "http://example.com",
-        questions: [
-          {
-            question: "What is 2+2?",
-            choices: ["3", "4", "5"],
-            correctAnswer: "4",
-          },
-        ],
+  axios
+    .patch(
+      "http://localhost:<PORT>/api/user/user@example.com/quiz",
+      {
+        quiz: {
+          url: "http://example.com",
+          questions: [
+            {
+              question: "What is 2+2?",
+              choices: ["3", "4", "5"],
+              correctAnswer: "4",
+            },
+          ],
+        },
       },
-    }),
-  })
-    .then((response) => response.json())
-    .then((data) => console.log(data));
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
+    .then((response) => console.log(response.data))
+    .catch((error) => console.error(error));
   ```
 
 - **Response:**
@@ -121,18 +122,21 @@ The base URL for all endpoints is: `http://localhost:<PORT>/api`
 - **Sample Request:**
 
   ```javascript
-  fetch("http://localhost:<PORT>/api/auth/register", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      email: "newuser@example.com",
-      password: "password123",
-    }),
-  })
-    .then((response) => response.json())
-    .then((data) => console.log(data));
+  axios
+    .post(
+      "http://localhost:<PORT>/api/auth/register",
+      {
+        email: "newuser@example.com",
+        password: "password123",
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
+    .then((response) => console.log(response.data))
+    .catch((error) => console.error(error));
   ```
 
 - **Response:**
@@ -150,18 +154,21 @@ The base URL for all endpoints is: `http://localhost:<PORT>/api`
 - **Sample Request:**
 
   ```javascript
-  fetch("http://localhost:<PORT>/api/auth/login", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      email: "user@example.com",
-      password: "password123",
-    }),
-  })
-    .then((response) => response.json())
-    .then((data) => console.log(data));
+  axios
+    .post(
+      "http://localhost:<PORT>/api/auth/login",
+      {
+        email: "user@example.com",
+        password: "password123",
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
+    .then((response) => console.log(response.data))
+    .catch((error) => console.error(error));
   ```
 
 - **Response:**
@@ -180,14 +187,18 @@ The base URL for all endpoints is: `http://localhost:<PORT>/api`
 - **Sample Request:**
 
   ```javascript
-  fetch("http://localhost:<PORT>/api/auth/verify-token", {
-    method: "POST",
-    headers: {
-      Authorization: "Bearer <JWT_TOKEN>",
-    },
-  })
-    .then((response) => response.json())
-    .then((data) => console.log(data));
+  axios
+    .post(
+      "http://localhost:<PORT>/api/auth/verify-token",
+      {},
+      {
+        headers: {
+          Authorization: "Bearer <JWT_TOKEN>",
+        },
+      }
+    )
+    .then((response) => console.log(response.data))
+    .catch((error) => console.error(error));
   ```
 
 - **Response:**
@@ -211,17 +222,20 @@ The base URL for all endpoints is: `http://localhost:<PORT>/api`
 - **Sample Request:**
 
   ```javascript
-  fetch("http://localhost:<PORT>/api/summary", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      webContent: "<HTML_CONTENT>",
-    }),
-  })
-    .then((response) => response.json())
-    .then((data) => console.log(data));
+  axios
+    .post(
+      "http://localhost:<PORT>/api/summary",
+      {
+        webContent: "<HTML_CONTENT>",
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
+    .then((response) => console.log(response.data))
+    .catch((error) => console.error(error));
   ```
 
 - **Response:**
