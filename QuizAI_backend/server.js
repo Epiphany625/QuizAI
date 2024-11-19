@@ -19,7 +19,7 @@ connectDB();
 
 // Routes
 app.use('/api/auth', authRoutes); // used for registration, login, and token verification
-app.use('/api/user', userRoutes); // used for getting user data
+app.use('/api/user', userRoutes); // used for getting user data, adding summary requested, and adding quiz generated
 app.use('/api/summary', summaryRoutes); // used for getting summary data
 // Start Server
 app.listen(PORT, () => {
