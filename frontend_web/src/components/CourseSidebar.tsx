@@ -1,46 +1,39 @@
 import React, { useState } from 'react';
-import { BookOpen, GraduationCap, BookMarked, Clock, Plus, Pencil, Trash2 } from 'lucide-react';
+import { BookOpen, GraduationCap, BookMarked, Clock, Plus, Pencil, Trash2, Camera } from 'lucide-react';
 import type { Course } from '../types';
-
-const SAMPLE_COURSES: Course[] = [
-  {
-    id: '1',
-    name: 'Introduction to Psychology',
-    description: 'Explore the fundamentals of human behavior and mental processes',
-    imageUrl: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&q=80&w=400',
-    materials: [],
-    quizzes: []
-  },
-  {
-    id: '2',
-    name: 'Calculus I',
-    description: 'Master derivatives, integrals, and limits',
-    imageUrl: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&q=80&w=400',
-    materials: [],
-    quizzes: []
-  }
-];
 
 interface CourseSidebarProps {
   selectedCourse: Course | null;
   onSelectCourse: (course: Course | null) => void;
   onViewProgress: (course: Course) => void;
   onViewMaterials: (course: Course) => void;
+  courses: Course[];
+  onAddCourse: (course: Course) => void;
 }
 
-interface CourseFormData {
-  name: string;
-  description: string;
-}
+const MAX_TITLE_LENGTH = 50; // Maximum characters for course title
+const MAX_DESCRIPTION_LENGTH = 200; // Maximum characters for course description
+const defaultCourseImage = 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&q=80&w=400';
 
-export function CourseSidebar({ selectedCourse, onSelectCourse, onViewProgress, onViewMaterials }: CourseSidebarProps) {
+export function CourseSidebar({ 
+  selectedCourse, 
+  onSelectCourse, 
+  onViewProgress, 
+  onViewMaterials,
+  courses,
+  onAddCourse 
+}: CourseSidebarProps) {
   const [selectedSection, setSelectedSection] = useState<'materials' | 'quizzes' | null>(null);
-  const [courses, setCourses] = useState(SAMPLE_COURSES);
   const [showNewCourseForm, setShowNewCourseForm] = useState(false);
-  const [newCourse, setNewCourse] = useState<CourseFormData>({ name: '', description: '' });
+  const [newCourse, setNewCourse] = useState({
+    name: '',
+    description: '',
+    imageUrl: defaultCourseImage
+  });
   const [editingCourse, setEditingCourse] = useState<string | null>(null);
-  const [deletingCourse, setDeletingCourse] = useState<string | null>(null);
-  const [confirmDelete, setConfirmDelete] = useState('');
+  const [titleError, setTitleError] = useState('');
+  const [descriptionError, setDescriptionError] = useState('');
+  const [showFullTitle, setShowFullTitle] = useState<string | null>(null);
 
   const handleMyCourses = () => {
     onSelectCourse(null);
@@ -49,36 +42,60 @@ export function CourseSidebar({ selectedCourse, onSelectCourse, onViewProgress, 
 
   const handleCreateCourse = (e: React.FormEvent) => {
     e.preventDefault();
+    if (newCourse.name.length > MAX_TITLE_LENGTH) {
+      setTitleError(`Title must be ${MAX_TITLE_LENGTH} characters or less`);
+      return;
+    }
+    if (newCourse.description.length > MAX_DESCRIPTION_LENGTH) {
+      setDescriptionError(`Description must be ${MAX_DESCRIPTION_LENGTH} characters or less`);
+      return;
+    }
     const course: Course = {
       id: Math.random().toString(36).substr(2, 9),
       name: newCourse.name,
       description: newCourse.description,
-      imageUrl: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&q=80&w=400',
+      imageUrl: newCourse.imageUrl,
       materials: [],
       quizzes: []
     };
-    setCourses([...courses, course]);
-    setNewCourse({ name: '', description: '' });
+    onAddCourse(course);
+    setNewCourse({ name: '', description: '', imageUrl: defaultCourseImage });
     setShowNewCourseForm(false);
+    setTitleError('');
+    setDescriptionError('');
   };
 
-  const handleUpdateCourse = (courseId: string, updatedName: string) => {
-    setCourses(courses.map(course => 
-      course.id === courseId 
-        ? { ...course, name: updatedName }
-        : course
-    ));
-    setEditingCourse(null);
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setNewCourse(prev => ({
+          ...prev,
+          imageUrl: reader.result as string
+        }));
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
-  const handleDeleteCourse = (courseId: string) => {
-    if (confirmDelete === courses.find(c => c.id === courseId)?.name) {
-      setCourses(courses.filter(course => course.id !== courseId));
-      if (selectedCourse?.id === courseId) {
-        onSelectCourse(null);
-      }
-      setDeletingCourse(null);
-      setConfirmDelete('');
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setNewCourse(prev => ({ ...prev, name: value }));
+    if (value.length > MAX_TITLE_LENGTH) {
+      setTitleError(`Title must be ${MAX_TITLE_LENGTH} characters or less`);
+    } else {
+      setTitleError('');
+    }
+  };
+
+  const handleDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const value = e.target.value;
+    setNewCourse(prev => ({ ...prev, description: value }));
+    if (value.length > MAX_DESCRIPTION_LENGTH) {
+      setDescriptionError(`Description must be ${MAX_DESCRIPTION_LENGTH} characters or less`);
+    } else {
+      setDescriptionError('');
     }
   };
 
@@ -106,26 +123,66 @@ export function CourseSidebar({ selectedCourse, onSelectCourse, onViewProgress, 
 
           {showNewCourseForm && (
             <form onSubmit={handleCreateCourse} className="mb-4 p-3 bg-gray-50 rounded-lg">
-              <input
-                type="text"
-                placeholder="Course Name"
-                value={newCourse.name}
-                onChange={(e) => setNewCourse({ ...newCourse, name: e.target.value })}
-                className="w-full p-2 mb-2 border border-gray-300 rounded-lg text-base"
-                required
-              />
-              <textarea
-                placeholder="Course Description"
-                value={newCourse.description}
-                onChange={(e) => setNewCourse({ ...newCourse, description: e.target.value })}
-                className="w-full p-2 mb-2 border border-gray-300 rounded-lg text-base"
-                rows={3}
-                required
-              />
+              <div className="mb-4">
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">Course Image</h3>
+                <div className="relative">
+                  <img
+                    src={newCourse.imageUrl}
+                    alt="Course cover"
+                    className="w-full h-32 object-cover rounded-lg"
+                  />
+                  <label className="absolute bottom-2 right-2 bg-[#3B82F6] text-white rounded-lg px-3 py-1 cursor-pointer hover:bg-[#2563EB] transition-colors duration-300 text-sm">
+                    <Camera className="w-4 h-4 inline-block mr-1" />
+                    Upload Image
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageUpload}
+                      className="hidden"
+                    />
+                  </label>
+                </div>
+              </div>
+              <div className="mb-2">
+                <input
+                  type="text"
+                  placeholder={`Course Name (max ${MAX_TITLE_LENGTH} characters)`}
+                  value={newCourse.name}
+                  onChange={handleTitleChange}
+                  className={`w-full p-2 border border-gray-300 rounded-lg text-sm ${
+                    titleError ? 'border-red-500' : ''
+                  }`}
+                  required
+                />
+                {titleError && (
+                  <p className="text-red-500 text-xs mt-1">{titleError}</p>
+                )}
+                <p className="text-xs text-gray-500 mt-1">
+                  {newCourse.name.length}/{MAX_TITLE_LENGTH} characters
+                </p>
+              </div>
+              <div className="mb-2">
+                <textarea
+                  placeholder={`Course Description (max ${MAX_DESCRIPTION_LENGTH} characters)`}
+                  value={newCourse.description}
+                  onChange={handleDescriptionChange}
+                  className={`w-full p-2 border border-gray-300 rounded-lg text-sm ${
+                    descriptionError ? 'border-red-500' : ''
+                  }`}
+                  rows={3}
+                  required
+                />
+                {descriptionError && (
+                  <p className="text-red-500 text-xs mt-1">{descriptionError}</p>
+                )}
+                <p className="text-xs text-gray-500 mt-1">
+                  {newCourse.description.length}/{MAX_DESCRIPTION_LENGTH} characters
+                </p>
+              </div>
               <div className="flex space-x-2">
                 <button
                   type="submit"
-                  className="flex-1 p-2 bg-[#3B82F6] text-white rounded-lg hover:bg-[#2563EB]"
+                  className="flex-1 p-2 bg-[#3B82F6] text-white rounded-lg hover:bg-[#2563EB] text-sm"
                 >
                   Create
                 </button>
@@ -133,9 +190,11 @@ export function CourseSidebar({ selectedCourse, onSelectCourse, onViewProgress, 
                   type="button"
                   onClick={() => {
                     setShowNewCourseForm(false);
-                    setNewCourse({ name: '', description: '' });
+                    setNewCourse({ name: '', description: '', imageUrl: defaultCourseImage });
+                    setTitleError('');
+                    setDescriptionError('');
                   }}
-                  className="flex-1 p-2 border border-gray-300 rounded-lg hover:bg-gray-100"
+                  className="flex-1 p-2 border border-gray-300 rounded-lg hover:bg-gray-100 text-sm"
                 >
                   Cancel
                 </button>
@@ -146,78 +205,33 @@ export function CourseSidebar({ selectedCourse, onSelectCourse, onViewProgress, 
           <div className="space-y-2">
             {courses.map((course) => (
               <div key={course.id} className="space-y-1">
-                <div className="flex items-center justify-between group">
+                <div className="flex items-center justify-between group relative">
                   <button
                     onClick={() => {
                       onSelectCourse(course);
                       setSelectedSection(null);
                     }}
-                    className={`flex items-center flex-1 p-3 rounded-lg transition-colors duration-200 text-base ${
+                    onMouseEnter={() => setShowFullTitle(course.id)}
+                    onMouseLeave={() => setShowFullTitle(null)}
+                    className={`flex items-center w-full p-3 rounded-lg transition-colors duration-200 text-base ${
                       selectedCourse?.id === course.id
                         ? 'bg-[#DBEAFE] text-[#3B82F6]'
                         : 'text-gray-700 hover:bg-gray-50'
                     }`}
                   >
-                    <BookOpen className="w-5 h-5 mr-3" />
-                    {editingCourse === course.id ? (
-                      <input
-                        type="text"
-                        value={course.name}
-                        onChange={(e) => handleUpdateCourse(course.id, e.target.value)}
-                        onBlur={() => setEditingCourse(null)}
-                        autoFocus
-                        className="flex-1 bg-transparent border-none focus:ring-0"
-                      />
-                    ) : (
-                      <span className="font-medium truncate">{course.name}</span>
-                    )}
+                    <BookOpen className="flex-shrink-0 w-5 h-5 mr-3" />
+                    <span className="font-medium truncate">
+                      {course.name.length > MAX_TITLE_LENGTH 
+                        ? `${course.name.substring(0, MAX_TITLE_LENGTH)}...` 
+                        : course.name}
+                    </span>
                   </button>
-                  <div className="hidden group-hover:flex items-center ml-2">
-                    <button
-                      onClick={() => setEditingCourse(course.id)}
-                      className="p-1 text-gray-500 hover:text-[#3B82F6] rounded-lg"
-                    >
-                      <Pencil className="w-4 h-4" />
-                    </button>
-                    <button
-                      onClick={() => setDeletingCourse(course.id)}
-                      className="p-1 text-gray-500 hover:text-red-500 rounded-lg"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
-                  </div>
-                </div>
-
-                {deletingCourse === course.id && (
-                  <div className="ml-6 p-3 bg-red-50 rounded-lg">
-                    <p className="text-sm text-red-600 mb-2">
-                      Type "{course.name}" to confirm deletion:
-                    </p>
-                    <input
-                      type="text"
-                      value={confirmDelete}
-                      onChange={(e) => setConfirmDelete(e.target.value)}
-                      className="w-full p-2 mb-2 border border-red-300 rounded-lg text-sm"
-                    />
-                    <div className="flex space-x-2">
-                      <button
-                        onClick={() => handleDeleteCourse(course.id)}
-                        className="flex-1 p-2 bg-red-600 text-white rounded-lg hover:bg-red-700 text-sm"
-                      >
-                        Delete
-                      </button>
-                      <button
-                        onClick={() => {
-                          setDeletingCourse(null);
-                          setConfirmDelete('');
-                        }}
-                        className="flex-1 p-2 border border-gray-300 rounded-lg hover:bg-gray-100 text-sm"
-                      >
-                        Cancel
-                      </button>
+                  {showFullTitle === course.id && course.name.length > MAX_TITLE_LENGTH && (
+                    <div className="absolute left-0 top-full mt-1 z-10 bg-white border border-gray-200 rounded-lg shadow-lg p-2 text-sm">
+                      {course.name}
                     </div>
-                  </div>
-                )}
+                  )}
+                </div>
 
                 {selectedCourse?.id === course.id && (
                   <div className="ml-6 space-y-2">

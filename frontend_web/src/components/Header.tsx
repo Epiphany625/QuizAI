@@ -1,6 +1,6 @@
 import React from 'react';
 import { GraduationCap, User, ArrowLeft, BookOpen } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 interface HeaderProps {
   onMistakesClick: () => void;
@@ -9,6 +9,8 @@ interface HeaderProps {
 }
 
 export function Header({ onMistakesClick, showBackButton, onBack }: HeaderProps) {
+  const navigate = useNavigate();
+
   return (
     <header className="bg-white shadow-sm h-16">
       <div className="h-full px-4 sm:px-6 lg:px-8">
@@ -38,7 +40,10 @@ export function Header({ onMistakesClick, showBackButton, onBack }: HeaderProps)
               <BookOpen className="h-6 w-6" />
               <span className="hidden sm:inline-block font-medium">Mistake Journal</span>
             </button>
-            <button className="flex items-center space-x-2 text-gray-700 hover:text-[#3B82F6] px-4 py-2 rounded-lg hover:bg-gray-50 text-lg">
+            <button 
+              onClick={() => navigate('/profile')}
+              className="flex items-center space-x-2 text-gray-700 hover:text-[#3B82F6] px-4 py-2 rounded-lg hover:bg-gray-50 text-lg"
+            >
               <User className="h-6 w-6" />
               <span className="hidden sm:inline-block font-medium">Profile</span>
             </button>

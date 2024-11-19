@@ -5,28 +5,10 @@ import type { Course } from '../types';
 interface CourseListProps {
   onSelectCourse: (course: Course) => void;
   onViewProgress: (course: Course) => void;
+  courses: Course[];
 }
 
-const courses: Course[] = [
-  {
-    id: '1',
-    name: 'Introduction to Psychology',
-    description: 'Explore the fundamentals of human behavior and mental processes',
-    imageUrl: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&q=80&w=400',
-    materials: [],
-    quizzes: []
-  },
-  {
-    id: '2',
-    name: 'Calculus I',
-    description: 'Master derivatives, integrals, and limits',
-    imageUrl: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&q=80&w=400',
-    materials: [],
-    quizzes: []
-  }
-];
-
-export function CourseList({ onSelectCourse, onViewProgress }: CourseListProps) {
+export function CourseList({ onSelectCourse, onViewProgress, courses }: CourseListProps) {
   return (
     <div className="max-w-6xl mx-auto">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
