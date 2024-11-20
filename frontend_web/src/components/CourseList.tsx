@@ -5,28 +5,10 @@ import type { Course } from '../types';
 interface CourseListProps {
   onSelectCourse: (course: Course) => void;
   onViewProgress: (course: Course) => void;
+  courses: Course[];
 }
 
-const courses: Course[] = [
-  {
-    id: '1',
-    name: 'Introduction to Psychology',
-    description: 'Explore the fundamentals of human behavior and mental processes',
-    imageUrl: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&q=80&w=400',
-    materials: [],
-    quizzes: []
-  },
-  {
-    id: '2',
-    name: 'Calculus I',
-    description: 'Master derivatives, integrals, and limits',
-    imageUrl: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&q=80&w=400',
-    materials: [],
-    quizzes: []
-  }
-];
-
-export function CourseList({ onSelectCourse, onViewProgress }: CourseListProps) {
+export function CourseList({ onSelectCourse, onViewProgress, courses }: CourseListProps) {
   return (
     <div className="max-w-6xl mx-auto">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
@@ -43,14 +25,14 @@ export function CourseList({ onSelectCourse, onViewProgress }: CourseListProps) 
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {courses.map((course) => (
-          <div key={course.id} className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-duration-300">
+          <div key={course.id} className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-duration-300 flex flex-col h-full">
             <img src={course.imageUrl} alt={course.name} className="w-full h-48 object-cover" />
-            <div className="p-6">
+            <div className="p-6 flex-1 flex flex-col">
               <div className="flex items-center mb-2">
                 <BookOpen className="w-5 h-5 text-[#3B82F6] mr-2" />
                 <h3 className="text-xl font-semibold text-[#1E3A8A]">{course.name}</h3>
               </div>
-              <p className="text-gray-600 mb-4">{course.description}</p>
+              <p className="text-gray-600 mb-4 flex-1">{course.description}</p>
               
               <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
                 <div className="flex items-center">
@@ -59,7 +41,7 @@ export function CourseList({ onSelectCourse, onViewProgress }: CourseListProps) 
                 </div>
               </div>
 
-              <div className="flex space-x-3">
+              <div className="flex space-x-3 mt-auto">
                 <button
                   onClick={() => onSelectCourse(course)}
                   className="flex-1 px-4 py-2 bg-[#3B82F6] text-white rounded-lg hover:bg-[#2563EB] transition-colors duration-300"
