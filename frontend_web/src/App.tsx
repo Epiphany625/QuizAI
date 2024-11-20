@@ -7,8 +7,9 @@ import { CourseProgress } from './components/CourseProgress';
 import { MistakeJournal } from './components/MistakeJournal';
 import { CourseList } from './components/CourseList';
 import { Login } from './pages/Login';
-import { Profile } from './pages/Profile';
-import type { Course } from './types';
+import { Achievements } from './pages/Achievements';
+import { Subscription } from './pages/Subscription';
+import type { Course, MistakeEntry } from './types';
 
 const defaultCourses: Course[] = [
   {
@@ -29,6 +30,40 @@ const defaultCourses: Course[] = [
   }
 ];
 
+// Sample mistake entries for demonstration
+const sampleMistakes: MistakeEntry[] = [
+  {
+    id: '1',
+    quizId: 'quiz1',
+    courseId: '1',
+    questionId: 'q1',
+    question: 'What is the primary function of neurotransmitters?',
+    correctAnswer: 'To transmit signals between neurons',
+    userAnswer: 'To store memories in the brain',
+    explanation: 'Neurotransmitters are chemical messengers that transmit signals across synapses between neurons, enabling communication within the nervous system.',
+    dateAdded: new Date(),
+    reviewed: false
+  }
+];
+
+interface AppLayoutProps {
+  children: React.ReactNode;
+  onMistakesClick: () => void;
+}
+
+function AppLayout({ children, onMistakesClick }: AppLayoutProps) {
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <Header 
+        onMistakesClick={onMistakesClick}
+        showBackButton={false}
+        onBack={() => {}}
+      />
+      {children}
+    </div>
+  );
+}
+
 function AppContent() {
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
   const [showProgress, setShowProgress] = useState(false);
@@ -42,7 +77,6 @@ function AppContent() {
     setShowProgress(true);
     setShowMaterials(false);
     setShowMistakes(false);
-    navigate('/');
   };
 
   const handleViewMaterials = (course: Course) => {
@@ -50,7 +84,6 @@ function AppContent() {
     setShowMaterials(true);
     setShowProgress(false);
     setShowMistakes(false);
-    navigate('/');
   };
 
   const handleAddCourse = (newCourse: Course) => {
@@ -62,7 +95,6 @@ function AppContent() {
     setSelectedCourse(null);
     setShowProgress(false);
     setShowMaterials(false);
-    navigate('/');
   };
 
   const handleMistakesClick = () => {
@@ -70,77 +102,112 @@ function AppContent() {
     setSelectedCourse(null);
     setShowProgress(false);
     setShowMaterials(false);
-    navigate('/');
   };
 
-  const AppLayout = ({ children }: { children: React.ReactNode }) => (
-    <div className="min-h-screen bg-gray-50">
-      <Header 
-        onMistakesClick={handleMistakesClick}
-        showBackButton={false}
-        onBack={() => {}}
-      />
-      <div className="flex">
-        <CourseSidebar 
-          selectedCourse={selectedCourse}
-          onSelectCourse={(course) => {
-            if (course === null) {
-              handleMyCourses();
-            } else {
-              setSelectedCourse(course);
-              setShowMaterials(true);
-              setShowProgress(false);
-              setShowMistakes(false);
-              navigate('/');
-            }
-          }}
-          onViewProgress={handleViewProgress}
-          onViewMaterials={handleViewMaterials}
-          courses={courses}
-          onAddCourse={handleAddCourse}
-        />
-        <main className="flex-1">
-          {children}
-        </main>
-      </div>
-    </div>
-  );
+  const handleReviewMistake = (mistakeId: string) => {
+    // Implement mistake review logic here
+    console.log('Reviewing mistake:', mistakeId);
+  };
 
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
-      <Route path="/profile" element={
-        <AppLayout>
-          <Profile />
+      <Route path="/achievements" element={
+        <AppLayout onMistakesClick={handleMistakesClick}>
+          <div className="flex">
+            <CourseSidebar 
+              selectedCourse={selectedCourse}
+              onSelectCourse={(course) => {
+                if (course === null) {
+                  handleMyCourses();
+                } else {
+                  setSelectedCourse(course);
+                  setShowMaterials(true);
+                  setShowProgress(false);
+                  setShowMistakes(false);
+                }
+              }}
+              onViewProgress={handleViewProgress}
+              onViewMaterials={handleViewMaterials}
+              courses={courses}
+              onAddCourse={handleAddCourse}
+            />
+            <Achievements />
+          </div>
+        </AppLayout>
+      } />
+      <Route path="/subscription" element={
+        <AppLayout onMistakesClick={handleMistakesClick}>
+          <div className="flex">
+            <CourseSidebar 
+              selectedCourse={selectedCourse}
+              onSelectCourse={(course) => {
+                if (course === null) {
+                  handleMyCourses();
+                } else {
+                  setSelectedCourse(course);
+                  setShowMaterials(true);
+                  setShowProgress(false);
+                  setShowMistakes(false);
+                }
+              }}
+              onViewProgress={handleViewProgress}
+              onViewMaterials={handleViewMaterials}
+              courses={courses}
+              onAddCourse={handleAddCourse}
+            />
+            <Subscription />
+          </div>
         </AppLayout>
       } />
       <Route path="/" element={
-        <AppLayout>
-          {showMistakes ? (
-            <MistakeJournal mistakes={[]} onReview={() => {}} />
-          ) : selectedCourse ? (
-            showProgress ? (
-              <CourseProgress 
-                course={selectedCourse}
-                onBack={() => setShowProgress(false)}
-              />
-            ) : showMaterials ? (
-              <CourseWorkspace course={selectedCourse} />
-            ) : (
-              <CourseWorkspace course={selectedCourse} />
-            )
-          ) : (
-            <div className="p-8">
-              <CourseList 
-                courses={courses}
-                onSelectCourse={(course) => {
+        <AppLayout onMistakesClick={handleMistakesClick}>
+          <div className="flex">
+            <CourseSidebar 
+              selectedCourse={selectedCourse}
+              onSelectCourse={(course) => {
+                if (course === null) {
+                  handleMyCourses();
+                } else {
                   setSelectedCourse(course);
                   setShowMaterials(true);
-                }} 
-                onViewProgress={handleViewProgress}
-              />
-            </div>
-          )}
+                  setShowProgress(false);
+                  setShowMistakes(false);
+                }
+              }}
+              onViewProgress={handleViewProgress}
+              onViewMaterials={handleViewMaterials}
+              courses={courses}
+              onAddCourse={handleAddCourse}
+            />
+            <main className="flex-1">
+              {showMistakes ? (
+                <MistakeJournal mistakes={sampleMistakes} onReview={handleReviewMistake} />
+              ) : selectedCourse ? (
+                showProgress ? (
+                  <CourseProgress 
+                    course={selectedCourse}
+                    onBack={() => setShowProgress(false)}
+                  />
+                ) : showMaterials ? (
+                  <CourseWorkspace course={selectedCourse} />
+                ) : (
+                  <CourseWorkspace course={selectedCourse} />
+                )
+              ) : (
+                <div className="p-8">
+                  <CourseList 
+                    courses={courses}
+                    onSelectCourse={(course) => {
+                      setSelectedCourse(course);
+                      setShowMaterials(true);
+                    }} 
+                    onViewProgress={handleViewProgress}
+                  />
+                </div>
+              )}
+            </main>
+          </div>
         </AppLayout>
       } />
     </Routes>
