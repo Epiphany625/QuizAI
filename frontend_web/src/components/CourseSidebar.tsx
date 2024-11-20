@@ -222,7 +222,10 @@ export function CourseSidebar({
               <div key={course.id} className="space-y-1">
                 <div className="flex items-center justify-between group relative">
                   <button
-                    onClick={() => handleCourseSelect(course)}
+                    onClick={() => {
+                      handleCourseSelect(course);
+                      setSelectedSection('materials');
+                    }}
                     onMouseEnter={() => setShowFullTitle(course.id)}
                     onMouseLeave={() => setShowFullTitle(null)}
                     className={`flex items-center w-full p-3 rounded-lg transition-colors duration-200 text-base ${

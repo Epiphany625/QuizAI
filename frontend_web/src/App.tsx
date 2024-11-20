@@ -30,7 +30,6 @@ const defaultCourses: Course[] = [
   }
 ];
 
-// Sample mistake entries for demonstration
 const sampleMistakes: MistakeEntry[] = [
   {
     id: '1',
@@ -102,11 +101,52 @@ function AppContent() {
     setSelectedCourse(null);
     setShowProgress(false);
     setShowMaterials(false);
+    navigate('/');
   };
 
   const handleReviewMistake = (mistakeId: string) => {
-    // Implement mistake review logic here
     console.log('Reviewing mistake:', mistakeId);
+  };
+
+  const handleSelectCourse = (course: Course | null) => {
+    setSelectedCourse(course);
+    if (course) {
+      setShowMaterials(true);
+      setShowProgress(false);
+      setShowMistakes(false);
+    } else {
+      setShowMaterials(false);
+      setShowProgress(false);
+      setShowMistakes(false);
+    }
+  };
+
+  const renderMainContent = () => {
+    if (showMistakes) {
+      return <MistakeJournal mistakes={sampleMistakes} onReview={handleReviewMistake} />;
+    }
+
+    if (selectedCourse) {
+      if (showProgress) {
+        return <CourseProgress course={selectedCourse} onBack={() => setShowProgress(false)} />;
+      }
+      if (showMaterials) {
+        return <CourseWorkspace key={selectedCourse.id} course={selectedCourse} />;
+      }
+    }
+
+    return (
+      <div className="p-8">
+        <CourseList 
+          courses={courses}
+          onSelectCourse={(course) => {
+            setSelectedCourse(course);
+            setShowMaterials(true);
+          }}
+          onViewProgress={handleViewProgress}
+        />
+      </div>
+    );
   };
 
   return (
@@ -117,22 +157,15 @@ function AppContent() {
           <div className="flex">
             <CourseSidebar 
               selectedCourse={selectedCourse}
-              onSelectCourse={(course) => {
-                if (course === null) {
-                  handleMyCourses();
-                } else {
-                  setSelectedCourse(course);
-                  setShowMaterials(true);
-                  setShowProgress(false);
-                  setShowMistakes(false);
-                }
-              }}
+              onSelectCourse={handleSelectCourse}
               onViewProgress={handleViewProgress}
               onViewMaterials={handleViewMaterials}
               courses={courses}
               onAddCourse={handleAddCourse}
             />
-            <Achievements />
+            <div className="flex-1">
+              <Achievements />
+            </div>
           </div>
         </AppLayout>
       } />
@@ -141,22 +174,15 @@ function AppContent() {
           <div className="flex">
             <CourseSidebar 
               selectedCourse={selectedCourse}
-              onSelectCourse={(course) => {
-                if (course === null) {
-                  handleMyCourses();
-                } else {
-                  setSelectedCourse(course);
-                  setShowMaterials(true);
-                  setShowProgress(false);
-                  setShowMistakes(false);
-                }
-              }}
+              onSelectCourse={handleSelectCourse}
               onViewProgress={handleViewProgress}
               onViewMaterials={handleViewMaterials}
               courses={courses}
               onAddCourse={handleAddCourse}
             />
-            <Subscription />
+            <div className="flex-1">
+              <Subscription />
+            </div>
           </div>
         </AppLayout>
       } />
@@ -165,47 +191,14 @@ function AppContent() {
           <div className="flex">
             <CourseSidebar 
               selectedCourse={selectedCourse}
-              onSelectCourse={(course) => {
-                if (course === null) {
-                  handleMyCourses();
-                } else {
-                  setSelectedCourse(course);
-                  setShowMaterials(true);
-                  setShowProgress(false);
-                  setShowMistakes(false);
-                }
-              }}
+              onSelectCourse={handleSelectCourse}
               onViewProgress={handleViewProgress}
               onViewMaterials={handleViewMaterials}
               courses={courses}
               onAddCourse={handleAddCourse}
             />
             <main className="flex-1">
-              {showMistakes ? (
-                <MistakeJournal mistakes={sampleMistakes} onReview={handleReviewMistake} />
-              ) : selectedCourse ? (
-                showProgress ? (
-                  <CourseProgress 
-                    course={selectedCourse}
-                    onBack={() => setShowProgress(false)}
-                  />
-                ) : showMaterials ? (
-                  <CourseWorkspace course={selectedCourse} />
-                ) : (
-                  <CourseWorkspace course={selectedCourse} />
-                )
-              ) : (
-                <div className="p-8">
-                  <CourseList 
-                    courses={courses}
-                    onSelectCourse={(course) => {
-                      setSelectedCourse(course);
-                      setShowMaterials(true);
-                    }} 
-                    onViewProgress={handleViewProgress}
-                  />
-                </div>
-              )}
+              {renderMainContent()}
             </main>
           </div>
         </AppLayout>
