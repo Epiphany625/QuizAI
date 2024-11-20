@@ -31,8 +31,13 @@ export function Header({ onMistakesClick, showBackButton, onBack }: HeaderProps)
     };
   }, []);
 
+  const handleNavigate = (path: string) => {
+    setShowProfileDropdown(false);
+    navigate(path);
+  };
+
   return (
-    <header className="bg-white shadow-sm h-16">
+    <header className="bg-white shadow-sm h-16 relative z-50">
       <div className="h-full max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-full">
           {/* Left section */}
@@ -46,10 +51,10 @@ export function Header({ onMistakesClick, showBackButton, onBack }: HeaderProps)
                 <span className="font-medium">Back</span>
               </button>
             ) : (
-              <div className="flex items-center">
+              <Link to="/" className="flex items-center">
                 <GraduationCap className="h-8 w-8 text-[#3B82F6]" />
                 <span className="ml-2 text-2xl font-bold text-gray-900">StudyPrep</span>
-              </div>
+              </Link>
             )}
           </div>
 
@@ -67,7 +72,7 @@ export function Header({ onMistakesClick, showBackButton, onBack }: HeaderProps)
           {/* Right section */}
           <div className="flex items-center space-x-4">
             <button
-              onClick={() => navigate('/subscription')}
+              onClick={() => handleNavigate('/subscription')}
               className="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-yellow-400 to-yellow-500 text-white rounded-lg hover:from-yellow-500 hover:to-yellow-600 transition-all duration-300 shadow-sm hover:shadow"
             >
               <Crown className="h-5 w-5" />
@@ -127,10 +132,7 @@ export function Header({ onMistakesClick, showBackButton, onBack }: HeaderProps)
 
                   <div className="px-4 py-2 border-b border-gray-100">
                     <button
-                      onClick={() => {
-                        navigate('/achievements');
-                        setShowProfileDropdown(false);
-                      }}
+                      onClick={() => handleNavigate('/achievements')}
                       className="flex items-center w-full py-2 text-gray-600 hover:text-[#3B82F6] group"
                     >
                       <Trophy className="w-4 h-4 mr-3 text-gray-400 group-hover:text-[#3B82F6]" />
@@ -140,10 +142,7 @@ export function Header({ onMistakesClick, showBackButton, onBack }: HeaderProps)
 
                   <div className="px-4 py-2 border-b border-gray-100">
                     <button
-                      onClick={() => {
-                        navigate('/subscription');
-                        setShowProfileDropdown(false);
-                      }}
+                      onClick={() => handleNavigate('/subscription')}
                       className="flex items-center w-full py-2 text-gray-600 hover:text-[#3B82F6] group"
                     >
                       <CreditCard className="w-4 h-4 mr-3 text-gray-400 group-hover:text-[#3B82F6]" />
@@ -152,24 +151,24 @@ export function Header({ onMistakesClick, showBackButton, onBack }: HeaderProps)
                   </div>
 
                   <div className="px-4 py-2">
-                    <Link
-                      to="/login"
-                      className="flex items-center text-gray-600 hover:text-red-600 py-2"
+                    <button
+                      onClick={() => handleNavigate('/login')}
+                      className="flex items-center text-gray-600 hover:text-red-600 py-2 w-full"
                     >
                       <LogOut className="w-4 h-4 mr-3" />
                       <span className="text-sm">Sign Out</span>
-                    </Link>
+                    </button>
                   </div>
                 </div>
               )}
             </div>
 
-            <Link
-              to="/login"
+            <button
+              onClick={() => handleNavigate('/login')}
               className="px-6 py-2 bg-[#3B82F6] text-white rounded-lg hover:bg-[#2563EB] transition-colors duration-300 text-lg font-medium"
             >
               Login
-            </Link>
+            </button>
           </div>
         </div>
       </div>

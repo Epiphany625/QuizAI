@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { BookOpen, GraduationCap, BookMarked, Clock, Plus, Pencil, Trash2, Camera } from 'lucide-react';
+import { BookOpen, GraduationCap, BookMarked, Clock, Plus, Pencil, Camera } from 'lucide-react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import type { Course } from '../types';
 
 interface CourseSidebarProps {
@@ -11,8 +12,8 @@ interface CourseSidebarProps {
   onAddCourse: (course: Course) => void;
 }
 
-const MAX_TITLE_LENGTH = 50; // Maximum characters for course title
-const MAX_DESCRIPTION_LENGTH = 200; // Maximum characters for course description
+const MAX_TITLE_LENGTH = 50;
+const MAX_DESCRIPTION_LENGTH = 200;
 const defaultCourseImage = 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&q=80&w=400';
 
 export function CourseSidebar({ 
@@ -30,14 +31,27 @@ export function CourseSidebar({
     description: '',
     imageUrl: defaultCourseImage
   });
-  const [editingCourse, setEditingCourse] = useState<string | null>(null);
   const [titleError, setTitleError] = useState('');
   const [descriptionError, setDescriptionError] = useState('');
   const [showFullTitle, setShowFullTitle] = useState<string | null>(null);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const handleMyCourses = () => {
     onSelectCourse(null);
     setSelectedSection(null);
+    if (location.pathname !== '/') {
+      navigate('/');
+    }
+  };
+
+  const handleCourseSelect = (course: Course) => {
+    onSelectCourse(course);
+    onViewMaterials(course);
+    setSelectedSection('materials');
+    if (location.pathname !== '/') {
+      navigate('/');
+    }
   };
 
   const handleCreateCourse = (e: React.FormEvent) => {
@@ -59,6 +73,7 @@ export function CourseSidebar({
       quizzes: []
     };
     onAddCourse(course);
+    handleCourseSelect(course);
     setNewCourse({ name: '', description: '', imageUrl: defaultCourseImage });
     setShowNewCourseForm(false);
     setTitleError('');
@@ -100,7 +115,7 @@ export function CourseSidebar({
   };
 
   return (
-    <div className="w-64 bg-white border-r border-gray-200 min-h-[calc(100vh-4rem)] flex flex-col">
+    <div className="w-64 bg-white border-r border-gray-200 min-h-[calc(100vh-4rem)] flex flex-col relative z-40">
       <div className="p-4 border-b border-gray-200">
         <button 
           onClick={handleMyCourses}
@@ -207,10 +222,7 @@ export function CourseSidebar({
               <div key={course.id} className="space-y-1">
                 <div className="flex items-center justify-between group relative">
                   <button
-                    onClick={() => {
-                      onSelectCourse(course);
-                      setSelectedSection(null);
-                    }}
+                    onClick={() => handleCourseSelect(course)}
                     onMouseEnter={() => setShowFullTitle(course.id)}
                     onMouseLeave={() => setShowFullTitle(null)}
                     className={`flex items-center w-full p-3 rounded-lg transition-colors duration-200 text-base ${

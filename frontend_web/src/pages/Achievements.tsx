@@ -1,6 +1,5 @@
 import React from 'react';
-import { Trophy, Star, Target, Award, ArrowLeft, FileText, Brain } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { Trophy, Star, Target, Award, FileText, Brain } from 'lucide-react';
 
 interface Achievement {
   id: string;
@@ -13,7 +12,6 @@ interface Achievement {
 }
 
 export function Achievements() {
-  const navigate = useNavigate();
   const achievements: Achievement[] = [
     {
       id: '1',
@@ -61,14 +59,6 @@ export function Achievements() {
   return (
     <div className="flex-1 bg-gray-50">
       <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-        <button
-          onClick={() => navigate(-1)}
-          className="flex items-center text-gray-600 hover:text-gray-900 mb-8"
-        >
-          <ArrowLeft className="w-5 h-5 mr-2" />
-          Back
-        </button>
-
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900">Achievements</h1>
           <p className="text-gray-600 mt-1">Track your learning milestones</p>
