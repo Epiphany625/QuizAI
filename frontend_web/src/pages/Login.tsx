@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { GraduationCap } from 'lucide-react';
+import { GraduationCap, Mail } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export function Login() {
@@ -9,6 +9,10 @@ export function Login() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Handle login logic here
+  };
+
+  const handleGoogleLogin = () => {
+    // Handle Google login logic here
   };
 
   return (
@@ -25,6 +29,23 @@ export function Login() {
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow-lg sm:rounded-lg sm:px-10">
+          <button
+            onClick={handleGoogleLogin}
+            className="w-full flex justify-center items-center py-3 px-4 border border-gray-300 rounded-lg shadow-sm text-lg font-medium text-gray-700 bg-white hover:bg-gray-50 mb-6"
+          >
+            <img src="https://www.google.com/favicon.ico" alt="Google" className="w-5 h-5 mr-3" />
+            Continue with Google
+          </button>
+
+          <div className="relative mb-6">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-300" />
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-2 bg-white text-gray-500">Or continue with email</span>
+            </div>
+          </div>
+
           <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
               <label htmlFor="email" className="block text-lg font-medium text-gray-700">

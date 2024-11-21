@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FolderUp, Brain } from 'lucide-react';
+import { FolderUp, Brain, Camera } from 'lucide-react';
 import QuizPromptForm from './QuizPromptForm';
 import { QuizList } from './QuizList';
 import type { Course, StudyMaterial } from '../types';
@@ -11,6 +11,11 @@ interface CourseWorkspaceProps {
 export function CourseWorkspace({ course }: CourseWorkspaceProps) {
   const [materials, setMaterials] = useState<StudyMaterial[]>(course.materials);
   const [showQuizForm, setShowQuizForm] = useState(false);
+  const [courseDetails, setCourseDetails] = useState({
+    title: course.name,
+    description: course.description,
+    imageUrl: course.imageUrl
+  });
 
   const handleFileUpload = (files: FileList) => {
     const newMaterials: StudyMaterial[] = Array.from(files).map((file) => ({
@@ -25,15 +30,60 @@ export function CourseWorkspace({ course }: CourseWorkspaceProps) {
     setMaterials([...materials, ...newMaterials]);
   };
 
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setCourseDetails(prev => ({
+          ...prev,
+          imageUrl: reader.result as string
+        }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">{course.name}</h1>
-        <p className="text-gray-600">{course.description}</p>
+        <input
+          type="text"
+          value={courseDetails.title}
+          onChange={(e) => setCourseDetails(prev => ({ ...prev, title: e.target.value }))}
+          className="text-3xl font-bold text-gray-900 mb-2 w-full bg-transparent border-none focus:outline-none focus:ring-2 focus:ring-[#3B82F6] rounded-lg px-2"
+        />
+        <textarea
+          value={courseDetails.description}
+          onChange={(e) => setCourseDetails(prev => ({ ...prev, description: e.target.value }))}
+          className="text-gray-600 w-full bg-transparent border-none focus:outline-none focus:ring-2 focus:ring-[#3B82F6] rounded-lg px-2 resize-none"
+          rows={2}
+        />
       </div>
 
       <div className="space-y-6">
         <div className="bg-white rounded-xl shadow-sm p-6 mb-6">
+          <div className="mb-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Course Image</h3>
+            <div className="relative">
+              <img
+                src={courseDetails.imageUrl}
+                alt="Course cover"
+                className="w-full h-48 object-cover rounded-lg"
+              />
+              <label className="absolute bottom-4 right-4 bg-[#3B82F6] text-white rounded-lg px-4 py-2 cursor-pointer hover:bg-[#2563EB] transition-colors duration-300">
+                <Camera className="w-5 h-5 inline-block mr-2" />
+                Change Image
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  className="hidden"
+                />
+              </label>
+            </div>
+          </div>
+
           <div
             onDrop={(e) => {
               e.preventDefault();

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X } from 'lucide-react';
+import { X, Pencil, Check } from 'lucide-react';
 import type { QuizPrompt, StudyMaterial } from '../types';
 
 interface QuizPromptFormProps {
@@ -17,15 +17,83 @@ export default function QuizPromptForm({ materials, onSubmit, onClose }: QuizPro
     timeLimit: 30
   });
 
+  const [title, setTitle] = useState('Generate New Quiz');
+  const [description, setDescription] = useState('');
+  const [editingTitle, setEditingTitle] = useState(false);
+  const [editingDescription, setEditingDescription] = useState(false);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit(prompt);
+    onSubmit({ ...prompt, title, description });
   };
 
   return (
     <form onSubmit={handleSubmit} className="p-6">
       <div className="flex items-center justify-between mb-6">
-        <h3 className="text-lg font-semibold text-gray-900">Generate New Quiz</h3>
+        <div className="flex-1 mr-4">
+          {editingTitle ? (
+            <div className="flex items-center">
+              <input
+                type="text"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                className="flex-1 text-lg font-semibold text-gray-900 px-2 py-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                autoFocus
+              />
+              <button
+                type="button"
+                onClick={() => setEditingTitle(false)}
+                className="ml-2 p-1 text-green-600 hover:text-green-700"
+              >
+                <Check className="w-5 h-5" />
+              </button>
+            </div>
+          ) : (
+            <div className="flex items-center group">
+              <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
+              <button
+                type="button"
+                onClick={() => setEditingTitle(true)}
+                className="ml-2 p-1 text-gray-400 opacity-0 group-hover:opacity-100 hover:text-gray-600 transition-opacity"
+              >
+                <Pencil className="w-4 h-4" />
+              </button>
+            </div>
+          )}
+          
+          {editingDescription ? (
+            <div className="flex items-center mt-2">
+              <input
+                type="text"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder="Add a description..."
+                className="flex-1 text-sm text-gray-600 px-2 py-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                autoFocus
+              />
+              <button
+                type="button"
+                onClick={() => setEditingDescription(false)}
+                className="ml-2 p-1 text-green-600 hover:text-green-700"
+              >
+                <Check className="w-5 h-5" />
+              </button>
+            </div>
+          ) : (
+            <div className="flex items-center group mt-1">
+              <p className="text-sm text-gray-600">
+                {description || 'Add a description...'}
+              </p>
+              <button
+                type="button"
+                onClick={() => setEditingDescription(true)}
+                className="ml-2 p-1 text-gray-400 opacity-0 group-hover:opacity-100 hover:text-gray-600 transition-opacity"
+              >
+                <Pencil className="w-4 h-4" />
+              </button>
+            </div>
+          )}
+        </div>
         <button
           type="button"
           onClick={onClose}
