@@ -1,4 +1,5 @@
 import React from 'react';
+import useTokenValidation from '../hooks/useTokenValidation';
 import { Trophy, Star, Target, Award, FileText, Brain } from 'lucide-react';
 
 interface Achievement {
@@ -12,6 +13,8 @@ interface Achievement {
 }
 
 export function Achievements() {
+  useTokenValidation();
+
   const achievements: Achievement[] = [
     {
       id: '1',

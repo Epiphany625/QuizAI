@@ -9,7 +9,7 @@ const useTokenValidation = () => {
         const verifyToken = async () => {
             const token = localStorage.getItem('token');
             if (!token) {
-                navigate('/');
+                navigate('/login');
             } else {
                 try {
                     const response = await axios.post('http://localhost:3000/api/auth/verify-token', {}, {
@@ -23,7 +23,7 @@ const useTokenValidation = () => {
                 } catch (error) {
                     console.error('Token verification failed:', error);
                     localStorage.removeItem('token');
-                    navigate('/');
+                    navigate('/login');
                 }
             }
         };

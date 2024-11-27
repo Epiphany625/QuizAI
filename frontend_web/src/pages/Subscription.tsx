@@ -1,4 +1,5 @@
 import React from 'react';
+import useTokenValidation from '../hooks/useTokenValidation';
 import { Shield, Check, Calendar, CreditCard, Zap } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
@@ -14,6 +15,7 @@ interface Plans {
 }
 
 export function Subscription() {
+  useTokenValidation();
   const navigate = useNavigate();
   const currentPlan = 'free';
   const nextBillingDate = new Date('2024-03-01');
