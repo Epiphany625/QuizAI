@@ -9,6 +9,7 @@ import { CourseList } from './components/CourseList';
 import { Login } from './pages/Login';
 import { Achievements } from './pages/Achievements';
 import { Subscription } from './pages/Subscription';
+import Signup from './pages/Signup';
 import type { Course, MistakeEntry } from './types';
 
 const defaultCourses: Course[] = [
@@ -152,6 +153,7 @@ function AppContent() {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<Signup />} />
       <Route path="/achievements" element={
         <AppLayout onMistakesClick={handleMistakesClick}>
           <div className="flex">
