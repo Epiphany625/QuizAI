@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { BookOpen, GraduationCap, BookMarked, Clock, Plus, Pencil, Camera } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import type { Course } from '../types';
+import axios from 'axios';
 
 interface CourseSidebarProps {
   selectedCourse: Course | null;
@@ -54,7 +55,7 @@ export function CourseSidebar({
     }
   };
 
-  const handleCreateCourse = (e: React.FormEvent) => {
+  const handleCreateCourse = async (e: React.FormEvent) => {
     e.preventDefault();
     if (newCourse.name.length > MAX_TITLE_LENGTH) {
       setTitleError(`Title must be ${MAX_TITLE_LENGTH} characters or less`);
@@ -64,6 +65,25 @@ export function CourseSidebar({
       setDescriptionError(`Description must be ${MAX_DESCRIPTION_LENGTH} characters or less`);
       return;
     }
+
+    // get the email from the local storage
+    const email = localStorage.getItem('email');
+    if (!email) {
+      console.error('Email not found in localStorage');
+      navigate('/login');
+      return;
+    }
+
+    // add the course to the user's courses
+    try {
+      const response = await axios.post(`http://localhost:3000/api/course/addcourse/${email}`, newCourse);
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+      return; 
+    }
+
+
     const course: Course = {
       id: Math.random().toString(36).substr(2, 9),
       name: newCourse.name,

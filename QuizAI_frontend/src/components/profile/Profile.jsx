@@ -23,14 +23,21 @@ const Profile = () => {
                         'Authorization': `Bearer ${localStorage.getItem('token')}`
                     }
                 });
+
+                // count the number of quizzes in all the courses
+                let quizCount = 0;
+                response.data.courses.forEach(course => {
+                    quizCount += course.quizzes.length;
+                });
                 
                 setUserStats({
-                    quizCount: response.data.quizRequested || 0,
+                    quizCount: quizCount || 0,
                     chatbotCount: response.data.chatbotRequested || 0,
                     summaryCount: response.data.summaryRequested || 0,
                     loading: false,
                     error: null
                 });
+
             } catch (error) {
                 setUserStats(prev => ({
                     ...prev,

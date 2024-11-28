@@ -22,16 +22,16 @@ export const addSummaryRequested = async (req, res) => {
     }
 }
 
-export const addQuizGenerated = async (req, res) => {
-    const { email } = req.params;
-    const { quiz } = req.body;
-    try {
-        const user = await User.findOne({ email });
-        user.quizRequested += 1;
-        user.quizGenerated.push(quiz);
-        await user.save();
-        res.status(200).json(user);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-}
+// export const addQuizGenerated = async (req, res) => {
+//     const { email } = req.params;
+//     const { quiz } = req.body;
+//     try {
+//         const user = await User.findOne({ email });
+//         user.quizRequested += 1;
+//         user.quizGenerated.push(quiz);
+//         await user.save();
+//         res.status(200).json(user);
+//     } catch (error) {
+//         res.status(500).json({ message: error.message });
+//     }
+// }

@@ -1,7 +1,7 @@
 // models/User.js
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
-import quizSchema from './Quiz.js';
+import courseSchema from './Course.js';
 
 const userSchema = new mongoose.Schema({
     email: {
@@ -25,8 +25,8 @@ const userSchema = new mongoose.Schema({
         type: Number,
         default: 0,
     },
-    quizGenerated: {
-        type: [quizSchema],
+    courses: {
+        type: [courseSchema],
         default: [],
     },
     date: {

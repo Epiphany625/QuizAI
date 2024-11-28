@@ -5,6 +5,7 @@ import connectDB from './config/db.js';
 import authRoutes from './routes/authRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import summaryRoutes from './routes/summaryRoutes.js';
+import courseRoutes from './routes/courseRoutes.js';
 import { PORT } from './config/config.js';
 
 // Initialize Express app
@@ -21,6 +22,7 @@ connectDB();
 app.use('/api/auth', authRoutes); // used for registration, login, and token verification
 app.use('/api/user', userRoutes); // used for getting user data, adding summary requested, and adding quiz generated
 app.use('/api/summary', summaryRoutes); // used for getting summary data
+app.use('/api/course', courseRoutes); // used for getting summary data
 // Start Server
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);

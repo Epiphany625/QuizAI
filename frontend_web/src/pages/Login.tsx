@@ -41,6 +41,7 @@ export function Login() {
         const responseData = await response.json();
         // Store token in localStorage
         localStorage.setItem('token', responseData.token);
+        localStorage.setItem('email', responseData.user.email);
         // Redirect to home page
         navigate('/');
       } else {
