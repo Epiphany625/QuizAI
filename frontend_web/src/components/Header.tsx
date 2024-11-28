@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { GraduationCap, ArrowLeft, BookOpen, Mail, Star, LogOut, Trophy, CreditCard, Crown } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
+import useTokenValidation from '../hooks/useTokenValidation';
 
 interface HeaderProps {
   onMistakesClick: () => void;
@@ -9,6 +10,10 @@ interface HeaderProps {
 }
 
 export function Header({ onMistakesClick, showBackButton, onBack }: HeaderProps) {
+
+  useTokenValidation(); // make sure the user is logged in
+
+
   const navigate = useNavigate();
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -30,6 +35,8 @@ export function Header({ onMistakesClick, showBackButton, onBack }: HeaderProps)
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
+
+  
 
   const handleNavigate = (path: string) => {
     setShowProfileDropdown(false);
@@ -126,7 +133,7 @@ export function Header({ onMistakesClick, showBackButton, onBack }: HeaderProps)
                   <div className="px-4 py-2 border-b border-gray-100">
                     <div className="flex items-center text-gray-600 py-2">
                       <Mail className="w-4 h-4 mr-3 text-gray-400" />
-                      <span className="text-sm">john.doe@example.com</span>
+                      <span className="text-sm">{localStorage.getItem('email')}</span>
                     </div>
                   </div>
 
