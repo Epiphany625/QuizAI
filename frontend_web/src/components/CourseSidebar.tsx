@@ -25,7 +25,6 @@ export function CourseSidebar({
   courses,
   onAddCourse 
 }: CourseSidebarProps) {
-  const [selectedSection, setSelectedSection] = useState<'materials' | 'quizzes' | null>(null);
   const [showNewCourseForm, setShowNewCourseForm] = useState(false);
   const [newCourse, setNewCourse] = useState({
     name: '',
@@ -40,7 +39,6 @@ export function CourseSidebar({
 
   const handleMyCourses = () => {
     onSelectCourse(null);
-    setSelectedSection(null);
     if (location.pathname !== '/') {
       navigate('/');
     }
@@ -49,7 +47,6 @@ export function CourseSidebar({
   const handleCourseSelect = (course: Course) => {
     onSelectCourse(course);
     onViewMaterials(course);
-    setSelectedSection('materials');
     if (location.pathname !== '/') {
       navigate('/');
     }
@@ -244,15 +241,10 @@ export function CourseSidebar({
                   <button
                     onClick={() => {
                       handleCourseSelect(course);
-                      setSelectedSection('materials');
                     }}
                     onMouseEnter={() => setShowFullTitle(course.id)}
                     onMouseLeave={() => setShowFullTitle(null)}
-                    className={`flex items-center w-full p-3 rounded-lg transition-colors duration-200 text-base ${
-                      selectedCourse?.id === course.id
-                        ? 'bg-[#DBEAFE] text-[#3B82F6]'
-                        : 'text-gray-700 hover:bg-gray-50'
-                    }`}
+                    className="flex items-center w-full p-3 rounded-lg transition-colors duration-200 text-base text-gray-700 hover:bg-gray-50"
                   >
                     <BookOpen className="flex-shrink-0 w-5 h-5 mr-3" />
                     <span className="font-medium truncate">
@@ -271,29 +263,15 @@ export function CourseSidebar({
                 {selectedCourse?.id === course.id && (
                   <div className="ml-6 space-y-2">
                     <button
-                      onClick={() => {
-                        onViewMaterials(course);
-                        setSelectedSection('materials');
-                      }}
-                      className={`flex items-center w-full p-3 text-base ${
-                        selectedSection === 'materials'
-                          ? 'text-[#3B82F6] bg-[#DBEAFE]'
-                          : 'text-gray-600 hover:text-[#3B82F6] hover:bg-gray-50'
-                      } rounded-lg`}
+                      onClick={() => onViewMaterials(course)}
+                      className="flex items-center w-full p-3 text-base text-gray-600 hover:text-[#3B82F6] hover:bg-gray-50 rounded-lg"
                     >
                       <BookMarked className="w-5 h-5 mr-3" />
                       Course Materials
                     </button>
                     <button
-                      onClick={() => {
-                        onViewProgress(course);
-                        setSelectedSection('quizzes');
-                      }}
-                      className={`flex items-center w-full p-3 text-base ${
-                        selectedSection === 'quizzes'
-                          ? 'text-[#3B82F6] bg-[#DBEAFE]'
-                          : 'text-gray-600 hover:text-[#3B82F6] hover:bg-gray-50'
-                      } rounded-lg`}
+                      onClick={() => onViewProgress(course)}
+                      className="flex items-center w-full p-3 text-base text-gray-600 hover:text-[#3B82F6] hover:bg-gray-50 rounded-lg"
                     >
                       <Clock className="w-5 h-5 mr-3" />
                       Past Quizzes
