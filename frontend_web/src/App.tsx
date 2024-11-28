@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 import { Header } from './components/Header';
 import { CourseWorkspace } from './components/CourseWorkspace';
@@ -10,26 +10,8 @@ import { Login } from './pages/Login';
 import { Achievements } from './pages/Achievements';
 import { Subscription } from './pages/Subscription';
 import Signup from './pages/Signup';
+import axios from 'axios';
 import type { Course, MistakeEntry } from './types';
-
-const defaultCourses: Course[] = [
-  {
-    id: '1',
-    name: 'Introduction to Psychology',
-    description: 'Explore the fundamentals of human behavior and mental processes',
-    imageUrl: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&q=80&w=400',
-    materials: [],
-    quizzes: []
-  },
-  {
-    id: '2',
-    name: 'Calculus I',
-    description: 'Master derivatives, integrals, and limits',
-    imageUrl: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&q=80&w=400',
-    materials: [],
-    quizzes: []
-  }
-];
 
 const sampleMistakes: MistakeEntry[] = [
   {
@@ -69,8 +51,19 @@ function AppContent() {
   const [showProgress, setShowProgress] = useState(false);
   const [showMistakes, setShowMistakes] = useState(false);
   const [showMaterials, setShowMaterials] = useState(false);
-  const [courses, setCourses] = useState<Course[]>(defaultCourses);
+  const [courses, setCourses] = useState<Course[]>([]);
   const navigate = useNavigate();
+
+  // retrieve the courses from the backend
+  useEffect(() => {
+    const email = localStorage.getItem('email');
+    if (email) {
+      axios.get(`http://localhost:3000/api/course/getcourses/${email}`).then(response => setCourses(response.data));
+    }
+    else {
+      console.error('Email not found in localStorage');
+    }
+  }, []);
 
   const handleViewProgress = (course: Course) => {
     setSelectedCourse(course);
