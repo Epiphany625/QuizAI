@@ -56,7 +56,7 @@ const courseSchema = new mongoose.Schema({
     quizzes: {
         type: [quizSchema],
         default: [],
-    }
+    },
 });
 
 export default courseSchema;

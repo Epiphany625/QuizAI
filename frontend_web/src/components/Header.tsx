@@ -43,6 +43,16 @@ export function Header({ onMistakesClick, showBackButton, onBack }: HeaderProps)
     navigate(path);
   };
 
+  const handleSignOut = () => {
+    localStorage.clear(); // Clear all localStorage items
+    handleNavigate('/login');
+  };
+
+  const handleLogin = () => {
+    localStorage.clear(); // Clear all localStorage items
+    handleNavigate('/login');
+  };
+
   return (
     <header className="bg-white shadow-sm h-16 relative z-50">
       <div className="h-full max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
@@ -159,7 +169,7 @@ export function Header({ onMistakesClick, showBackButton, onBack }: HeaderProps)
 
                   <div className="px-4 py-2">
                     <button
-                      onClick={() => handleNavigate('/login')}
+                      onClick={handleSignOut}
                       className="flex items-center text-gray-600 hover:text-red-600 py-2 w-full"
                     >
                       <LogOut className="w-4 h-4 mr-3" />
@@ -171,7 +181,7 @@ export function Header({ onMistakesClick, showBackButton, onBack }: HeaderProps)
             </div>
 
             <button
-              onClick={() => handleNavigate('/login')}
+              onClick={handleLogin}
               className="px-6 py-2 bg-[#3B82F6] text-white rounded-lg hover:bg-[#2563EB] transition-colors duration-300 text-lg font-medium"
             >
               Login

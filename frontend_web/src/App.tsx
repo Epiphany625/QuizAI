@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { Header } from './components/Header';
 import { CourseWorkspace } from './components/CourseWorkspace';
 import { CourseSidebar } from './components/CourseSidebar';
@@ -53,17 +53,19 @@ function AppContent() {
   const [showMaterials, setShowMaterials] = useState(false);
   const [courses, setCourses] = useState<Course[]>([]);
   const navigate = useNavigate();
+  const location = useLocation();
 
-  // retrieve the courses from the backend
   useEffect(() => {
-    const email = localStorage.getItem('email');
-    if (email) {
-      axios.get(`http://localhost:3000/api/course/getcourses/${email}`).then(response => setCourses(response.data));
+    if (location.pathname === '/') {
+      const email = localStorage.getItem('email');
+      console.log(`retrieving courses for ${email}`);
+      if (email) {
+        axios.get(`http://localhost:3000/api/course/getcourses/${email}`).then(response => setCourses(response.data));
+      } else {
+        console.error('Email not found in localStorage');
+      }
     }
-    else {
-      console.error('Email not found in localStorage');
-    }
-  }, []);
+  }, [location.pathname]);
 
   const handleViewProgress = (course: Course) => {
     setSelectedCourse(course);

@@ -11,7 +11,7 @@ export const registerUser = async (req, res) => {
         if (existingUser)
             return res.status(400).json({ message: 'User already exists' });
 
-        const newUser = new User({ email, password });
+        const newUser = new User({ email, password, courses: [] });
         await newUser.save();
         res.status(201).json({ message: 'User registered successfully' });
     } catch (error) {

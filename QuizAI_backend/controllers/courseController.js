@@ -6,6 +6,7 @@ export const getCourses = async (req, res) => {
     try {
         const user = await User.findOne({ email });
         res.status(200).json(user.courses);
+        console.log(`retrieved courses for ${email}`);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
