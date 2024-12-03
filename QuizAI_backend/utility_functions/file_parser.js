@@ -1,4 +1,6 @@
 // this file contains the file parser utility function that will be used to parse user's files
+// ***** can be modified to output text directly instead of writing txt file to output directory ****
+
 
 import fs from 'fs-extra';
 import path from 'path';
