@@ -2,6 +2,7 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 import courseSchema from './Course.js';
+import quizSchema from './Course.js';
 
 const userSchema = new mongoose.Schema({
     email: {
@@ -32,7 +33,7 @@ const userSchema = new mongoose.Schema({
     date: {
         type: Date,
         default: Date.now,
-    },
+    }
 });
 
 // Hash the password before saving

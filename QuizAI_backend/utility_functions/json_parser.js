@@ -11,6 +11,8 @@
  *   ...
  * ]
  */
+import { v4 as uuidv4 } from 'uuid';
+
 function parseQuizToJson(quizText, questionType="mcq") {
   if (questionType === "multiple-choice" || questionType === "true-false") {
       return parseMCQToJson(quizText);
@@ -39,9 +41,11 @@ const quizJson = [];
           quizJson.push(currentQuestion);
         }
         currentQuestion = {
+          id: uuidv4(),
           question: part.trim(),
           choices: [],
-          correctAnswer: ''
+          correctAnswer: '',
+          type: 'mcq'
         };
     } else if (part.match(/^[A-D]\)\s(.*)/)) {
       if (currentQuestion) {
@@ -66,7 +70,7 @@ const quizJson = [];
 }
 
 function parseFillInTheBlankToJson(quizText) {
-return parseShortAnswerToJson(quizText);
+  return parseShortAnswerToJson(quizText);
 }
 
 function parseShortAnswerToJson(quizText) {
@@ -82,6 +86,8 @@ function parseShortAnswerToJson(quizText) {
             
             if (question && answer) {
                 quizJson.push({
+                    id: uuidv4(),
+                    type: 'short-answer',
                     question: question.trim(),
                     choices: [],
                     correctAnswer: answer.trim()
