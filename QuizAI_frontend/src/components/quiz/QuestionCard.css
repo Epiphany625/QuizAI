@@ -1,0 +1,179 @@
+/* General container for the question card */
+.question-container {
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+  }
+  
+  /* Question title styling */
+  .question {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+    color: #333;
+  }
+  
+  /* Input container */
+  .question-input-container {
+    margin-bottom: 20px;
+  }
+  
+  /* Multiple Choice Questions (MCQ) */
+  .question-mcq {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .question-mcq label {
+    display: block;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  /* Highlight only the border on hover */
+  .question-mcq label:hover {
+    border-color: #007bff; /* Blue border */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .question-mcq input[type="radio"]:checked + span {
+    border-color: #007bff; /* Blue border */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    font-weight: bold; 
+  }
+
+
+  /* True/False Buttons */
+  .question-tf button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+  }
+  
+  .question-tf button:hover {
+    background-color: #e0e0e0;
+  }
+  
+  .question-tf button:focus {
+    background-color: #007bff;
+    color: white;
+    border-color: #0056b3;
+  }
+  
+  /* Fill-in-the-blank Input */
+  .question-fin input[type="text"],
+  .question-sa textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .question-fin input[type="text"]:focus,
+  .question-sa textarea:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  }
+  
+  /* Buttons Container */
+  .question-buttons-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+  /* Navigation Buttons */
+  .previous-button,
+  .next-button,
+  .submit-button {
+    background-color: #007bff;
+    color: white;
+    font-size: 1rem;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .previous-button:disabled,
+  .submit-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  .previous-button:hover:not(:disabled),
+  .next-button:hover:not(:disabled),
+  .submit-button:hover:not(:disabled) {
+    background-color: #0056b3;
+  }
+  
+  /* End Buttons Container */
+  .end-buttons-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .submit-hover-text-container {
+    font-size: 0.9rem;
+    color: red;
+    margin-top: 5px;
+  }
+  /* Submit Button */
+.submit-button {
+    background-color: #007bff;
+    color: white;
+    font-size: 1rem;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    position: relative; /* Enable positioning for hover text */
+    transition: background-color 0.3s ease;
+  }
+  
+  .submit-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  .submit-button:hover:not(:disabled) {
+    background-color: #0056b3;
+  }
+  
+  /* Hover Text for Submit Button */
+  .submit-button:hover .submit-hover-text-container {
+    display: block; /* Show hover text on hover */
+  }
+  
+  .submit-hover-text-container {
+    display: none; /* Hidden by default */
+    position: absolute;
+    bottom: -30px; /* Position text below the button */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 5px 10px;
+    font-size: 0.8rem;
+    border-radius: 5px;
+    white-space: nowrap; /* Prevent text wrapping */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+  }
+  

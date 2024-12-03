@@ -1,0 +1,60 @@
+.quiz-results-container {
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .quiz-results-header-container {
+    margin-bottom: 2rem;
+  }
+  
+  .quiz-results-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .quiz-score-container {
+    font-size: 1.2rem;
+    color: #007bff;
+  }
+  
+  .quiz-results-questions-container {
+    margin-top: 2rem;
+  }
+  
+  .quiz-results-question-card {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 1rem;
+    text-align: left;
+  }
+  
+  .correct-icon {
+    color: green;
+    margin-right: 10px;
+  }
+  
+  .wrong-icon {
+    color: red;
+    margin-right: 10px;
+  }
+  
+  .override-button, .undo-override-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .undo-override-button {
+    background-color: orange;
+  }
+  
+  .override-button:hover, .undo-override-button:hover {
+    background-color: #0056b3;
+  }
+  

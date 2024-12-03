@@ -6,11 +6,12 @@ import axios from 'axios';
 import Quiz from './Quiz.tsx';
 import './QuizPage.css';
 import './Quiz.css';
+import sampleQuestions from './Question.ts'
 
 const QuizPage = () => {
     useTokenValidation();
 
-    const [quiz, setQuiz] = useState([]);
+    const [quiz, setQuiz] = useState(sampleQuestions);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
@@ -77,10 +78,10 @@ const QuizPage = () => {
         ) : (
             <>
                 <NavigationBar />
-                <div className="quiz-container">
+                <div className="quiz-page-container">
                     <h1 className="quiz-title">Quiz</h1>
                     <button
-                        className="quiz-button"
+                        className="generate-quiz-button"
                         onClick={handleQuiz}
                         disabled={loading}
                     >
