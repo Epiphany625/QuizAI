@@ -20,7 +20,7 @@ const questionSchema = new mongoose.Schema({
 const quizSchema = new mongoose.Schema({
     // the url of the webpage / file on which the quiz is based
     url: {
-        type: String,
+        type: [String],
         required: true,
     },
     // the questions in the quiz

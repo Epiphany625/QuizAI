@@ -17,11 +17,19 @@ export const addCourse = async (req, res) => {
     const { email } = req.params;
     const { imageUrl, name, description } = req.body;
     try {
+        // check if course already exists
         const user = await User.findOne({ email });
+        for(const course of user.courses){
+            if(course.name === name){
+                res.status(400).json({ message: "Course already exists" });
+                return;
+            }
+        }
         user.courses.push({ imageUrl, name, description });
         await user.save();
         res.status(200).json(user.courses);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        console.log(error);
+        res.status(500).json({ message: "server error" });
     }
 }

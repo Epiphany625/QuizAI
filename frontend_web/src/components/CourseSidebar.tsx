@@ -25,18 +25,27 @@ export function CourseSidebar({
   courses,
   onAddCourse 
 }: CourseSidebarProps) {
+  // State variables for form visibility and input values
   const [showNewCourseForm, setShowNewCourseForm] = useState(false);
   const [newCourse, setNewCourse] = useState({
     name: '',
     description: '',
     imageUrl: defaultCourseImage
   });
+
+  // State variables for error messages
   const [titleError, setTitleError] = useState('');
   const [descriptionError, setDescriptionError] = useState('');
+  const [createCourseError, setCreateCourseError] = useState('');
+
+  // State for displaying full course title on hover
   const [showFullTitle, setShowFullTitle] = useState<string | null>(null);
+
+  // React Router hooks for navigation
   const navigate = useNavigate();
   const location = useLocation();
 
+  // Handle clicking "My Courses" button
   const handleMyCourses = () => {
     onSelectCourse(null);
     if (location.pathname !== '/') {
@@ -44,6 +53,7 @@ export function CourseSidebar({
     }
   };
 
+  // Handle selecting a specific course
   const handleCourseSelect = (course: Course) => {
     onSelectCourse(course);
     onViewMaterials(course);
@@ -52,18 +62,23 @@ export function CourseSidebar({
     }
   };
 
+  // Handle form submission to create a new course
   const handleCreateCourse = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Validate title length
     if (newCourse.name.length > MAX_TITLE_LENGTH) {
       setTitleError(`Title must be ${MAX_TITLE_LENGTH} characters or less`);
       return;
     }
+
+    // Validate description length
     if (newCourse.description.length > MAX_DESCRIPTION_LENGTH) {
       setDescriptionError(`Description must be ${MAX_DESCRIPTION_LENGTH} characters or less`);
       return;
     }
 
-    // get the email from the local storage
+    // Get the user's email from local storage
     const email = localStorage.getItem('email');
     if (!email) {
       console.error('Email not found in localStorage');
@@ -71,16 +86,26 @@ export function CourseSidebar({
       return;
     }
 
-    // add the course to the user's courses
+    // Attempt to add the course via API call
     try {
       const response = await axios.post(`http://localhost:3000/api/course/addcourse/${email}`, newCourse);
       console.log(response.data);
+
+      // Clear any previous error messages
+      setCreateCourseError('');
     } catch (error) {
       console.error(error);
+
+      // Set a concise error message to display
+      let errorMessage = 'Failed to add course.';
+      if (axios.isAxiosError(error) && error.response && error.response.data && error.response.data.message) {
+        errorMessage = error.response.data.message;
+      }
+      setCreateCourseError(errorMessage);
       return; 
     }
 
-
+    // Create a new course object
     const course: Course = {
       id: Math.random().toString(36).substr(2, 9),
       name: newCourse.name,
@@ -89,14 +114,19 @@ export function CourseSidebar({
       materials: [],
       quizzes: []
     };
+
+    // Update the courses list and select the new course
     onAddCourse(course);
     handleCourseSelect(course);
+
+    // Reset the form fields and errors
     setNewCourse({ name: '', description: '', imageUrl: defaultCourseImage });
     setShowNewCourseForm(false);
     setTitleError('');
     setDescriptionError('');
   };
 
+  // Handle image upload for the course cover
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -111,6 +141,7 @@ export function CourseSidebar({
     }
   };
 
+  // Handle changes in the course title input
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setNewCourse(prev => ({ ...prev, name: value }));
@@ -121,6 +152,7 @@ export function CourseSidebar({
     }
   };
 
+  // Handle changes in the course description input
   const handleDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
     setNewCourse(prev => ({ ...prev, description: value }));
@@ -133,6 +165,7 @@ export function CourseSidebar({
 
   return (
     <div className="w-64 bg-white border-r border-gray-200 min-h-[calc(100vh-4rem)] flex flex-col relative z-40">
+      {/* Header with "My Courses" button */}
       <div className="p-4 border-b border-gray-200">
         <button 
           onClick={handleMyCourses}
@@ -143,8 +176,10 @@ export function CourseSidebar({
         </button>
       </div>
 
+      {/* Main content area */}
       <div className="flex-1 overflow-y-auto">
         <div className="p-4">
+          {/* Button to show the new course form */}
           <button
             onClick={() => setShowNewCourseForm(true)}
             className="flex items-center w-full p-3 mb-4 rounded-lg text-[#3B82F6] hover:bg-[#DBEAFE] transition-colors duration-200"
@@ -153,8 +188,10 @@ export function CourseSidebar({
             <span className="font-medium">Create New Course</span>
           </button>
 
+          {/* New course creation form */}
           {showNewCourseForm && (
             <form onSubmit={handleCreateCourse} className="mb-4 p-3 bg-gray-50 rounded-lg">
+              {/* Course image upload */}
               <div className="mb-4">
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">Course Image</h3>
                 <div className="relative">
@@ -175,6 +212,8 @@ export function CourseSidebar({
                   </label>
                 </div>
               </div>
+
+              {/* Course title input */}
               <div className="mb-2">
                 <input
                   type="text"
@@ -193,6 +232,8 @@ export function CourseSidebar({
                   {newCourse.name.length}/{MAX_TITLE_LENGTH} characters
                 </p>
               </div>
+
+              {/* Course description input */}
               <div className="mb-2">
                 <textarea
                   placeholder={`Course Description (max ${MAX_DESCRIPTION_LENGTH} characters)`}
@@ -211,7 +252,14 @@ export function CourseSidebar({
                   {newCourse.description.length}/{MAX_DESCRIPTION_LENGTH} characters
                 </p>
               </div>
-              <div className="flex space-x-2">
+
+              {/* Display error message if course creation fails */}
+              {createCourseError && (
+                <p className="text-red-500 text-sm mt-2">{createCourseError}</p>
+              )}
+
+              {/* Form action buttons */}
+              <div className="flex space-x-2 mt-2">
                 <button
                   type="submit"
                   className="flex-1 p-2 bg-[#3B82F6] text-white rounded-lg hover:bg-[#2563EB] text-sm"
@@ -225,6 +273,7 @@ export function CourseSidebar({
                     setNewCourse({ name: '', description: '', imageUrl: defaultCourseImage });
                     setTitleError('');
                     setDescriptionError('');
+                    setCreateCourseError(''); // Reset the error message
                   }}
                   className="flex-1 p-2 border border-gray-300 rounded-lg hover:bg-gray-100 text-sm"
                 >
@@ -234,9 +283,11 @@ export function CourseSidebar({
             </form>
           )}
 
+          {/* List of existing courses */}
           <div className="space-y-2">
             {courses.map((course) => (
               <div key={course.id} className="space-y-1">
+                {/* Course item */}
                 <div className="flex items-center justify-between group relative">
                   <button
                     onClick={() => {
@@ -253,6 +304,7 @@ export function CourseSidebar({
                         : course.name}
                     </span>
                   </button>
+                  {/* Tooltip for full course name */}
                   {showFullTitle === course.id && course.name.length > MAX_TITLE_LENGTH && (
                     <div className="absolute left-0 top-full mt-1 z-10 bg-white border border-gray-200 rounded-lg shadow-lg p-2 text-sm">
                       {course.name}
@@ -260,6 +312,7 @@ export function CourseSidebar({
                   )}
                 </div>
 
+                {/* Sub-menu for the selected course */}
                 {selectedCourse?.id === course.id && (
                   <div className="ml-6 space-y-2">
                     <button
