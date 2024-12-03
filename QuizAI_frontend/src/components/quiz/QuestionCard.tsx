@@ -1,6 +1,8 @@
 import React from 'react';
-import { Question } from '../data/questions';
-import { ArrowRight, ArrowLeft, Check } from 'lucide-react';
+import { Question } from './Question.ts';
+// import { ArrowRight, ArrowLeft, Check } from 'lucide-react';
+import { MdArrowForward, MdArrowBack, MdCheck } from 'react-icons/md'; // Material Design icons
+
 import './Quiz.css';
 
 interface QuestionCardProps {
@@ -115,7 +117,7 @@ export default function QuestionCard({
           disabled={isFirst}
           className="quiz-btn-secondary flex items-center gap-2"
         >
-          <ArrowLeft className="w-5 h-5" />
+          <MdArrowForward className="w-5 h-5" />
           Previous
         </button>
 
@@ -127,7 +129,7 @@ export default function QuestionCard({
               className="quiz-btn-primary flex items-center gap-2"
             >
               Submit
-              <Check className="w-5 h-5" />
+              <MdCheck className="w-5 h-5" />
             </button>
             
             {!canSubmit && (
@@ -144,7 +146,7 @@ export default function QuestionCard({
             className="quiz-btn-primary flex items-center gap-2"
           >
             Next
-            <ArrowRight className="w-5 h-5" />
+            <MdArrowBack className="w-5 h-5" />
           </button>
         )}
       </div>

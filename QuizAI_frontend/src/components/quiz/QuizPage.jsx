@@ -3,22 +3,24 @@ import React, { useState, useEffect } from 'react';
 import NavigationBar from '../navigationBar/NavigationBar.jsx';
 import useTokenValidation from '../../hooks/useTokenValidation';
 import axios from 'axios';
+import Quiz from './Quiz.tsx';
 import './QuizPage.css';
+import './Quiz.css';
 
 const QuizPage = () => {
     useTokenValidation();
 
-    const [quiz, setQuiz] = useState('');
+    const [quiz, setQuiz] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
     // cached quiz
-    useEffect(() => {
-        const quiz = localStorage.getItem('quiz');
-        if (quiz) {
-            setQuiz(quiz);
-        }
-    }, []);
+    // useEffect(() => {
+    //     const cachedQuiz = localStorage.getItem('quiz');
+    //     if (cachedQuiz) {
+    //         setQuiz(JSON.parse(cachedQuiz));
+    //     }
+    // }, []);
 
     const getCurrentPageContent = async () => {
         return new Promise((resolve, reject) => {
@@ -51,14 +53,17 @@ const QuizPage = () => {
             // update the summary count
             // const userEmail = localStorage.getItem('email');
             // await axios.patch(`http://localhost:3000/api/user/${userEmail}/quiz`);
-
+            console.log(quiz);
+            console.log("quiz starting to be generated...");
             const pageContent = await getCurrentPageContent();
+            console.log(pageContent);
             const quizResponse = await axios.post(`http://localhost:3000/api/quiz`, {
                 webContent: pageContent
             });
             console.log("quiz generated: \n", quizResponse)
+            console.log('Quiz data:', quizResponse.data.quiz);
             setQuiz(quizResponse.data.quiz);
-            localStorage.setItem('quiz', quizResponse.data.quiz);
+            // localStorage.setItem('quiz', JSON.stringify(quizResponse.data.quiz));
         } catch (err) {
             setError(err.message || 'Failed to generate quiz');
         } finally {
@@ -67,21 +72,24 @@ const QuizPage = () => {
     };
 
     return (
-        <>
-            <NavigationBar />
-            <div className="quiz-container">
-                <h1 className="quiz-title">Quiz</h1>
-                <button
-                    className="quiz-button"
-                    onClick={handleQuiz}
-                    disabled={loading}
-                >
-                    {loading ? 'Generating...' : 'Generate Quiz'}
-                </button>
-                {error && <p className="error-text">{error}</p>}
-                {quiz && <div className="Quiz-content"><Quiz questions={quiz}/></div>}
-            </div>
-        </>
+        quiz.length > 0 ? (
+            <Quiz questions={quiz} />
+        ) : (
+            <>
+                <NavigationBar />
+                <div className="quiz-container">
+                    <h1 className="quiz-title">Quiz</h1>
+                    <button
+                        className="quiz-button"
+                        onClick={handleQuiz}
+                        disabled={loading}
+                    >
+                        {loading ? 'Generating...' : 'Generate Quiz'}
+                    </button>
+                    {error && <p className="error-text">{error}</p >}
+                </div>
+            </>
+        )
     );
 };
 

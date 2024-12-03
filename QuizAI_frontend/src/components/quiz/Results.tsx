@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Question } from '../data/questions';
-import { CheckCircle, XCircle, RefreshCw } from 'lucide-react';
+import { Question } from './Question.ts';
+// import { CheckCircle, XCircle, RefreshCw } from 'lucide-react';
+import { MdCheckCircle, MdCancel, MdRefresh } from 'react-icons/md'; // Material Design icons
 
 interface ResultsProps {
   questions: Question[];
@@ -90,9 +91,9 @@ export default function Results({ questions, userAnswers, onRetry }: ResultsProp
               )}
               <div className="flex items-start gap-3">
                 {isCorrect ? (
-                  <CheckCircle className="w-6 h-6 text-green-500 flex-shrink-0 mt-1" />
+                  <MdCheckCircle className="w-6 h-6 text-green-500 flex-shrink-0 mt-1" />
                 ) : (
-                  <XCircle className="w-6 h-6 text-red-500 flex-shrink-0 mt-1" />
+                  <MdCancel className="w-6 h-6 text-red-500 flex-shrink-0 mt-1" />
                 )}
                 <div className="flex-grow pr-32">
                   <h3 className="text-lg font-medium text-gray-900 mb-2">
