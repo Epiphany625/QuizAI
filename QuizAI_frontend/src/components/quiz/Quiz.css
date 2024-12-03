@@ -1,35 +1,29 @@
-/* Theme colors */
-:root {
-  --dark-blue: #201E43;
-  --medium-blue: #134B70;
-  --light-blue: #508C9B;
-  --background: #EEEEEE;
-}
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 .quiz-container {
-  @apply bg-white text-gray-900 min-h-screen;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  margin: 0 auto;
+  max-width: 800px;
+  padding: 20px;
 }
 
-@layer components {
-  .quiz-btn-primary {
-    @apply px-6 py-2.5 bg-[#134B70] text-white rounded-lg font-medium
-    hover:bg-[#508C9B] transition-colors duration-200
-    disabled:bg-gray-300 disabled:cursor-not-allowed;
-  }
+.quiz-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
 
-  .quiz-btn-secondary {
-    @apply px-6 py-2.5 bg-white text-[#134B70] border border-[#134B70] rounded-lg font-medium
-    hover:bg-gray-50 transition-colors duration-200;
-  }
+.quiz-title {
+  font-size: 2rem;
+  font-weight: bold;
+}
 
-  .quiz-input {
-    @apply w-full px-4 py-3 rounded-lg border border-gray-200
-    focus:border-[#508C9B] focus:ring-2 focus:ring-[#508C9B]/20 focus:outline-none
-    bg-white text-gray-900 placeholder-gray-400;
-  }
-} 
+.quiz-question-number {
+  font-size: 1rem;
+  color: #555;
+}
+
+.quiz-body {
+  background-color: #ffffff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}

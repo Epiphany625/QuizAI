@@ -7,7 +7,7 @@ export interface Question {
     explanation?: string;
   }
   
-  export const questions: Question[] = [
+  export const sampleQuestions: Question[] = [
     {
       id: '1',
       type: 'mcq',
@@ -44,3 +44,5 @@ export interface Question {
       explanation: 'HTTP status codes are grouped into five categories, each serving a specific purpose in indicating the outcome of HTTP requests.'
     }
   ];
+
+  export default sampleQuestions;
