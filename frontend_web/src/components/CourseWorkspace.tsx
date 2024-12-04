@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { FolderUp, Brain, Camera, X, Pencil, Check } from 'lucide-react';
 import type { Course, StudyMaterial, QuizPrompt } from '../types';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 interface CourseWorkspaceProps {
   course: Course;
@@ -14,7 +16,9 @@ export function CourseWorkspace({ course }: CourseWorkspaceProps) {
     description: course.description,
     imageUrl: course.imageUrl,
   });
-  const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
+
+  // navigation
+  const navigate = useNavigate();
 
   // State variables for the quiz form
   const [prompt, setPrompt] = useState<QuizPrompt>({
@@ -29,18 +33,39 @@ export function CourseWorkspace({ course }: CourseWorkspaceProps) {
   const [editingQuizTitle, setEditingQuizTitle] = useState(false);
   const [editingQuizDescription, setEditingQuizDescription] = useState(false);
 
-  const handleFileUpload = (files: FileList) => {
+  const handleFileUpload = async (files: FileList) => {
     const newMaterials: StudyMaterial[] = Array.from(files).map((file) => ({
       id: Math.random().toString(36).substr(2, 9),
       name: file.name,
       type: file.type,
       size: file.size,
       uploadedAt: new Date(),
-      status: 'ready',
+      status: 'processing',
     }));
 
-    setUploadedFiles([...uploadedFiles, ...Array.from(files)]); // store the uploaded files for future upload
-    setMaterials([...materials, ...newMaterials]); // update the materials state that displays files to the user
+    setMaterials([...materials, ...newMaterials]);
+
+    const formData = new FormData();
+    Array.from(files).forEach(file => {
+      formData.append('files', file);
+    });
+
+    const email = localStorage.getItem('email');
+    if (!email) {
+      navigate('/login');
+      return;
+    }
+
+    try {
+      const response = await axios.post(`http://localhost:3000/api/upload/${email}/${course.name}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        }
+      });
+      console.log(response.data);
+    } catch (error) {
+      console.error('Error uploading files:', error);
+    }
   };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
