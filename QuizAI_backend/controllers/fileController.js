@@ -21,12 +21,14 @@ const storage = multer.diskStorage({
     cb(null, uploadPath);
   },
   filename: (req, file, cb) => {
-    cb(null, `${Date.now()}-${file.originalname}`);
+    cb(null, `${file.originalname}`);
   },
 });
 
 const upload = multer({ storage }).array('files', 10); // Allow up to 10 files, using 'files' as the field name
 
+
+// handle file upload
 export const uploadFiles = async (req, res) => {
   try {
     upload(req, res, async (err) => {
@@ -62,7 +64,13 @@ export const uploadFiles = async (req, res) => {
       }
 
       // store the files in the course
-      course.materials = req.files.map((file) => file.path);
+      for (const file of req.files) {
+        course.materials.push(file.path);
+      }
+
+      await user.save();
+
+      console.log("file saved for user", email);
 
       // Success response
       res.status(200).json({
@@ -80,4 +88,31 @@ export const uploadFiles = async (req, res) => {
     res.status(500).json({ message: 'Internal server error.' });
   }
 };
+
+// retrieve the files for a course
+export const getFiles = async (req, res) => {
+  const { email, name } = req.params;
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "user not found" });
+    }
+    const course = user.courses.find((course) => course.name === name);
+    if (!course) {
+      return res.status(404).json({ message: "course notfound" });
+    }
+
+    let materials = [];
+    for (const material of course.materials) {
+      const materialSplit = material.split('/');
+      materials.push(materialSplit[materialSplit.length - 1]);
+    }
+    res.status(200).json({ materials });
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "server error" });
+  }
+
+}
   

@@ -175,9 +175,17 @@ export function CourseWorkspace({ course }: CourseWorkspaceProps) {
 
         <div className="bg-white rounded-xl shadow-sm p-6">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-semibold text-gray-900">
-              Course Materials
-            </h2>
+            <div className="flex items-center">
+              <h2 className="text-xl font-semibold text-gray-900">
+                Course Materials
+              </h2>
+              <button
+                onClick={() => {}}
+                className="ml-4 px-3 py-2 bg-[#3B82F6] text-white rounded-lg hover:bg-[#2563EB] transition-colors duration-300"
+              >
+                Retrieve Past Files
+              </button>
+            </div>
             <span className="text-sm text-gray-500">
               {materials.length} files
             </span>
