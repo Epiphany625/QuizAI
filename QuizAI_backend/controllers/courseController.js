@@ -33,3 +33,37 @@ export const addCourse = async (req, res) => {
         res.status(500).json({ message: "server error" });
     }
 }
+
+// request to change the course name
+export const changeCourseName = async (req, res) => {
+    const { email } = req.params;
+    const { oldName, newName } = req.body;
+    try {
+        const user = await User.findOne({ email });
+        user.courses.forEach((course) => {
+            if(course.name === oldName){
+                course.name = newName;
+            }
+        })
+    } catch (error) {
+        console.log(error); 
+        res.status(500).json({ message: "server error" });
+    }
+}
+
+// request to change the course description
+export const changeCourseDescription = async (req, res) => {
+    const { email } = req.params;
+    const { name, description } = req.body;
+    try {
+        const user = await User.findOne({ email });
+        user.courses.forEach((course) => {
+            if(course.name === name){
+                course.description = description;
+            }
+        })
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "server error" });
+    }
+}

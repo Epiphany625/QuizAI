@@ -1,20 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { FolderUp, Brain, Camera, X, Pencil, Check } from 'lucide-react';
 import type { Course, StudyMaterial, QuizPrompt } from '../types';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 interface CourseWorkspaceProps {
   course: Course;
 }
 
 export function CourseWorkspace({ course }: CourseWorkspaceProps) {
-  const [materials, setMaterials] = useState<StudyMaterial[]>(course.materials);
+  const [materials, setMaterials] = useState<StudyMaterial[]>([]);
   const [showQuizForm, setShowQuizForm] = useState(false);
   const [courseDetails, setCourseDetails] = useState({
     title: course.name,
     description: course.description,
     imageUrl: course.imageUrl,
   });
-  const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
+
+  // navigation
+  const navigate = useNavigate();
 
   // State variables for the quiz form
   const [prompt, setPrompt] = useState<QuizPrompt>({
@@ -29,18 +33,60 @@ export function CourseWorkspace({ course }: CourseWorkspaceProps) {
   const [editingQuizTitle, setEditingQuizTitle] = useState(false);
   const [editingQuizDescription, setEditingQuizDescription] = useState(false);
 
-  const handleFileUpload = (files: FileList) => {
-    const newMaterials: StudyMaterial[] = Array.from(files).map((file) => ({
-      id: Math.random().toString(36).substr(2, 9),
-      name: file.name,
-      type: file.type,
-      size: file.size,
-      uploadedAt: new Date(),
-      status: 'ready',
-    }));
+  // State variable for retrieve status
+  const [retrieveStatus, setRetrieveStatus] = useState<'idle' | 'success' | 'failed' | 'loading'>('idle');
 
-    setUploadedFiles([...uploadedFiles, ...Array.from(files)]); // store the uploaded files for future upload
-    setMaterials([...materials, ...newMaterials]); // update the materials state that displays files to the user
+  // Ref to scroll to bottom when materials change
+  const materialsEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (materialsEndRef.current) {
+      materialsEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [materials]);
+
+  const handleFileUpload = async (files: FileList) => {
+    const formData = new FormData();
+    Array.from(files).forEach(file => {
+      formData.append('files', file);
+    });
+
+    const email = localStorage.getItem('email');
+    if (!email) {
+      navigate('/login');
+      return;
+    }
+
+    try {
+      const response = await axios.post(`http://localhost:3000/api/upload/${email}/${course.name}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        }
+      });
+      console.log(response.data);
+      const newMaterials: StudyMaterial[] = Array.from(files).map((file) => ({
+        id: Math.random().toString(36).substr(2, 9),
+        name: file.name,
+        type: file.type,
+        size: file.size,
+        uploadedAt: new Date(),
+        status: 'ready',
+      }));
+  
+      setMaterials([...materials, ...newMaterials]);
+    } catch (error) {
+      console.error('Error uploading files:', error);
+      const newMaterials: StudyMaterial[] = Array.from(files).map((file) => ({
+        id: Math.random().toString(36).substr(2, 9),
+        name: file.name,
+        type: file.type,
+        size: file.size,
+        uploadedAt: new Date(),
+        status: 'failed',
+      }));
+  
+      setMaterials([...materials, ...newMaterials]);
+    }
   };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -62,6 +108,36 @@ export function CourseWorkspace({ course }: CourseWorkspaceProps) {
     // Handle the quiz submission here
     // ...
     setShowQuizForm(false); // Close the form after submission
+  };
+
+  // Function for retrieving past files
+  const retrievePastFiles = async () => {
+    const email = localStorage.getItem('email');
+    if (!email) {
+      navigate('/login');
+      return;
+    }
+    setRetrieveStatus('loading');
+    try {
+      const response = await axios.get(`http://localhost:3000/api/upload/${email}/${course.name}`);
+      console.log(response.data.materials);
+      const newMaterials: StudyMaterial[] = [];
+      for (const file of response.data.materials) {
+        newMaterials.push({
+          name: file,
+          id: Math.random().toString(36).substr(2, 9),
+          type: file.type,
+          size: file.size,
+          uploadedAt: new Date(),
+          status: 'ready',
+        });
+      }
+      setMaterials([...materials, ...newMaterials]);
+      setRetrieveStatus('success');
+    } catch (error) {
+      console.error('Error retrieving past files:', error);
+      setRetrieveStatus('failed');
+    }
   };
 
   return (
@@ -150,9 +226,30 @@ export function CourseWorkspace({ course }: CourseWorkspaceProps) {
 
         <div className="bg-white rounded-xl shadow-sm p-6">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-semibold text-gray-900">
-              Course Materials
-            </h2>
+            <div className="flex items-center">
+              <h2 className="text-xl font-semibold text-gray-900">
+                Uploaded Materials
+              </h2>
+              <button
+                onClick={retrievePastFiles}
+                disabled={retrieveStatus === 'success' || retrieveStatus === 'loading'}
+                className={`ml-4 px-3 py-2 rounded-lg transition-colors duration-300 ${
+                  retrieveStatus === 'success'
+                    ? 'bg-green-500 text-white cursor-not-allowed'
+                    : retrieveStatus === 'failed'
+                    ? 'bg-red-500 text-white'
+                    : 'bg-[#3B82F6] text-white hover:bg-[#2563EB]'
+                }`}
+              >
+                {retrieveStatus === 'success'
+                  ? 'Retrieval Success'
+                  : retrieveStatus === 'failed'
+                  ? 'Retrieval Failed. Click to retrieve again'
+                  : retrieveStatus === 'loading'
+                  ? 'Retrieving...'
+                  : 'Retrieve Past Files'}
+              </button>
+            </div>
             <span className="text-sm text-gray-500">
               {materials.length} files
             </span>
@@ -165,12 +262,25 @@ export function CourseWorkspace({ course }: CourseWorkspaceProps) {
               >
                 <div className="flex-1">
                   <p className="font-medium text-gray-900">{material.name}</p>
-                  <p className="text-sm text-gray-500">
-                    {material.status === 'processing' ? 'Processing...' : 'Ready'}
+                  <p
+                    className={`text-sm ${
+                      material.status === 'failed'
+                        ? 'text-red-500'
+                        : material.status === 'processing'
+                        ? 'text-yellow-500'
+                        : 'text-green-500'
+                    }`}
+                  >
+                    {material.status === 'failed'
+                      ? 'Upload failed'
+                      : material.status === 'processing'
+                      ? 'Processing...'
+                      : 'Ready'}
                   </p>
                 </div>
               </div>
             ))}
+            <div ref={materialsEndRef}></div>
           </div>
         </div>
 
