@@ -63,6 +63,13 @@ export const uploadFiles = async (req, res) => {
         return res.status(404).json({ message: 'Course not found.' });
       }
 
+      // do not allow files with the same name
+      for (const file of req.files) {
+        if (course.materials.includes(file.path)) {
+          return res.status(400).json({ message: 'File already exists.' });
+        }
+      }
+
       // store the files in the course
       for (const file of req.files) {
         course.materials.push(file.path);
