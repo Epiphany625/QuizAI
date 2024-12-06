@@ -3,6 +3,7 @@ import { FolderUp, Brain, Camera, X, Pencil, Check } from 'lucide-react';
 import type { Course, StudyMaterial, QuizPrompt } from '../types';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
 
 interface CourseWorkspaceProps {
   course: Course;
@@ -16,9 +17,16 @@ export function CourseWorkspace({ course }: CourseWorkspaceProps) {
     description: course.description,
     imageUrl: course.imageUrl,
   });
+  const [quiz, setQuiz] = useState([]); // quiz state to store the current quiz
+
 
   // navigation
   const navigate = useNavigate();
+
+
+  useEffect(() => {
+    console.log(`Quiz form visibility changed to: ${showQuizForm}`);
+  }, [showQuizForm]);
 
   // State variables for the quiz form
   const [prompt, setPrompt] = useState<QuizPrompt>({
@@ -65,7 +73,7 @@ export function CourseWorkspace({ course }: CourseWorkspaceProps) {
       });
       console.log(response.data);
       const newMaterials: StudyMaterial[] = Array.from(files).map((file) => ({
-        id: Math.random().toString(36).substr(2, 9),
+        id: uuidv4(),
         name: file.name,
         type: file.type,
         size: file.size,
@@ -77,7 +85,7 @@ export function CourseWorkspace({ course }: CourseWorkspaceProps) {
     } catch (error) {
       console.error('Error uploading files:', error);
       const newMaterials: StudyMaterial[] = Array.from(files).map((file) => ({
-        id: Math.random().toString(36).substr(2, 9),
+        id: uuidv4(),
         name: file.name,
         type: file.type,
         size: file.size,

@@ -16,9 +16,15 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
+    "fs-extra": "^11.2.0",
     "jsonwebtoken": "^9.0.2",
+    "mammoth": "^1.8.0",
     "mongoose": "^8.7.2",
     "multer": "^1.4.5-lts.1",
+    "pdf-text-reader": "^5.1.0",
+    "python-shell": "^5.0.0",
+    "tesseract.js": "^5.1.1",
+    "textract": "^0.20.0",
     "uuid": "^11.0.3"
   }
 }
