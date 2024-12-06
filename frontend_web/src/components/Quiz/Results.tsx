@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
-import { Question } from '../data/questions';
-import { CheckCircle, XCircle, RefreshCw } from 'lucide-react';
+import { Question } from './Question.ts';
+// import { CheckCircle, XCircle, RefreshCw } from 'lucide-react';
+import { MdCheckCircle, MdCancel, MdRefresh } from 'react-icons/md'; // Material Design icons
+import './Results.css'
+
 
 interface ResultsProps {
   questions: Question[];
@@ -41,22 +44,22 @@ export default function Results({ questions, userAnswers, onRetry }: ResultsProp
   };
 
   return (
-    <div>
-      <div className="mb-8 text-center">
-        <h1 className="text-3xl font-bold text-[#201E43] mb-4">
+    <div className='quiz-results-container'>
+      <div className="quiz-results-header-container">
+        <h1 className="quiz-results-title">
           Quiz Results
         </h1>
-        <div className="space-y-2">
-          <h2 className="text-2xl font-semibold text-[#201E43]">
+        <div className="quiz-score-container">
+          <h2 className="quiz-score">
             Your Score: {score} / {questions.length}
           </h2>
-          <p className="text-xl text-[#508C9B]">
+          <p className="quiz-percentage">
             {percentage}%
           </p>
         </div>
       </div>
 
-      <div className="space-y-6">
+      <div className="quiz-results-questions-container">
         {questions.map((question) => {
           const isOverridden = overriddenAnswers.has(question.id);
           const isCorrect = isOverridden || 
@@ -65,57 +68,49 @@ export default function Results({ questions, userAnswers, onRetry }: ResultsProp
           return (
             <div
               key={question.id}
-              className={`p-4 rounded-lg bg-gray-50 border relative ${
-                isCorrect ? 'border-green-200' : 'border-red-200'
-              }`}
+              className="quiz-results-question-card"
             >
               {canBeOverridden(question.type) && (
                 isOverridden ? (
                   <button
                     onClick={() => handleUndoOverride(question.id)}
-                    className="absolute top-4 right-4 text-sm text-red-500 hover:text-red-700
-                      transition-colors duration-200 underline mt-1"
+                    className="undo-override-button"
                   >
                     Undo override
                   </button>
                 ) : !isCorrect && (
                   <button
                     onClick={() => handleOverride(question.id)}
-                    className="absolute top-4 right-4 text-sm text-[#508C9B] hover:text-[#134B70]
-                      transition-colors duration-200 underline mt-1"
+                    className="override-button"
                   >
                     Override: I was correct
                   </button>
                 )
               )}
-              <div className="flex items-start gap-3">
                 {isCorrect ? (
-                  <CheckCircle className="w-6 h-6 text-green-500 flex-shrink-0 mt-1" />
+                  <MdCheckCircle className="correct-icon" />
                 ) : (
-                  <XCircle className="w-6 h-6 text-red-500 flex-shrink-0 mt-1" />
+                  <MdCancel className="wrong-icon" />
                 )}
-                <div className="flex-grow pr-32">
-                  <h3 className="text-lg font-medium text-gray-900 mb-2">
+                  <h3 className="results-question">
                     {question.question}
                   </h3>
-                  <div className="space-y-1.5">
-                    <p className="text-gray-600">
+                  <div>
+                    <p className="your-answer-container">
                       Your answer: {userAnswers[question.id] || 'No answer'}
                       {isOverridden && (
-                        <span className="ml-2 text-sm text-[#508C9B]">(Marked as correct)</span>
+                        <span className="mark-as-correct">(Marked as correct)</span>
                       )}
                     </p>
-                    <p className="text-gray-900 font-medium">
+                    <p className="correct-answer">
                       Correct answer: {question.correctAnswer}
                     </p>
                     {question.explanation && (
-                      <p className="mt-2 text-sm text-[#508C9B]">
+                      <p className="answer-explanation">
                         {question.explanation}
                       </p>
                     )}
                   </div>
-                </div>
-              </div>
             </div>
           );
         })}

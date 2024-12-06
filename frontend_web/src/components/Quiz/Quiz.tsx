@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import QuestionCard from './QuestionCard';
 import Results from './Results';
-import { Brain } from 'lucide-react';
-import { Question } from '../../types';
+// import { Brain } from 'lucide-react';
+// import { Brain } from 'lucide-react';
+import { Question } from './Question';
+import useTokenValidation from '../../hooks/useTokenValidation';
 import './Quiz.css';
 
 interface QuizProps {
@@ -18,6 +20,7 @@ export default function Quiz({
   questions, 
   onComplete = defaultOnComplete 
 }: QuizProps) {
+  useTokenValidation();
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [userAnswers, setUserAnswers] = useState<Record<string, string>>({});
   const [showResults, setShowResults] = useState(false);
@@ -64,22 +67,19 @@ export default function Quiz({
   };
 
   return (
+    <>
     <div className="quiz-container">
-      <nav className="bg-[#201E43] text-white py-4 px-4 shadow-lg mb-8">
-        <div className="max-w-4xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Brain className="w-8 h-8 text-[#508C9B]" />
-            <h1 className="text-xl font-semibold">Interactive Quiz</h1>
-          </div>
+      <nav className="quiz-nav">
+            <h1 className="quiz-title">Interactive Quiz</h1>
           {!showResults && (
-            <div className="bg-white/10 px-4 py-1.5 rounded-full text-sm">
+            <div className="quiz-question-number">
               Question {currentQuestionIndex + 1} of {questions.length}
             </div>
           )}
-        </div>
+        
       </nav>
 
-      <main className="max-w-4xl mx-auto px-4 pb-8">
+      <main className="quiz-body">
         {!showResults ? (
           <QuestionCard
             question={questions[currentQuestionIndex]}
@@ -101,5 +101,6 @@ export default function Quiz({
         )}
       </main>
     </div>
+    </>
   );
 }

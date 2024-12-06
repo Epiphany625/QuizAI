@@ -5,7 +5,7 @@ export interface Question {
     choices?: string[];
     correctAnswer: string;
     explanation?: string;
-}
+  }
   
   export const sampleQuestions: Question[] = [
     {

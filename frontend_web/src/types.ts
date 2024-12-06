@@ -30,12 +30,11 @@ export interface Quiz {
 
 export interface Question {
   id: string;
-  text: string;
-  options: string[];
-  correctAnswer: number;
+  type: 'mcq' | 'true-false' | 'fill-blank' | 'short-answer';
+  question: string;
+  choices?: string[];
+  correctAnswer: string;
   explanation?: string;
-  isCorrect?: boolean;
-  userAnswer?: number;
 }
 
 export interface StudyMaterial {
