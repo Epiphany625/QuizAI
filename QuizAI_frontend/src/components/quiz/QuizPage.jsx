@@ -11,7 +11,7 @@ import sampleQuestions from './Question.ts'
 const QuizPage = () => {
     useTokenValidation();
 
-    const [quiz, setQuiz] = useState(sampleQuestions);
+    const [quiz, setQuiz] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 

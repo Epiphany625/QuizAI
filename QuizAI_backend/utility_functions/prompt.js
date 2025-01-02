@@ -1,14 +1,16 @@
 // Quiz generation prompts
 const mcqFormat = `
     Create a multiple-choice quiz question following this format:
+    # [QUESTION]? # (A) [CHOICE A] (B) [CHOICE B] (C) [CHOICE C] (D) [CHOICE D] --- [ANSWER]
+
     For example, the quiz questions are:
-    Which planet is known as the Red Planet? A) Venus B) Jupiter C) Mars D) Saturn--- C
-    What is the chemical symbol for water? A) H2 B) O2 C) H2O D) CO2--- C
-    Who wrote the play "Romeo and Juliet"? A) William Shakespeare B) Charles Dickens C) Mark Twain D) Jane Austen--- A
+    Which planet is known as the Red Planet? A) Venus B) Jupiter C) Mars D) Saturn, Correct Answer: C
+    What is the chemical symbol for water? A) H2 B) O2 C) H2O D) CO2, Correct Answer: C
+    Who wrote the play "Romeo and Juliet"? A) William Shakespeare B) Charles Dickens C) Mark Twain D) Jane Austen, Correct Answer: A
 
     Your response should be in the format:
-    # Which planet is known as the Red Planet? # A) Venus B) Jupiter C) Saturn D) Mars --- B
-    # What is the chemical symbol for water? # A) H2 B) O2 C) H2O D) CO2 --- B
+    # Which planet is known as the Red Planet? # (A) Venus (B) Jupiter (C) Saturn (D) Mars --- C
+    # What is the chemical symbol for water? # (A) H2 (B) O2 (C) H2O (D) CO2 --- C
     Etc. please do not omit the # sign. `;
 
 const shortAnswerFormat = `
@@ -74,6 +76,9 @@ function getQuizPrompt(content, numQuestions, questionType, exampleQuestion=null
         ${exampleQuestion ? `Here is an example question showcasing the type of style: ${exampleQuestion}` : ""}
 
         ${questionType === "fill-in-the-blank" ? fillInTheBlankFormat : ""}
+
+        Only use the parentheses as instructed above A), B), C), D), and only use # to separate sections. 
+
         Please use the content below to generate a quiz:
         ${content}
     `;

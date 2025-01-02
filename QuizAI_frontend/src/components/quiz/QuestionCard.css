@@ -46,7 +46,6 @@
 
   .question-mcq input[type="radio"]:checked + span {
     border-color: #007bff; /* Blue border */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     font-weight: bold; 
   }
 
