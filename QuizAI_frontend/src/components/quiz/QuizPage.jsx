@@ -59,7 +59,9 @@ const QuizPage = () => {
             const pageContent = await getCurrentPageContent();
             console.log(pageContent);
             const quizResponse = await axios.post(`http://localhost:3000/api/quiz`, {
-                webContent: pageContent
+                content: pageContent,
+                // numQuestions: 5,
+                // questionType: 'short-answer'
             });
             console.log("quiz generated: \n", quizResponse)
             console.log('Quiz data:', quizResponse.data.quiz);

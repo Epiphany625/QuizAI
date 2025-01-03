@@ -3,6 +3,9 @@ import multer from 'multer';
 import fs from 'fs';
 import path from 'path';
 
+
+
+
 // Configure multer globally
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -96,8 +99,23 @@ export const uploadFiles = async (req, res) => {
   }
 };
 
+const parseFile = async (req, res) => {
+  const { email, file } = req.params;
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "user not found" });
+    }
+    
+
+  } catch (error) {
+    
+  }
+
+}
+
 // retrieve the files for a course
-export const getFiles = async (req, res) => {
+const getFiles = async (req, res) => {
   const { email, name } = req.params;
   try {
     const user = await User.findOne({ email });
@@ -122,4 +140,7 @@ export const getFiles = async (req, res) => {
   }
 
 }
+
+export { parseFile, getFiles };
+
   
