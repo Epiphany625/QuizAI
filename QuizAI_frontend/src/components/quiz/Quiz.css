@@ -16,6 +16,21 @@
   font-weight: bold;
 }
 
+.quiz-subtitle {
+  font-size: 1rem;
+  color: #555;
+}
+
+.course-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.course-button:hover {
+  border-color: #007bff;
+}
+
 .quiz-question-number {
   font-size: 1rem;
   color: #555;
