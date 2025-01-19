@@ -1,10 +1,7 @@
 import { getDocument } from 'pdfjs-dist';
 
-
-const pdfPath = '../uploads/xinyangx/Calculus I/104handout25.pdf'; // Replace with a correct file path
-
-const loadPDF = async () => {
-  const pdf = await getDocument(pdfPath).promise;
+export default async function parsePDF(filePath) {
+  const pdf = await getDocument(filePath).promise;
 
   let fullText = '';
 
@@ -18,7 +15,5 @@ const loadPDF = async () => {
     fullText += pageText + '\n'; // Add newlines between pages
   }
 
-  console.log(fullText); // This is the full text of the PDF
-};
-
-loadPDF();
+  return fullText;
+}

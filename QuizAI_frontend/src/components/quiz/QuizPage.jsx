@@ -22,6 +22,7 @@ const QuizPage = () => {
     //     }
     // }, []);
 
+
     // get the courses based on the user
     useEffect(() => {
         const fetchCourses = async () => {
