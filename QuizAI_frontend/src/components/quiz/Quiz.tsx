@@ -17,9 +17,9 @@ const defaultOnComplete = (results: Record<string, string>) => {
   console.log('Quiz completed:', results);
 };
 
-export default function Quiz({ 
-  questions, 
-  onComplete = defaultOnComplete 
+export default function Quiz({
+  questions,
+  onComplete = defaultOnComplete
 }: QuizProps) {
   useTokenValidation();
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -47,12 +47,12 @@ export default function Quiz({
   };
 
   const handleSubmit = () => {
-    const newScore = questions.reduce((acc, q) => 
-      acc + (userAnswers[q.id]?.toLowerCase() === q.correctAnswer.toLowerCase() ? 1 : 0), 
-    0);
+    const newScore = questions.reduce((acc, q) =>
+      acc + (userAnswers[q.id]?.toLowerCase() === q.correctAnswer.toLowerCase() ? 1 : 0),
+      0);
     setScore(newScore);
     setShowResults(true);
-    
+
     onComplete(userAnswers);
   };
 
@@ -69,40 +69,40 @@ export default function Quiz({
 
   return (
     <>
-    <NavigationBar />
-    <div className="quiz-container">
-      <nav className="quiz-nav">
-            <h1 className="quiz-title">Interactive Quiz</h1>
+      <NavigationBar />
+      <div className="quiz-container">
+        <nav className="quiz-nav">
+          <h1 className="quiz-title">Interactive Quiz</h1>
           {!showResults && (
             <div className="quiz-question-number">
               Question {currentQuestionIndex + 1} of {questions.length}
             </div>
           )}
-        
-      </nav>
 
-      <main className="quiz-body">
-        {!showResults ? (
-          <QuestionCard
-            question={questions[currentQuestionIndex]}
-            currentAnswer={userAnswers[questions[currentQuestionIndex].id] || ''}
-            onAnswerChange={handleAnswerSelect}
-            onNext={handleNext}
-            onPrevious={handlePrevious}
-            isFirst={currentQuestionIndex === 0}
-            isLast={currentQuestionIndex === questions.length - 1}
-            onSubmit={handleSubmit}
-            canSubmit={isQuizComplete()}
-          />
-        ) : (
-          <Results
-            questions={questions}
-            userAnswers={userAnswers}
-            onRetry={handleRetry}
-          />
-        )}
-      </main>
-    </div>
+        </nav>
+
+        <main className="quiz-body">
+          {!showResults ? (
+            <QuestionCard
+              question={questions[currentQuestionIndex]}
+              currentAnswer={userAnswers[questions[currentQuestionIndex].id] || ''}
+              onAnswerChange={handleAnswerSelect}
+              onNext={handleNext}
+              onPrevious={handlePrevious}
+              isFirst={currentQuestionIndex === 0}
+              isLast={currentQuestionIndex === questions.length - 1}
+              onSubmit={handleSubmit}
+              canSubmit={isQuizComplete()}
+            />
+          ) : (
+            <Results
+              questions={questions}
+              userAnswers={userAnswers}
+              onRetry={handleRetry}
+            />
+          )}
+        </main>
+      </div>
     </>
   );
 }

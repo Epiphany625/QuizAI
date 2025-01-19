@@ -2,7 +2,6 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 import courseSchema from './Course.js';
-import quizSchema from './Course.js';
 
 const userSchema = new mongoose.Schema({
     email: {
