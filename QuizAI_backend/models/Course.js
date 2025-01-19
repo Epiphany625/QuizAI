@@ -17,6 +17,7 @@ const questionSchema = new mongoose.Schema({
     },
 });
 
+
 const quizSchema = new mongoose.Schema({
     // the url of the webpage / file on which the quiz is based
     url: {
@@ -59,4 +60,11 @@ const courseSchema = new mongoose.Schema({
     },
 });
 
+// export the models so that they can be used in other files and functions
+const Question = mongoose.model('Question', questionSchema);
+const Quiz = mongoose.model('Quiz', quizSchema);
+const Course = mongoose.model('Course', courseSchema);
+export { Question, Quiz, Course };
+
+// export the schema so that it can be used in User.js
 export default courseSchema;

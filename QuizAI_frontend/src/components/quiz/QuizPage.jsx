@@ -119,7 +119,8 @@ const QuizPage = () => {
             const quizResponse = await axios.post(`http://localhost:3000/api/quiz`, {
                 content: pageContent,
                 course: selectedCourse,
-                url: url,
+                url: [url],
+                email: email,
                 // numQuestions: 5,
                 // questionType: 'short-answer'
             });

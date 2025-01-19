@@ -1,5 +1,6 @@
 import { generateQuiz } from '../utility_functions/Gemini_API.js';
-import User from '../models/user.js';
+import User from '../models/User.js';
+import { Question, Quiz } from '../models/Course.js';
 
 export const postQuiz = async (req, res) => {
     console.log("post quiz...");
@@ -11,7 +12,8 @@ export const postQuiz = async (req, res) => {
     // generate the quiz
     const quiz = await generateQuiz(req.body.content, num, type, example);
 
-    // save the quiz to the database, if the user has selected a course
+    // // save the quiz to the database, if the user has selected a course
+    console.log(req.body);
     if(req.body.course){
         const courseName = req.body.course; 
         const user = await User.findOne({email: req.body.email});
@@ -22,12 +24,13 @@ export const postQuiz = async (req, res) => {
                 const newQuiz = new Quiz({url: req.body.url, questions: []});
                 for(let j = 0; j < quiz.length; j++) {
                     const currQuestion = quiz[j];
-                    const newQuestion = new Question({question, choices, correctAnswer});
+                    const newQuestion = new Question({question:currQuestion.question, choices:currQuestion.choices, correctAnswer: currQuestion.correctAnswer});
                     newQuiz.questions.push(newQuestion);
                 }
                 currCourse.quizzes.push(newQuiz);
             }
         }
+        await user.save();
     }
     res.status(200).json({quiz: quiz});
 }
