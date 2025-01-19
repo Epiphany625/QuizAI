@@ -4,6 +4,7 @@ import type { Course, StudyMaterial, QuizPrompt } from '../types';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
+import Quiz from './Quiz/Quiz';
 
 interface CourseWorkspaceProps {
   course: Course;
@@ -111,10 +112,46 @@ export function CourseWorkspace({ course }: CourseWorkspaceProps) {
     }
   };
 
-  const handleQuizFormSubmit = (e: React.FormEvent) => {
+  const handleQuizFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle the quiz submission here
-    // ...
+    try {
+      setShowQuizForm(false);
+      setQuiz([]);
+      // update the summary count
+      // const userEmail = localStorage.getItem('email');
+      // await axios.patch(`http://localhost:3000/api/user/${userEmail}/quiz`);
+      
+      const files = materials.filter(material => prompt.selectedMaterials.includes(material.id)).map(material => material.name);
+      // get the content from the files using backend parser
+
+        const email = localStorage.getItem('email');
+        if (!email) {
+          navigate('/login');
+          return;
+        }
+        console.log(files);
+        const response = await axios.post('http://localhost:3000/api/parse/parseMaterials', {
+          email,
+          courseName: course.name,
+          files: files,
+        });
+        console.log('Parsed text:', response.data.combinedText);
+
+        // json({
+        //   parsedText: fileContents,
+        //   combinedText,
+        // });
+
+      const quizResponse = await axios.post(`http://localhost:3000/api/quiz`, {
+          content: response.data.combinedText,
+          numQuestions: prompt.questionCount,
+          questionType: prompt.format,
+          sampleQuestions: prompt.sampleQuestions,});
+      setQuiz(quizResponse.data.quiz);
+    console.log(files);
+    } catch (error) {
+      console.error('Error generating quiz:', error);
+    }
     setShowQuizForm(false); // Close the form after submission
   };
 
@@ -147,6 +184,7 @@ export function CourseWorkspace({ course }: CourseWorkspaceProps) {
       setRetrieveStatus('failed');
     }
   };
+
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -516,6 +554,7 @@ export function CourseWorkspace({ course }: CourseWorkspaceProps) {
 
                 <button
                   type="submit"
+                  onSubmit={handleQuizFormSubmit}
                   className="w-full px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 
                            transition-colors duration-300 focus:outline-none focus:ring-2 
                            focus:ring-indigo-500 focus:ring-offset-2"
@@ -526,6 +565,8 @@ export function CourseWorkspace({ course }: CourseWorkspaceProps) {
             </form>
           </div>
         )}
+
+      {quiz.length > 0 && <Quiz questions={quiz} />}
       </div>
     </div>
   );

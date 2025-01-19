@@ -23,6 +23,7 @@ const QuizPage = () => {
     //     }
     // }, []);
 
+
     const getCurrentPageContent = async () => {
         return new Promise((resolve, reject) => {
             chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
