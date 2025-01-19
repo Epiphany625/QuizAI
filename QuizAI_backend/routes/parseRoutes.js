@@ -1,8 +1,7 @@
 import express from 'express';
-import { parseFile } from '../controllers/fileController.js';
+import { parseMaterials } from '../controllers/fileController.js';
 
 const router = express.Router();
-
-router.get('/parseFile/:email/', parseFile);
+router.post('/parseMaterials', parseMaterials);
 
 export default router;

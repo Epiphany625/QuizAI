@@ -2,6 +2,7 @@ import User from '../models/User.js';
 import multer from 'multer';
 import fs from 'fs';
 import path from 'path';
+import parsePDF from '../utility_functions/pdf_parser.js';
 
 
 
@@ -99,20 +100,6 @@ export const uploadFiles = async (req, res) => {
   }
 };
 
-const parseFile = async (req, res) => {
-  const { email, file } = req.params;
-  try {
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(404).json({ message: "user not found" });
-    }
-    
-
-  } catch (error) {
-    
-  }
-
-}
 
 // retrieve the files for a course
 const getFiles = async (req, res) => {
@@ -141,6 +128,36 @@ const getFiles = async (req, res) => {
 
 }
 
-export { parseFile, getFiles };
+export const parseMaterials = async (req, res) => {
+  try {
+    const { email, courseName, files } = req.body;
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "user not found" });
+    }
+    const course = user.courses.find((c) => c.name === courseName);
+    if (!course) {
+      return res.status(404).json({ message: "course not found" });
+    }
+    const emailBody = email.split('@')[0];
+    const fileContents = {};
+    let combinedText = '';
+    for (const fileName of files) {
+      const filePath = path.join('uploads', emailBody, courseName, fileName);
+      const text = await parsePDF(filePath);
+      fileContents[fileName] = text;
+      combinedText += text + '\n';
+    }
 
-  
+    res.status(200).json({
+      parsedText: fileContents,
+      combinedText,
+    });
+  } catch (error) {
+    console.error('Error parsing materials:', error);
+    res.status(500).json({ message: 'Failed to parse materials.' });
+  }
+};
+
+export { getFiles };
+
