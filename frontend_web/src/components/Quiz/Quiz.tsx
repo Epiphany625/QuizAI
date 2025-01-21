@@ -43,9 +43,17 @@ export default function Quiz({
   };
 
   const handleSubmit = () => {
-    const newScore = questions.reduce((acc, q) => 
-      acc + (userAnswers[q.id]?.toLowerCase() === q.correctAnswer.toLowerCase() ? 1 : 0), 
-    0);
+    // loop to print userAnswers[q.id]?.toLowerCase() for every question
+    for (const q of questions) {
+      const answerIndex = q.choices.findIndex((a: string) => a === userAnswers[q.id]);
+      console.log("user:", String.fromCharCode(65 + answerIndex).toLowerCase());
+      console.log("correct:", q.correctAnswer?.toString().toLowerCase());
+    }
+    
+    const newScore = questions.reduce((acc, q) => {
+        const answerIndex = q.choices.findIndex((a: string) => a === userAnswers[q.id]);
+        return acc + (String.fromCharCode(65 + answerIndex).toLowerCase() === q.correctAnswer?.toLowerCase() ? 1 : 0);
+      }, 0);
     setScore(newScore);
     setShowResults(true);
     

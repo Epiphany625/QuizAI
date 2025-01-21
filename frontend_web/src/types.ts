@@ -30,9 +30,9 @@ export interface Quiz {
 
 export interface Question {
   id: string;
-  text: string;
-  options: string[];
-  correctAnswer: number;
+  questions: string;
+  choices: string[];
+  correctAnswer: string;
   explanation?: string;
   isCorrect?: boolean;
   userAnswer?: number;

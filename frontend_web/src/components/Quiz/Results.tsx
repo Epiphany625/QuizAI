@@ -11,9 +11,10 @@ interface ResultsProps {
 export default function Results({ questions, userAnswers, onRetry }: ResultsProps) {
   const [overriddenAnswers, setOverriddenAnswers] = useState<Set<string>>(new Set());
   const [score, setScore] = useState(() => 
-    questions.reduce((acc, q) => 
-      acc + (userAnswers[q.id]?.toLowerCase() === q.correctAnswer.toLowerCase() ? 1 : 0), 
-    0)
+    questions.reduce((acc, q) => {
+      const answerIndex = q.choices.findIndex((a: string) => a === userAnswers[q.id]);
+      return acc + (String.fromCharCode(65 + answerIndex).toLowerCase() === q.correctAnswer?.toLowerCase() ? 1 : 0);
+    }, 0)
   );
 
   const percentage = Math.round((score / questions.length) * 100);
@@ -60,7 +61,8 @@ export default function Results({ questions, userAnswers, onRetry }: ResultsProp
         {questions.map((question) => {
           const isOverridden = overriddenAnswers.has(question.id);
           const isCorrect = isOverridden || 
-            userAnswers[question.id]?.toLowerCase() === question.correctAnswer.toLowerCase();
+            (String.fromCharCode(65 + question.choices.findIndex((a: string) => a === userAnswers[question.id])).toLowerCase() 
+            === question.correctAnswer?.toLowerCase() ? 1 : 0);
 
           return (
             <div
