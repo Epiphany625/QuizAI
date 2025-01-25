@@ -108,7 +108,12 @@ export default function Results({ questions, userAnswers, onRetry }: ResultsProp
                       )}
                     </p>
                     <p className="text-gray-900 font-medium">
-                      Correct answer: {question.correctAnswer}
+                      Correct answer: {question.correctAnswer} 
+                      {question.type === 'mcq' && (
+                      <span className="mcq-correct-answer">
+                      &nbsp;({question.choices[question.correctAnswer.charCodeAt(0) - 65]})
+                      </span>
+                      )}
                     </p>
                     {question.explanation && (
                       <p className="mt-2 text-sm text-[#508C9B]">

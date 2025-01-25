@@ -115,14 +115,13 @@ const QuizPage = () => {
             const url = await getCurrentTabUrl();
             console.log(url);
 
-            // send a post request
-            
+            // send a post request to the backend to generate the quiz (default: 10 questions, multiple choice)
             const quizResponse = await axios.post(`http://localhost:3000/api/quiz`, {
                 content: pageContent,
                 course: selectedCourse,
                 url: [url],
                 email: email,
-                // numQuestions: 5,
+                numQuestions: 2,
                 // questionType: 'short-answer'
             });
             console.log("quiz generated: \n", quizResponse)

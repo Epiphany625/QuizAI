@@ -15,7 +15,10 @@ export default function Results({ questions, userAnswers, onRetry }: ResultsProp
   const [overriddenAnswers, setOverriddenAnswers] = useState<Set<string>>(new Set());
   const [score, setScore] = useState(() => 
     questions.reduce((acc, q) => 
-      acc + (userAnswers[q.id]?.toLowerCase() === q.correctAnswer.toLowerCase() ? 1 : 0), 
+      acc + (
+        (userAnswers[q.id]?.toLowerCase() === q.correctAnswer.toLowerCase()) || 
+        (String.fromCharCode(65 + q.choices.findIndex((a: string) => a === userAnswers[q.id])).toLowerCase() === q.correctAnswer?.toLowerCase() ? 1 : 0)
+      ), 
     0)
   );
 
@@ -62,9 +65,10 @@ export default function Results({ questions, userAnswers, onRetry }: ResultsProp
       <div className="quiz-results-questions-container">
         {questions.map((question) => {
           const isOverridden = overriddenAnswers.has(question.id);
-          const isCorrect = isOverridden || 
-          (String.fromCharCode(65 + question.choices.findIndex((a: string) => a === userAnswers[question.id])).toLowerCase() 
-          === question.correctAnswer?.toLowerCase() ? 1 : 0);
+          const isCorrect = isOverridden || // if overriden
+            (userAnswers[question.id]?.toLowerCase() === question.correctAnswer.toLowerCase()) || // if exact match
+            (String.fromCharCode(65 + question.choices.findIndex((a: string) => a === userAnswers[question.id])).toLowerCase() 
+            === question.correctAnswer?.toLowerCase() ? 1 : 0); // if match mcq
 
             /**
              * const isCorrect = isOverridden || 
@@ -111,7 +115,12 @@ export default function Results({ questions, userAnswers, onRetry }: ResultsProp
                       )}
                     </p>
                     <p className="correct-answer">
-                      Correct answer: {question.correctAnswer}
+                      Correct answer: {question.correctAnswer} 
+                      {question.type === 'mcq' && (
+                      <span className="mcq-correct-answer">
+                      &nbsp;({question.choices[question.correctAnswer.charCodeAt(0) - 65]})
+                      </span>
+                      )}
                     </p>
                     {question.explanation && (
                       <p className="answer-explanation">
