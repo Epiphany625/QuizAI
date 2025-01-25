@@ -63,7 +63,15 @@ export default function Results({ questions, userAnswers, onRetry }: ResultsProp
         {questions.map((question) => {
           const isOverridden = overriddenAnswers.has(question.id);
           const isCorrect = isOverridden || 
-            userAnswers[question.id]?.toLowerCase() === question.correctAnswer.toLowerCase();
+          (String.fromCharCode(65 + question.choices.findIndex((a: string) => a === userAnswers[question.id])).toLowerCase() 
+          === question.correctAnswer?.toLowerCase() ? 1 : 0);
+
+            /**
+             * const isCorrect = isOverridden || 
+            (String.fromCharCode(65 + question.choices.findIndex((a: string) => a === userAnswers[question.id])).toLowerCase() 
+            === question.correctAnswer?.toLowerCase() ? 1 : 0);
+             */
+
 
           return (
             <div
