@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation } from
 import { Header } from './components/Header';
 import { CourseWorkspace } from './components/CourseWorkspace';
 import { CourseSidebar } from './components/CourseSidebar';
-import { CourseProgress } from './components/CourseProgress';
+import CourseProgress from './components/CourseProgress';
 import { MistakeJournal } from './components/MistakeJournal';
 import { CourseList } from './components/CourseList';
 import { Login } from './pages/Login';
