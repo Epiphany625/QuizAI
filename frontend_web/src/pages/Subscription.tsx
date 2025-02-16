@@ -17,7 +17,7 @@ interface Plans {
 export function Subscription() {
   useTokenValidation();
   const navigate = useNavigate();
-  const currentPlan = 'free';
+  let currentPlan = 'free';
   const nextBillingDate = new Date('2024-03-01');
 
   const plans: Plans = {

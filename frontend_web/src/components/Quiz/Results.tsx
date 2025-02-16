@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Question } from '../data/questions';
+import { Question } from '../../types';
 import { CheckCircle, XCircle, RefreshCw } from 'lucide-react';
 
 interface ResultsProps {

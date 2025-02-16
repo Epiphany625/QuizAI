@@ -124,7 +124,8 @@ function AppContent() {
 
     if (selectedCourse) {
       if (showProgress) {
-        return <CourseProgress course={selectedCourse} onBack={() => setShowProgress(false)} />;
+        return <CourseProgress course={selectedCourse}/>;
+        // return <CourseProgress course={selectedCourse} onBack={() => setShowProgress(false)} />;
       }
       if (showMaterials) {
         return <CourseWorkspace key={selectedCourse.id} course={selectedCourse} />;

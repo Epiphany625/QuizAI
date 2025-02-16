@@ -30,12 +30,13 @@ export interface Quiz {
 
 export interface Question {
   id: string;
-  questions: string;
+  question: string;
   choices: string[];
   correctAnswer: string;
   explanation?: string;
   isCorrect?: boolean;
   userAnswer?: number;
+  type: string; 
 }
 
 export interface StudyMaterial {
