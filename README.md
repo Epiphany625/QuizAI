@@ -20,7 +20,7 @@ QuizAI is an AI helper application that empowers users to:
 
 ## Urgent Future Work
 
-- **Front End:** Refactor Entire frontend to ensure a smoother user experience and ensure scalability.
+- **Front End:** Refactor the entire frontend to ensure a smoother user experience and scalability.
 - **Back End:** Enhance CRUD operations for images, files, and quizzes.
 
 ---
@@ -37,6 +37,20 @@ QuizAI/
 ---
 
 ## Getting Started
+
+### Cloning the Repository
+
+To get started, clone the repository:
+
+```bash
+git clone https://github.com/Epiphany625/QuizAI.git
+```
+
+Then navigate into the project folder:
+
+```bash
+cd QuizAI
+```
 
 **Important:** After pulling the latest changes from the repository, please run `npm i` in the respective folders to ensure all dependencies are up to date.
 
@@ -84,7 +98,13 @@ QuizAI/
    ```bash
    npm i
    ```
-3. **Start the server**:
+3. **Create a `.env` file** in the `QuizAI_backend` folder with the following structure:
+   ```env
+   GOOGLE_AI_KEY=""
+   MONGO_URI=""
+   ```
+   Fill in your actual API key and database URI before running the server.
+4. **Start the server**:
    ```bash
    node server.js
    ```

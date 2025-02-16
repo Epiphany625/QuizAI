@@ -70,7 +70,7 @@ export function Header({ onMistakesClick, showBackButton, onBack }: HeaderProps)
             ) : (
               <Link to="/" className="flex items-center">
                 <GraduationCap className="h-8 w-8 text-[#3B82F6]" />
-                <span className="ml-2 text-2xl font-bold text-gray-900">StudyPrep</span>
+                <span className="ml-2 text-2xl font-bold text-gray-900">QuizAI</span>
               </Link>
             )}
           </div>
