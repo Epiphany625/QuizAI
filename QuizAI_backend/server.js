@@ -31,6 +31,6 @@ app.use('/api/upload', uploadRoutes); // used for uploading files
 app.use('/api/parse', parseRoutes); // used for parsing files
 
 // Start Server
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server running on port ${PORT}`);
-});
+  });

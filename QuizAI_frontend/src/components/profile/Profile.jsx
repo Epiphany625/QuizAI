@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import NavigationBar from '../navigationBar/NavigationBar.jsx';
 import useTokenValidation from '../../hooks/useTokenValidation';
 import axios from 'axios';
-import './Profile.css';
+import './profile.css';
 
 const Profile = () => {
     useTokenValidation();

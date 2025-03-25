@@ -1,0 +1,28 @@
+version: "3.8"
+services:
+  backend:
+    build: ./QuizAI_backend
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./QuizAI_backend/.env
+    networks:
+      - quizai-net
+
+  frontend:
+    build: ./frontend_web
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+    networks:
+      - quizai-net
+
+  extension:
+    build: ./QuizAI_frontend
+    # 不开放端口，不作为服务运行，只用于构建插件
+    networks:
+      - quizai-net
+
+networks:
+  quizai-net:

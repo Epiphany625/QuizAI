@@ -1,130 +1,146 @@
-# QuizAI
+# 📚 QuizAI
 
-QuizAI is an AI helper application that empowers users to:
+**QuizAI** is an AI-powered assistant application that helps users:
 
-- **Create courses**
-- **Upload files**
-- **Generate quizzes**
-- **Receive feedback**
+• Create courses
 
----
+• Upload learning materials
 
-## Tech Stack
+• Generate quizzes
 
-- **Front End:** React.js
-- **Back End:** Express.js
-- **Database:** MongoDB
-- **Cloud Service:** Amazon Web Services (AWS)
+• Receive personalized feedback
 
 ---
 
-## Urgent Future Work
+### **🧰 Tech Stack**
 
-- **Front End:** Refactor the entire frontend to ensure a smoother user experience and scalability.
-- **Back End:** Enhance CRUD operations for images, files, and quizzes.
+• **Frontend Web App:** React.js
+
+• **Chrome Extension:** React.js
+
+• **Backend:** Express.js + MongoDB
+
+• **Cloud Services:** Amazon Web Services (AWS)
+
+• **Containerization:** Docker & Docker Compose
 
 ---
 
-## Project Structure
+### **📁 Project Structure**
 
 ```
 QuizAI/
-├─ QuizAI_frontend/           # Chrome Extension Front End
-├─ frontend_web/              # Web App Front End
-└─ QuizAI_backend/            # Back End (Express.js)
+├─ QuizAI_frontend/        # Chrome Extension (React)
+├─ frontend_web/           # Web App Frontend (React + Nginx)
+├─ QuizAI_backend/         # Backend API (Express + MongoDB)
+├─ docker-compose.yml      # Multi-service Docker configuration
 ```
 
 ---
 
-## Getting Started
+### **🚀 Run the Full App with Docker (Recommended)**
 
-### Cloning the Repository
+This is the easiest and most reliable way to run the entire app without setting up Node or dependencies manually.
 
-To get started, clone the repository:
+### **🧩 Steps:**
 
-```bash
-git clone https://github.com/Epiphany625/QuizAI.git
+1. **Clone the repository**
+
 ```
-
-Then navigate into the project folder:
-
-```bash
+git clone https://github.com/Epiphany625/QuizAI.git
 cd QuizAI
 ```
 
-**Important:** After pulling the latest changes from the repository, please run `npm i` in the respective folders to ensure all dependencies are up to date.
+2. **Set up environment variables**
 
-### Front End Chrome Extension
+Create a .env file inside the QuizAI_backend/ folder:
 
-1. **Navigate** to the Chrome Extension folder:
-   ```bash
-   cd QuizAI_frontend
-   ```
-2. **Install dependencies**:
-   ```bash
-   npm i
-   ```
-3. **Run in development mode**:
-   ```bash
-   npm run dev
-   ```
-4. **Build for production** (if needed):
-   ```bash
-   npm run build
-   ```
+```
+GOOGLE_AI_KEY=your_google_ai_api_key
+MONGO_URI=your_mongo_connection_uri
+```
 
-### Web App
+3. **Start all services (frontend, backend, extension build)**
 
-1. **Navigate** to the Web App folder:
-   ```bash
-   cd frontend_web
-   ```
-2. **Install dependencies**:
-   ```bash
-   npm i
-   ```
-3. **Start the server**:
-   ```bash
-   node server.js
-   ```
+```
+docker compose up --build
+```
 
-### Back End
+4. **Access the app**
 
-1. **Navigate** to the Back End folder:
-   ```bash
-   cd QuizAI_backend
-   ```
-2. **Install dependencies**:
-   ```bash
-   npm i
-   ```
-3. **Create a `.env` file** in the `QuizAI_backend` folder with the following structure:
-   ```env
-   GOOGLE_AI_KEY=""
-   MONGO_URI=""
-   ```
-   Fill in your actual API key and database URI before running the server.
-4. **Start the server**:
-   ```bash
-   node server.js
-   ```
+• Web App: [http://localhost:5173](http://localhost:5173/)
+
+• API Server: http://localhost:3000/api
+
+5. **Load the Chrome Extension**
+
+• Open Chrome and go to chrome://extensions
+
+• Enable “Developer mode”
+
+• Click “Load unpacked”
+
+• Select the QuizAI_frontend/dist/ folder (after it’s built by Docker or manually)
+
+6. **Stop all containers**
+
+```
+docker compose down
+```
 
 ---
 
-## Contributing
+**🧪 Run Locally (for development)**
 
-- **Branching**: Please push changes to a **separate branch** for each feature.
-- **Pull Requests**: Submit a pull request once your feature is complete and tested.
-- **Code Reviews**: Collaborators will review and provide feedback before merging.
+If you prefer running each module separately:
+
+**Chrome Extension**
+
+```
+cd QuizAI_frontend
+npm install
+npm run dev
+```
+
+**Web App**
+
+```
+cd frontend_web
+npm install
+npm run dev
+```
+
+**Backend**
+
+```
+cd QuizAI_backend
+npm install
+# Create a .env file as shown above
+node server.js
+```
 
 ---
 
-## Collaborators
+### **✅ Contribution Guidelines**
 
-- **Xinyang Xu**
-- **Minyu Huang**
-- **Haipeng Wu**
+• **Branching:** Create a new branch for each feature or fix.
+
+• **Pull Requests:** Submit a PR after completing and testing your changes.
+
+• **Code Reviews:** Collaborators will review and approve before merging.
 
 ---
 
-Happy quizzing! If you have any questions or issues, feel free to open an issue or contact one of the collaborators.
+### **👥 Collaborators**
+
+• **Xinyang Xu**
+
+• **Minyu Huang**
+
+• **Haipeng Wu**
+
+---
+
+🎉 Happy quizzing!
+
+Feel free to open an issue or reach out if you need help getting started.
