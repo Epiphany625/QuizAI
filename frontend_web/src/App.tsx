@@ -7,6 +7,7 @@ import CourseProgress from './components/CourseProgress';
 import { MistakeJournal } from './components/MistakeJournal';
 import { CourseList } from './components/CourseList';
 import { Login } from './pages/Login';
+import { DocSearch } from './pages/DocSearch';
 import { Achievements } from './pages/Achievements';
 import { Subscription } from './pages/Subscription';
 import Signup from './pages/Signup';
@@ -148,6 +149,7 @@ function AppContent() {
 
   return (
     <Routes>
+      <Route path="/doc" element={<DocSearch />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/achievements" element={

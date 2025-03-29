@@ -59,7 +59,7 @@ export function CourseWorkspace({ course }: CourseWorkspaceProps) {
     Array.from(files).forEach(file => {
       formData.append('files', file);
     });
-
+  
     const email = localStorage.getItem('email');
     if (!email) {
       navigate('/login');
@@ -67,12 +67,27 @@ export function CourseWorkspace({ course }: CourseWorkspaceProps) {
     }
 
     try {
+      // Step 1: Upload to your backend and save locally
       const response = await axios.post(`http://localhost:3000/api/upload/${email}/${course.name}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         }
       });
-      console.log(response.data);
+  
+      console.log('Upload response:', response.data);
+  
+      // Step 2: Send data to external API for parsing/embedding
+      const requestBody = {
+        email,
+        courseName: course.name,
+        fileNames: Array.from(files).map(file => file.name),
+      }
+      console.log(requestBody);
+      const secondaryResponse = await axios.post('http://localhost:8000/api/save', requestBody);
+      console.log(secondaryResponse)
+
+      
+  
       const newMaterials: StudyMaterial[] = Array.from(files).map((file) => ({
         id: uuidv4(),
         name: file.name,
@@ -85,6 +100,7 @@ export function CourseWorkspace({ course }: CourseWorkspaceProps) {
       setMaterials([...materials, ...newMaterials]);
     } catch (error) {
       console.error('Error uploading files:', error);
+  
       const newMaterials: StudyMaterial[] = Array.from(files).map((file) => ({
         id: uuidv4(),
         name: file.name,
@@ -242,7 +258,10 @@ export function CourseWorkspace({ course }: CourseWorkspaceProps) {
                 handleFileUpload(e.dataTransfer.files);
               }
             }}
-            onDragOver={(e) => e.preventDefault()}
+            onDragOver={(e) => {e.preventDefault();               if (e.dataTransfer.files) {
+              handleFileUpload(e.dataTransfer.files);
+            }}}
+
             className="border-2 border-dashed border-[#3B82F6] rounded-lg p-8 text-center hover:border-[#2563EB] transition-colors duration-300"
           >
             <FolderUp className="w-12 h-12 text-[#3B82F6] mx-auto mb-4" />

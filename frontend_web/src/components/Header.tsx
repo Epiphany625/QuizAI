@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { GraduationCap, ArrowLeft, BookOpen, Mail, Star, LogOut, Trophy, CreditCard, Crown } from 'lucide-react';
+import { GraduationCap, ArrowLeft, BookOpen, Mail, Star, LogOut, Trophy, CreditCard, Crown, FileText } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import useTokenValidation from '../hooks/useTokenValidation';
 
@@ -10,9 +10,7 @@ interface HeaderProps {
 }
 
 export function Header({ onMistakesClick, showBackButton, onBack }: HeaderProps) {
-
   useTokenValidation(); // make sure the user is logged in
-
 
   const navigate = useNavigate();
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
@@ -35,8 +33,6 @@ export function Header({ onMistakesClick, showBackButton, onBack }: HeaderProps)
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
-
-  
 
   const handleNavigate = (path: string) => {
     setShowProfileDropdown(false);
@@ -76,13 +72,20 @@ export function Header({ onMistakesClick, showBackButton, onBack }: HeaderProps)
           </div>
 
           {/* Center section */}
-          <div className="flex-1 flex items-center justify-center">
+          <div className="flex-1 flex items-center justify-center space-x-4">
             <button
               onClick={onMistakesClick}
               className="flex items-center space-x-2 text-gray-700 hover:text-[#3B82F6] px-4 py-2 rounded-lg hover:bg-gray-50 text-lg mx-4"
             >
               <BookOpen className="h-6 w-6" />
               <span className="font-medium">Mistake Journal</span>
+            </button>
+            <button
+              onClick={() => handleNavigate('/doc')}
+              className="flex items-center space-x-2 text-gray-700 hover:text-[#3B82F6] px-4 py-2 rounded-lg hover:bg-gray-50 text-lg"
+            >
+              <FileText className="h-6 w-6" />
+              <span className="font-medium">Docs</span>
             </button>
           </div>
           
